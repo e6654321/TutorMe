@@ -5,3 +5,21 @@ from django.views.generic import View, TemplateView
 
 class HomePageView(TemplateView):
     template_name = 'index.html'
+
+class MainView(TemplateView):
+    template_name = 'main.html'
+
+class SearchView(TemplateView):
+    template_name = 'search.html'
+
+class GeolocationView(TemplateView):
+    template_name = 'geolocation.html'
+
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
+class PaymentView(TemplateView):
+    template_name = 'payment.html'
+
+class SettingsView(TemplateView):
+    template_name = 'settings.html'
