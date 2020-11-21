@@ -8,3 +8,6 @@ class HomePageView(TemplateView):
 
 class MainView(TemplateView):
     template_name = 'main.html'
+
+class NotesPageView(TemplateView):
+    template_name='notes.html'

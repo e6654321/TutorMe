@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import (
-	HomePageView, 
+from pages.views import (
+	HomePageView,
+	NotesPageView, 
 # 	# DashboardPageView,
 # 	# LoginPageView,
 # 	# RegCustomerPageView,
@@ -9,13 +10,14 @@ from .views import (
 # 	# TableProductPageView,
 # 	# TableOrderPageView,
 # 	# ErrorPageView
-	MainView
+	MainView,
 )
 
 app_name = 'pages'
 urlpatterns = [
 	path('',HomePageView.as_view(),name='home'),
 	path('index/',HomePageView.as_view(),name='index'),
+	path('notes/',NotesPageView.as_view(),name='notes'),
 	# path('dashboard/',DashboardPageView.as_view(),name='dashboard'),
 	# path('login/',LoginPageView.as_view(),name='login'),
 	# path('register/customer/',RegCustomerPageView.as_view(),name='regcustomer'),
