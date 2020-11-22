@@ -1,288 +1,129 @@
-{% extends "components/base.html" %}
+{% extends 'components/base.html' %}
+
 {% load static %}
 
-
-{% block title %}<title>TutorMe</title>{% endblock %}
+{% block title %}
+    <title>Tutorme | Notes</title>
+{% endblock %}
 
 {% block pageCSS %}
-<style type="text/css">
-
-    .container{
-        width: 100%;
-        height: 100%;
-        display: block;
-        align-items: center;
-    }
-
-    /* ------------------------------------------------------------------------------- */
-
-    
-    button{
-        cursor: pointer; /* Pointer/hand icon */
-        width: 80%; /* Set a width if needed */
-        display: block; /* Make the buttons appear below each other */
-    }
-
-    button:not(:last-child) {
-        border-bottom: none; /* Prevent double borders */
-    }
-
-    .btn-group{
-        float: right;
-        width: 100%;
-    }
-
-    .search-bar{
-        display: flex;
-    }
-
-    .search-bar button{
-        width: 50px;
-    }
-
-    .col {
-        margin-top: 35px;
-        height: 100%;
-    }
-
-    .col-2 {
-        margin-top: 35px;
-        height: 100%;
-    }
-
-    .col-2 a{
-        display: block;
-    }
-
-    .col-7 {
-        height: 100%;
-        margin-top: 35px;
-    }
-
-    .main {
-        width: 100%; 
-        height: 660px; 
-        background-color: white; 
-        overflow: hidden;
-        overflow-y: scroll; 
-        margin-top: 45px;
-        border-style: solid;
-        border-width: 0.2px;
-        border-color: lightgray;
-    }
-
-    .main-content {
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 10px;
-    }
-
-    .suggestions .row3 h6{
-        float: left;
-    }
-
-</style>
+    <style type="text/css">
+        .center-component{
+            height: 89vh;
+            width: 80%;
+            position: relative;
+            overflow-y: scroll;
+        }
+        .notes-table{
+            width: 100%;
+            padding: 2%;
+            margin-top: 1%;
+            border-top-right-radius: 5%;
+            border-right: lightgrey 1px;
+            box-shadow: 5px 2px lightgrey;
+            border-bottom-right-radius: 5%;
+        }
+        .notes-container{
+            display: flex;
+            flex-direction: column;
+            padding: 1.5% 1.5% 5px 1.5%;
+            background-color: skyblue;
+            border-left: solid blue 5px;
+            border-radius: 0px 10px 10px 0px;
+        }
+        .notes-header{
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
 {% endblock %}
 
 {% block pageBody %}
+    <div class="main-container">
+        {% include 'components/navigation.html' %}
 
-    <div class="row">
-        <div class="col-2" style="margin-top: 1px; margin-left: 1px;">
-
-            <a href="{% url 'pages:main' %}" style="vertical-align: middle; margin-left: 25px; margin-top: 35px;">
-                <img src="{% static '/assets/img/logoTutorMe_v4.png' %}" style="width:200px; height: 100px;">
-            </a>
-    
-            <a href="">
-                <button type="button" class="btn btn-link" name="gift" style="margin-top: 65px; margin-left: 20px;">
-                    <i class="fas fa-gift" style="font-size: 50px;"></i></button>
-            </a>
-            
-            <a href="">
-                <button type="button" class="btn btn-link" name="message" style="margin-top: 25px; margin-left: 20px;">
-                    <i class="fas fa-envelope" style="font-size: 50px;"></i></button>
-            </a>
-            
-            <a href="">
-                <button type="button" class="btn btn-link" name="notes" style="margin-top: 25px; margin-left: 20px;">
-                    <i class="fas fa-book-reader" style="font-size: 50px;"></i></button>
-            </a>
-            
-            <a href="">
-                <button type="button" class="btn btn-link" name="schedule" style="margin-top: 25px; margin-left: 20px;">
-                    <i class="fas fa-calendar-check" style="font-size: 50px;"></i></button>
-            </a>
-            
-            <a href="">
-                <button type="button" class="btn btn-link"  name="chatbot" style="margin-top: 105px; margin-left: 20px; border-style: solid; border-color: #ffb10d; border-width: 1px;">
-                    <i class="fas fa-robot" style="font-size: 50px;"></i></button>
-            </a>
-            
-    
-        </div>
-    
-        <div class="col-7"> 
-    
-            <div class="search-bar">
-                <input class="form-control" type="text" placeholder="Search" id="searchInput">
-                <a href="{% url 'pages:search' %}">
-                    <button type="button" class="btn btn-outline-primary" name="search"><i class="fas fa-search"></i></button>
-                </a>
-                <a href="{% url 'pages:geo' %}" style="margin-left: 12px;">
-                    <button type="button" class="btn btn-outline-primary" name="geosearch"><i class="fas fa-map-marker-alt"></i></button>
-                </a>
-            </div>
-    
-            <div class="main">
-
-                <div class="main-content">
-                    
-                    <table id="example" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Tutor</th>
-                                <th>Subject</th>
-                                <th>Rating</th>
-                                <th>Rate per Hour</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jisoo Kim</td>
-                                <td>History</td>
-                                <td>4.8</td>
-                                <td>190</td>
-                                <td><a class="btn btn-link" href="#" role="button">VIEW</a></td>
-                            </tr>
-                            <tr>
-                                <td>Rosé Park</td>
-                                <td>Math</td>
-                                <td>4.9</td>
-                                <td>195</td>
-                                <td><a class="btn btn-link" href="#" role="button">VIEW</a></td>
-                            </tr>
-                            <tr>
-                                <td>Ashton Yu</td>
-                                <td>Science</td>
-                                <td>4.0</td>
-                                <td>140</td>
-                                <td><a class="btn btn-link" href="#" role="button">VIEW</a></td>
-                            </tr>
-                            <tr>
-                                <td>Nini Kim</td>
-                                <td>Science</td>
-                                <td>4.7</td>
-                                <td>180</td>
-                                <td><a class="btn btn-link" href="#" role="button">VIEW</a></td>
-                            </tr>
-                            <tr>
-                                <td>Lalalisa Manoban</td>
-                                <td>English</td>
-                                <td>4.7</td>
-                                <td>150</td>
-                                <td><a class="btn btn-link" href="#" role="button">VIEW</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-                        
-            </div>
-           
-    
-        </div>
-    
-        <div class="col" style="margin-left: 0px; margin-right: 25px;">
-
-            <div class="btn-group">
-
-                <img src="{% static '/assets/img/pp1.jpg' %}" class="rounded-circle z-depth-0"
-                  alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                  Jennie Ruby Jane
-                </button>
-
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="{% url 'pages:profile' %}">Profile</a>
-                  <a class="dropdown-item" href="{% url 'pages:payment' %}">Payment</a>
-                  <a class="dropdown-item" href="{% url 'pages:settings' %}">Settings</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'pages:login' %}">Logout</a>
-                </div>
-
-            </div>
-    
-            <div class="suggestions" style="margin-top: 82px; border-style: solid; border-color: #ffb10d; border-width: 1px; height: 310px;">
-
-                    <div class="container">
-
-                      <p style="margin-top: 5px; font-size: medium; font-weight: normal;">SUGGESTED TUTOR</p>
-                      
-                      <div class="row1" style="text-align: center;">
-
-                            <img src="{% static '/assets/img/pp2.jpg' %}" class="rounded-circle z-depth-0"
-                                        alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-                            <p style="font-size: small; font-weight: bolder;">Lalalisa Manoban</p>
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
-
-                      </div>
-
-                      <div class="row2" style="text-align: center; line-height: -2px;">
-
-                        <p  style="background-color: #ffb10d;">
-                            Math
-                        </p>
-
-                        <p style="background-color: #ffb10d;">
-                            Science
-                        </p>
-
-                        <p  style="background-color: #ffb10d;">
-                            History
-                        </p>
-
-                      </div>
-
-                      <div class="row3">
-
-                        <h6><i>Rate</i></h6>
-
-                            <div class="rate" style="float: right;">
-                                <h6>150/hr</h6>
+        <div class="body-container col">
+            {% include 'components/header.html' %}
+            <div class="row">
+                <div class="center-component col-9">
+                    <div class="notes-table">
+                        <div class="notes-container">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>10:00 - 11:00</p>
                             </div>
-
-                      </div>
-
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Special Topics in Mathematics</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>13:00 - 15:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Aldren Kim Concordia</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Intelligent Systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #C4BEFF; border-left-color: #948BFF;">
+                            <div class="notes-header">
+                                <h5>October 30</h5>
+                                <p>9:00 - 10:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jonah Marc Batomalaque</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Information Management</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #FF6E6E; border-left-color: #FD3030;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>10:00 - 11:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jhosie Charles Espantaleon</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Life and Works of Rizal</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-    
-            </div>
-    
-            <div class="calendar" style="margin-top: 22px;" style="border-style: solid; border-color: #ffb10d; border-width: 1px;">
-
-                <div class="calendar-content" style="max-width: 18rem;">
-
-                      <h5 class="card-title">CALENDAR</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
-    
-            </div>
-
-            <div class="becomeMentor" style="margin-top: 30px;">
-                <a href="">
-                    <button type="button" class="btn btn-outline-primary" style="width: 100%;">Become a Mentor</button>
-                </a>
-            </div>
-    
+                {% include "components/sidebar.html" %}
         </div>
-    
     </div>
+</div>
 {% endblock %}
 
-
 {% block pageJS %}
-<script type="text/javascript">
-    console.log("Login");
-</script>
+    <script type="text/javascript">
+
+    </script>
 {% endblock %}

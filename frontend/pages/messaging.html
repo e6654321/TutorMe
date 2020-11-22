@@ -4,30 +4,6 @@
 
 {% block pageCSS %}
 <style type="text/css">
-    .d-box{
-        display: flex;
-        height: inherit;
-        width: inherit;
-        flex-direction: row;
-        justify-content: space-around;
-        margin: 0;
-        padding: 0;
-    }
-    .left-sidebar{
-        height: 100%;
-        width: 5%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        justify-items: center;
-        align-items: center;
-        border-right: solid lightgray 2px;
-    }
-    .lef-sidebar > img{
-        width: 30%;
-        height: 4%;
-        padding-left: 2px;
-    }
     .center-component{
         width: 95%;
         display: flex;
@@ -54,9 +30,13 @@
         padding-top: 7px;
     }
     .below-bar{
+        position: absolute;
         display: flex;
         justify-content: space-between;
         padding: 0px 25px 20px 25px;
+        right: 10px;
+        bottom: 0px;
+        width: 100%;
     }
     .below-bar > a{
         padding: 0px 5px 0px 5px;
@@ -78,7 +58,6 @@
     .middle-content
     {
         width: 100%;
-        height: 100%;
         margin: 0;
         padding:0;
     }
@@ -128,52 +107,65 @@
         position: relative;
         top:20px;
     }
-    p{
-        margin: 0;
+    .main-content{
+        justify-content: space-between;
+        padding: 10px;
+        height: 100%;
     }
 </style>
 {% endblock %}
 
 {% block pageBody %}
-<div class="d-box">
-    <div class="left-sidebar">
-        <a href="#"><img src="{% static 'assets/icons/cube.png' %}" alt=""></a>
-        <a href="#"><img src="{% static 'assets/icons/magnifying.png' %}" alt=""></a>
-        <a href="#"><img src="{% static 'assets/icons/map.png' %}" alt=""></a>
-        <a href="#"><img src="{% static 'assets/icons/email.png' %}" alt=""></a>
-    </div>
-    <div class="center-component">
-        <div class="above-bar">
-            <div class="left-group-bar">
-                <a href="#"><img src="{% static 'assets/icons/arrow-white.png' %}" alt=""></a>
-                <p>Jhosie</p>
-            </div>
-            <div class="right-group-bar">
-                <a href="#"><img src="{% static 'assets/icons/chat-box.png' %}" alt=""></a>
-                <a href=""><img src="{% static 'assets/icons/phone.png' %}" alt=""></a>
-                <a href=""><img src="{% static 'assets/icons/three-dots.png' %}" alt=""></a>
-            </div>
-        </div>
-        <div class="middle-content">
-            <div class="chat-mentor">
-                <a href="#"><img src="{% static 'assets/icons/jhosie.png' %}" alt=""></a>
-                <div class="message-mentor">
-                    <p>Sorry I'll be late for a bit</p>
+
+    <div class="main-container row">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col-11   ">
+            {% include 'components/header.html' %}
+    
+            <div class="row"> 
+                <div class="main col-9">
+
+                    <div class="main-content shadow-rounded">
+                        
+                        <div class="above-bar rounded">
+                            <div class="left-group-bar">
+                                <a href="#"><img src="{% static 'assets/icons/arrow-white.png' %}" alt=""></a>
+                                <p>Jhosie</p>
+                            </div>
+                            <div class="right-group-bar">
+                                <a href="#"><img src="{% static 'assets/icons/chat-box.png' %}" alt=""></a>
+                                <a href=""><img src="{% static 'assets/icons/phone.png' %}" alt=""></a>
+                                <a href=""><img src="{% static 'assets/icons/three-dots.png' %}" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="middle-content">
+                            <div class="chat-mentor">
+                                <a href="#"><img src="{% static 'assets/icons/jhosie.png' %}" alt=""></a>
+                                <div class="message-mentor">
+                                    <p>Sorry I'll be late for a bit</p>
+                                </div>
+                            </div>
+                            <div class="message-mentee">
+                                <p>Ok</p>
+                            </div>
+                        </div>
+                        <div class="below-bar">
+                            <a href="#"><img src="{% static 'assets/icons/camera.png' %}" alt=""></a>
+                            <input type="text" name="message-input" id="message" placeholder="Type your message here...">
+                            <a href="#"><img src="{% static 'assets/icons/airplane-send.png' %}" alt=""></a>
+                        </div>
+                    </div>
+                            
                 </div>
+               
+        
+                {% include "components/sidebar.html" %}
             </div>
-            <div class="message-mentee">
-                <p>Ok</p>
-            </div>
-        </div>
-        <div class="below-bar">
-            <a href="#"><img src="{% static 'assets/icons/camera.png' %}" alt=""></a>
-            <input type="text" name="message-input" id="message" placeholder="Type your message here...">
-            <a href="#"><img src="{% static 'assets/icons/airplane-send.png' %}" alt=""></a>
+    
         </div>
     </div>
-    <div class="right-sidebar">
-    </div>
-</div>
+
 {% endblock %}
 
 {% block pageJS %}
