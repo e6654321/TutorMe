@@ -29,3 +29,9 @@ class SettingsView(TemplateView):
 
 class MessagingView(TemplateView):
     template_name='messaging.html'
+
+class CreateSubjectView(TemplateView):
+    template_name= 'create-subject.html'
+
+class ScheduleSubjectView(TemplateView):
+    template_name= 'schedule-page.html'
