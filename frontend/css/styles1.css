@@ -8,15 +8,21 @@
     /* ------------------------------------------------------------------------------- */
 
     
-    button{
-        cursor: pointer; /* Pointer/hand icon */
-        width: 80%; /* Set a width if needed */
-        display: block; /* Make the buttons appear below each other */
+    .button {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      border-radius: 8px;
     }
 
-    button:not(:last-child) {
-        border-bottom: none; /* Prevent double borders */
-    }
 
     .btn-group{
         float: right;
@@ -71,3 +77,63 @@
     .suggestions .row3 h6{
         float: left;
     }
+
+    .box {
+        width: 180px;
+        height: 180px;
+        background: black;
+        margin: 20px 50px;
+    }
+    .circle {
+        border-radius: 50%;
+    }
+    .inner-border {
+        border: 20px solid black;
+        box-shadow: inset 0px 0px 0px 10px red;
+        box-sizing: border-box; /* Include padding and border in element's width and height */
+    }
+    /* CSS3 solution only for rectangular shape */
+    .inner-outline {
+        outline: 10px solid red;
+        outline-offset: -30px;
+    }
+
+    .corner {
+        border-radius: 25px;
+        border: 2px solid #73AD21;
+        padding: 20px;
+        width: 200px;
+        height: 150px;
+    }
+
+    .info {
+      background-color: white; 
+      color: #008CBA; 
+      border: 2px solid #008CBA;
+    }
+
+    .info:hover {
+      background-color: #008CBA;
+      color: white;
+    }
+
+    .relative {
+      padding: 10px;
+      position: relative;
+      left: 30px;
+      background-color: #fff;
+      margin: 10px;    } 
+    .navitem {
+      display: inline-block;
+      width: 100px; 
+      height: 30px; 
+      text-align: center;
+      border: none;
+      color: white;
+      border: gray;
+      background-color: #008CBA;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
