@@ -1,9 +1,97 @@
 html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 .rounded {
   border-radius: 30px !important;
+}
+
+.left-sidebar{
+    height: 100%;
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+    border-right: solid lightgray 2px;
+}
+
+.lef-sidebar > img{
+    width: 30%;
+    height: 4%;
+    padding-left: 2px;
+}
+
+.sidebarImg{
+  width: 75px;
+}
+
+.header{
+  padding: 10px 20px;
+  width: 100%;
+  box-shadow: 0px 1px lightgrey;
+  justify-content: space-around;
+  margin: 0px;
+}
+
+.search{
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 5px;
+}
+
+.search > *{
+  color: lightgrey;
+}
+
+.search > svg{
+  padding-right: 5px;
+}
+
+.search > input{
+    width: 92%;
+    border: none;
+}
+
+.search > input:focus{
+  outline: none;
+  color: black;
+}
+
+.search > input:focus + svg{
+  color: black;
+}
+
+.btn-group{
+    float: right;
+    width: 100%;
+}
+
+.main-container{
+    display: flex;
+    height: inherit;
+    width: inherit;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.btn-group{
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 5px;
+}
+
+.btn-group img {
+  width: 30px;
+}
+
+.btn-group button {
+  background-color: transparent !important;
 }

@@ -73,16 +73,11 @@
         padding-right: 15px;
         padding-top: 10px;
     }
-
-    .suggestions .row3 h6{
-        float: left;
-    }
-
 </style>
 {% endblock %}
 
 {% block pageBody %}
-
+    {% include 'components/navigation.html' %}
     <form action="">
 
         <div class="row">
@@ -143,26 +138,6 @@
         
             </div>
         
-            <div class="col" style="margin-left: 0px; margin-right: 25px;">
-    
-                <div class="btn-group">
-    
-                    <img src="{% static '/assets/img/pp1.jpg' %}" class="rounded-circle z-depth-0"
-                      alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-    
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                      Jennie Ruby Jane
-                    </button>
-    
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{% url 'pages:profile' %}">Profile</a>
-                      <a class="dropdown-item" href="{% url 'pages:payment' %}">Payment</a>
-                      <a class="dropdown-item" href="{% url 'pages:settings' %}">Settings</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="{% url 'pages:login' %}">Logout</a>
-                    </div>
-    
-                </div>
         
                 <div class="suggestions" style="margin-top: 82px; border-style: solid; border-color: #ffb10d; border-width: 1px; height: 310px;">
     
@@ -228,8 +203,8 @@
             </div>
         
         </div>
+    </form>
 
-    </form>    
 
 {% endblock %}
 
