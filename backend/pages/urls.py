@@ -10,6 +10,7 @@ from pages.views import (
 	PaymentView,
 	MessagingView,
 	CreateSubjectView,
+	ScheduleSubjectView,
 )
 
 app_name = 'pages'
@@ -25,4 +26,5 @@ urlpatterns = [
 	path('payment/',PaymentView.as_view(),name='payment'),
 	path('messaging/',MessagingView.as_view(),name='message'),
 	path('create-subject/',CreateSubjectView.as_view(),name='create-sub'),
+	path('schedule/',ScheduleSubjectView.as_view(),name='subject-view'),
 ]
