@@ -27,5 +27,5 @@ class PaymentView(TemplateView):
 class SettingsView(TemplateView):
     template_name = 'settings.html'
 
-class SubjectScheduleView(TemplateView):
-    template_name='create-subject.html'
+class MessagingView(TemplateView):
+    template_name='messaging.html'
