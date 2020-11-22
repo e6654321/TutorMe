@@ -9,6 +9,9 @@ class HomePageView(TemplateView):
 class MainView(TemplateView):
     template_name = 'main.html'
 
+class NotesPageView(TemplateView):
+    template_name='notes.html'
+
 class SearchView(TemplateView):
     template_name = 'search.html'
 
@@ -23,3 +26,4 @@ class PaymentView(TemplateView):
 
 class SettingsView(TemplateView):
     template_name = 'settings.html'
+

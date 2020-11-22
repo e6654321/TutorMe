@@ -1,0 +1,253 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <title>Tutorme | Notes</title>
+{% endblock %}
+
+{% block pageCSS %}
+    <style type="text/css">
+        .d-box{
+            display: flex;
+            height: inherit;
+            width: inherit;
+            flex-direction: row;
+            justify-content: space-around;
+            margin: 0;
+            padding: 0;
+        }
+        .left-sidebar{
+            height: 100%;
+            width: 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            justify-items: center;
+            align-items: center;
+            border-right: solid lightgray 2px;
+        }
+        .lef-sidebar > img{
+            width: 30%;
+            height: 4%;
+            padding-left: 2px;
+        }
+        .center-component{
+            width: 80%;
+            padding: 1%;
+        }
+        .search-panel{
+            padding: 10px 30px 20px 30px;
+            width: 100%;
+            box-shadow: 0px 1px lightgrey;
+            
+        }
+        .search-panel > input{
+            width: 92%;
+        }
+        .notes-table{
+            width: 100%;
+            padding: 2%;
+            margin-top: 1%;
+            border-top-right-radius: 5%;
+            border-right: lightgrey 1px;
+            box-shadow: 5px 2px lightgrey;
+            border-bottom-right-radius: 5%;
+        }
+        .notes-container{
+            display: flex;
+            flex-direction: column;
+            padding: 1.5% 1.5% 5px 1.5%;
+            background-color: skyblue;
+            border-left: solid blue 5px;
+        }
+        .notes-header{
+            display: flex;
+            justify-content: space-between;
+        }
+        .right-sidebar{
+            width: 15%;
+            padding: 1%;
+        }
+        .user-box{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            padding: 5px 10px 17px 10px;
+            justify-content: space-evenly;
+            border-bottom: solid lightgrey 1px;
+        }
+        .user-box > img{
+            width: 20%;
+        }
+        p{
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block pageBody %}
+    <div class="d-box">
+        <div class="left-sidebar">
+            <a href="#"><img src="{% static 'assets/icons/cube.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'assets/icons/magnifying.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'assets/icons/map.png' %}" alt=""></a>
+            <a href="#"><img src="{% static 'assets/icons/email.png' %}" alt=""></a>
+        </div>
+        <div class="center-component">
+            <div class="search-panel">
+                <input type="text" name="search-bar" id="search-bar" placeholder="Search ...">
+                <a href="#"><img src="{% static 'assets/icons/magnifying.png' %}" style="width: 28px; height: 28px;" alt=""></a>
+                <a href="#"><img src="{% static 'assets/icons/pen.png' %}" style="width: 30px; height: 30px;" alt=""></a>
+            </div>
+            <div class="notes-table">
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <h5>October 24</h5>
+                        <p>10:00 - 11:00</p>
+                    </div>
+                    <div class="notes-details">
+                        <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/elram.png' %}">
+                            <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                        </div>
+                        <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/math_logo.png' %}">
+                            <p>Special Topics in Mathematics</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <h5>October 24</h5>
+                        <p>10:00 - 11:00</p>
+                    </div>
+                    <div class="notes-details">
+                        <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/elram.png' %}">
+                            <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                        </div>
+                        <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/math_logo.png' %}">
+                            <p>Special Topics in Mathematics</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <h5>October 24</h5>
+                        <p>10:00 - 11:00</p>
+                    </div>
+                    <div class="notes-details">
+                        <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/elram.png' %}">
+                            <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                        </div>
+                        <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/math_logo.png' %}">
+                            <p>Special Topics in Mathematics</p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <h5>October 24</h5>
+                        <p>10:00 - 11:00</p>
+                    </div>
+                    <div class="notes-details">
+                        <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/elram.png' %}">
+                            <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                        </div>
+                        <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                            <img src="{% static 'assets/icons/math_logo.png' %}">
+                            <p>Special Topics in Mathematics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-sidebar">
+            <div class="user-box">
+                <img src="{% static '/assets/img/pp1.jpg' %}" class="rounded-circle z-depth-0" alt="avatar image" >
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    Jennie Ruby
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Payment</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                </div>
+           </div>
+           <div class="suggestions" style="margin-top: 82px; border-style: solid; border-color: #ffb10d; border-width: 1px; height: 310px;">
+
+            <div class="container">
+
+              <p style="margin-top: 5px; font-size: medium; font-weight: normal;">SUGGESTED TUTOR</p>
+              
+              <div class="row1" style="text-align: center;">
+
+                    <img src="{% static '/assets/img/pp2.jpg' %}" class="rounded-circle z-depth-0"
+                                alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
+                    <p style="font-size: small; font-weight: bolder;">Lalalisa Manoban</p>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
+
+              </div>
+
+              <div class="row2" style="text-align: center; line-height: -2px;">
+
+                <p  style="background-color: #ffb10d;">
+                    Math
+                </p>
+
+                <p style="background-color: #ffb10d;">
+                    Science
+                </p>
+
+                <p  style="background-color: #ffb10d;">
+                    History
+                </p>
+
+              </div>
+
+              <div class="row3">
+
+                <h6><i>Rate</i></h6>
+
+                    <div class="rate" style="float: right;">
+                        <h6>150/hr</h6>
+                    </div>
+
+              </div>
+
+            </div>
+
+            </div>
+
+            <div class="calendar" style="margin-top: 22px;" style="border-style: solid; border-color: #ffb10d; border-width: 1px;">
+
+                <div class="calendar-content" style="max-width: 18rem;">
+
+                    <h5 class="card-title">CALENDAR</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+
+            </div>
+
+            <div class="becomeMentor" style="margin-top: 30px;">
+                <button type="button" class="btn btn-outline-primary" style="width: 100%;">Become a Mentor</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageJS %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}
