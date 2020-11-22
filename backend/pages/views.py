@@ -11,3 +11,19 @@ class MainView(TemplateView):
 
 class NotesPageView(TemplateView):
     template_name='notes.html'
+
+class SearchView(TemplateView):
+    template_name = 'search.html'
+
+class GeolocationView(TemplateView):
+    template_name = 'geolocation.html'
+
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
+class PaymentView(TemplateView):
+    template_name = 'payment.html'
+
+class SettingsView(TemplateView):
+    template_name = 'settings.html'
+

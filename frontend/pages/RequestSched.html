@@ -1,0 +1,176 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block title %}<title>TutorMe</title>{% endblock %}
+{% block pageBody %}
+	<link rel="stylesheet" type="text/css" href="{% static '/css/styles1.css' %}">
+    <div class="row">
+        <div class="col-2" style="margin-top: 1px; margin-left: 1px;">
+
+            <a href="" style="vertical-align: middle; margin-left: 50px; margin-top: 35px;">
+                <img src="{% static '/assets/img/logoTutorMe_v4.png' %}" style="width:200px; height: 100px;">
+            </a>
+    
+            <div style="display: block;">
+            	<button type="button" class="btn btn-link" style="margin-top: 65px; margin-left: 100px;"><i class="fas fa-gift" style="font-size: 50px;"></i></button><br>
+            
+	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-envelope" style="font-size: 50px;"></i></button><br>
+	            
+	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-book-reader" style="font-size: 50px;"></i></button><br>
+	            
+	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-calendar-check" style="font-size: 50px;"></i></button><br>
+	            
+	            <button type="button" class="btn btn-link" style="margin-top: 105px; margin-left: 100px;"><i class="fas fa-robot" style="font-size: 50px;"></i></button><br>
+            </div>
+            
+    
+        </div>
+    
+        <div class="col-7"> 
+    
+            <div class="search-bar">
+                <input class="form-control" type="text" placeholder="Search" readonly>
+                <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
+                <button type="button" class="btn btn-outline-primary"><i class="fas fa-map-marker-alt"></i></button>
+            </div>
+    
+            <div class="main">
+                <div class="main-content">
+                	<h4 style="margin-top:" align="center">SCHEDULE A TUTORIAL</h4><br>
+                	<div style="position: sticky;">
+                		<img src="{% static '/assets/img/costumer.jpg' %}" class="border border-warning rounded-circle z-depth-0" alt="avatar image" style="width: 80px; height: 80px; position: absolute; margin: auto; right: 0; left: 0;"> 
+                	</div>
+                	<br><br><br><br>
+                	<div align="center">
+                		<h5>Aldren Kim Concordia</h5><h6>Special Topics in Mathematics</h6>
+                		<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
+                	</div>
+                	<div>
+                		<h6 align="left">Date</h6>
+                		<i>Slots Available: 12</i><br>
+                		<input type="DATE" name="">
+                	</div><br>
+                	
+                		<h6 align="left">Time Available</h6>
+                		<div class="">
+	                		<button class="button info">13:00-13:30</button>
+	                		<button class="button info">15:00-16:30</button>
+	                		<button class="button info">17:00-17:30</button>
+	                		<button class="button info">Custom</button>
+                		</div><br>
+
+                		<h6>Rate Per Hour</h6>
+                		<input class="form-control" type="text" id="rate" name="rate" value="P50.00" readonly><br>
+
+                		<div>
+                			<i>Mentee / Your Contact Information:</i>
+                			<h6 align="left">Name</h6>
+                			<input class="form-control" type="text" id="rate" name="rate" value="Jhosie Charles Espantaleon" readonly><br>
+                			<h6 align="left">Contact Number</h6>
+                			<input class="form-control" type="text" id="rate" name="rate" value="0917XXXXXXX" readonly><br>
+                			<h6 align="left">Email</h6>
+                			<input class="form-control" type="text" id="rate" name="rate" value="thisisfake@email.com" readonly><br>
+                			<h6 align="left">Method Payment</h6>
+                			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 25%;">Credit / Debit Card</button>
+                			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 25%;">Cash on Meet-up</button>
+                			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 25%;">Online Payment</button><br><br>
+                		</div>
+                		<div align="center">
+                			<button type="button" class="btn btn-warning" style="width: 50%">Request Schedule</button>
+                		</div>
+                </div>  
+            </div>
+        </div>
+    
+        <div class="col" style="margin-left: 0px; margin-right: 25px;">
+
+            <div class="btn-group">
+
+                <img src="{% static '/assets/img/pp1.jpg' %}" class="rounded-circle z-depth-0"
+                  alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
+
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
+                  Jennie Ruby Jane
+                </button>
+
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Profile</a>
+                  <a class="dropdown-item" href="#">Payment</a>
+                  <a class="dropdown-item" href="#">Settings</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Logout</a>
+                </div>
+
+            </div>
+    
+            <div class="suggestions" style="margin-top: 82px; border-style: solid; border-color: #ffb10d; border-width: 1px; height: 310px;">
+
+                    <div class="container">
+
+                      <p style="margin-top: 5px; font-size: medium; font-weight: normal;">SUGGESTED TUTOR</p>
+                      
+                      <div class="row1" style="text-align: center;">
+
+                            <img src="{% static '/assets/img/pp2.jpg' %}" class="rounded-circle z-depth-0"
+                                        alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
+                            <p style="font-size: small; font-weight: bolder;">Lalalisa Manoban</p>
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
+
+                      </div>
+
+                      <div class="row2" style="text-align: center; line-height: -2px;">
+
+                        <p  style="background-color: #ffb10d;">
+                            Math
+                        </p>
+
+                        <p style="background-color: #ffb10d;">
+                            Science
+                        </p>
+
+                        <p  style="background-color: #ffb10d;">
+                            History
+                        </p>
+
+                      </div>
+
+                      <div class="row3">
+
+                        <h6><i>Rate</i></h6>
+
+                            <div class="rate" style="float: right;">
+                                <h6>150/hr</h6>
+                            </div>
+
+                      </div>
+
+                    </div>
+    
+            </div>
+    
+            <div class="calendar" style="margin-top: 22px;" style="border-style: solid; border-color: #ffb10d; border-width: 1px;">
+
+                <div class="calendar-content" style="max-width: 18rem;">
+
+                      <h5 class="card-title">CALENDAR</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+    
+            </div>
+
+            <div class="becomeMentor" style="margin-top: 30px;">
+                <button type="button" class="btn btn-outline-primary" style="width: 100%;">Become a Mentor</button>
+            </div>
+    
+        </div>
+    
+    </div>
+{% endblock %}
+
+
+{% block pageJS %}
+<script type="text/javascript">
+    console.log("Login");
+</script>
+{% endblock %}
