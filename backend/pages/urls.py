@@ -11,6 +11,7 @@ from pages.views import (
 	MessagingView,
 	CreateSubjectView,
 	ScheduleSubjectView,
+	MentorProfileView,
 )
 
 app_name = 'pages'
@@ -27,4 +28,5 @@ urlpatterns = [
 	path('messaging/',MessagingView.as_view(),name='message'),
 	path('create-subject/',CreateSubjectView.as_view(),name='create-sub'),
 	path('schedule/',ScheduleSubjectView.as_view(),name='subject-view'),
+	path('mentor-profile/',MentorProfileView.as_view(),name='mentor-profile'),
 ]
