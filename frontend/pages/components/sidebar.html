@@ -1,57 +1,98 @@
 {% load static %}
-    <div class="right-sidebar col-3">
-       <div class="suggestions" style="margin-top: 20px; border-style: solid; border-color: #ffb10d; border-width: 1px; height: 310px;">
+<div class="right-sidebar col-3">
+    <h5>Suggested Tutors</h5>
+    <div class="suggestions card text-center">
+      <div class="card-body">
+        <div class="row mentor" style="text-align: center;">
 
-            <p style="margin-top: 5px; font-size: medium; font-weight: normal;">SUGGESTED TUTOR</p>
-          
-            <div class="col" style="text-align: center;">
+            <img class="col-4 ml-2" src="{% static '/assets/icons/edah.png' %}" alt="avatar image" />
 
-                <img src="{% static '/assets/img/pp2.jpg' %}" class="rounded-circle z-depth-0"
-                            alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-                <p style="font-size: small; font-weight: bolder;">Lalalisa Manoban</p>
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
-
-            </div>
-
-            <div class="col" style="text-align: center; line-height: -2px;">
-
-                <p  style="background-color: #ffb10d;">
-                    Math
-                </p>
-
-                <p style="background-color: #ffb10d;">
-                    Science
-                </p>
-
-                <p  style="background-color: #ffb10d;">
-                    History
-                </p>
-
-            </div>
-
-            <div class="row" style="padding: 0px 5px;">
-
-                <h6 class="col-6">Rate</h6>
-
-                <div class="rate col-6" style="text-align: right;">
-                    <h6>150/hr</h6>
+            <div class="name text-left">
+                <span>Lalalisa Manoban</span>
+                <div class="row ml-1">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-
             </div>
 
         </div>
 
-        <div class="calendar" style="margin-top: 22px;" style="border-style: solid; border-color: #ffb10d; border-width: 1px;">
+        <div class="row subjects">
 
-            <div class="calendar-content" style="max-width: 18rem;">
-                <h5 class="card-title">CALENDAR</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="col-4 rounded" style="background-color: #ffb10d;">
+                Math
+            </p>
+
+            <p class="col-4 rounded" style="background-color: #948BFF;">
+                Science
+            </p>
+
+            <p class="col-4 rounded"  style="background-color: #FF6E6E;">
+                History
+            </p>
+
+        </div>
+      </div>
+      <div class="card-footer">
+            <span class="price">Price</span>
+
+            <div class="rate">
+                <span><b>₱100.00/hr</b></span>
             </div>
-
+      </div>
+    </div>
+    <div class="calendar">
+        <div id='fullDiv' >
+          <ul>
+            <li>SU</li>
+            <li>MO</li>
+            <li>TU</li>
+            <li>WE</li>
+            <li>TH</li>
+            <li>FR</li>
+            <li>SA</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+            <li>19</li>
+            <li>20</li>
+            <li>21</li>
+            <li>22</li>
+            <li>23</li>
+            <li>24</li>
+            <li>25</li>
+            <li>26</li>
+            <li>27</li>
+            <li>28</li>
+            <li>29</li>
+            <li>30</li>
+            <li>31</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
         </div>
-
-        <div class="becomeMentor" style="margin-top: 30px;">
-            <button type="button" class="btn btn-outline-primary" style="width: 100%;">Become a Mentor</button>
-        </div>
+    </div>
+    <div class="becomeMentor" style="margin-top: 30px;">
+        <button type="button" class="btn">Become a Mentor</button>
     </div>
 </div>

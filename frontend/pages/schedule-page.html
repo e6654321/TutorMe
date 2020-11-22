@@ -155,41 +155,58 @@
 {% endblock %}
 
 {% block pageBody %}
-<div class="create-body">
-    <div class="above-bar">
-        <a href="#"><img src="{% static 'assets/icons/arrow-blue.png' %}" alt=""></a>
+
+    <div class="main-container row">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col-11   ">
+            {% include 'components/header.html' %}
+    
+            <div class="row"> 
+                <div class="center-component col-9">
+                    <div class="create-body">
+                        <div class="above-bar">
+                            <a href="#"><img src="{% static 'assets/icons/arrow-blue.png' %}" alt=""></a>
+                        </div>
+                        <div class="middle-content">
+                            <div class="above">
+                                <img src="{% static 'assets/icons/elram.png' %}" alt="">
+                                <h4>Elram Espra</h4>
+                            </div>
+                            <div class="subject-name">
+                                <input type="text" name="subject-name" id="subject" value="Special Topics in Mathematics">
+                            </div>
+                            <div class="date-group">
+                                <img src="{% static 'assets/icons/calendar.png' %}" alt="">
+                                <input type="text" name="date" autocomplete="off" value="29, September 2020">
+                            </div>
+                            <div class="time-group">
+                                <img src="{% static 'assets/icons/clock.png' %}" alt="">
+                                <input type="text" name="time"  value="10:00 AM">
+                                <p>_</p>
+                                <input type="text" name="time" value="02:00 PM">
+                            </div>
+                            <div class="rate-group">
+                                <img src="{% static 'assets/icons/money.png' %}" alt="">
+                                <input type="text" name="rate" id="rate" value="&#8369 50.00/hr">
+                            </div>
+                            <div class="tele-group">
+                                <img src="{% static 'assets/icons/mobile-phone.png' %}" alt="">
+                                <input type="text" name="tele" id="tele" value="0917XXXXXXX">
+                            </div>
+                            <div class="below-bar">
+                                <img src="{% static 'assets/icons/design.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                {% include "components/sidebar.html" %}
+            </div>
+    
+        </div>
     </div>
-    <div class="middle-content">
-        <div class="above">
-            <img src="{% static 'assets/icons/elram.png' %}" alt="">
-            <h4>Elram Espra</h4>
-        </div>
-        <div class="subject-name">
-            <input type="text" name="subject-name" id="subject" value="Special Topics in Mathematics">
-        </div>
-        <div class="date-group">
-            <img src="{% static 'assets/icons/calendar.png' %}" alt="">
-            <input type="text" name="date" autocomplete="off" value="29, September 2020">
-        </div>
-        <div class="time-group">
-            <img src="{% static 'assets/icons/clock.png' %}" alt="">
-            <input type="text" name="time"  value="10:00 AM">
-            <p>_</p>
-            <input type="text" name="time" value="02:00 PM">
-        </div>
-        <div class="rate-group">
-            <img src="{% static 'assets/icons/money.png' %}" alt="">
-            <input type="text" name="rate" id="rate" value="&#8369 50.00/hr">
-        </div>
-        <div class="tele-group">
-            <img src="{% static 'assets/icons/mobile-phone.png' %}" alt="">
-            <input type="text" name="tele" id="tele" value="0917XXXXXXX">
-        </div>
-        <div class="below-bar">
-            <img src="{% static 'assets/icons/design.png' %}" alt="">
-        </div>
-    </div>
-</div>
+
 {% endblock %}
 
 {% block pageJS %}
