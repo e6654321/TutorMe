@@ -11,7 +11,7 @@ class MainView(TemplateView):
 
 class RequestSchedView(TemplateView):
 	template_name = 'RequestSched.html'
-	
+
 class NotesPageView(TemplateView):
     template_name='notes.html'
 
@@ -41,4 +41,3 @@ class ScheduleSubjectView(TemplateView):
 
 class MentorProfileView(TemplateView):
     template_name = 'mentor-profile.html'
->>>>>>> c77d609a3bc45773f0b02a6b0f5be7e35ecb28ca
