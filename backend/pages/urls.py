@@ -9,7 +9,8 @@ from .views import (
 # 	# TableProductPageView,
 # 	# TableOrderPageView,
 # 	# ErrorPageView
-	MainView
+	MainView,
+	RequestSchedView
 )
 
 app_name = 'pages'
@@ -25,6 +26,7 @@ urlpatterns = [
 	# path('report/order/',TableOrderPageView.as_view(),name='tableorder'),
 	# path('404/',ErrorPageView.as_view(),name='error'),
 	path('main/',MainView.as_view(),name='main'),
+	path('RequestSched/',RequestSchedView.as_view(), name = 'RequestSched'),
 
 
 ]

@@ -8,3 +8,9 @@ class HomePageView(TemplateView):
 
 class MainView(TemplateView):
     template_name = 'main.html'
+
+class RequestSchedView(TemplateView):
+	template_name = 'RequestSched.html'
+	def post(self, request):
+		if request.method == 'POST':
+			return render(request, 'cardDetails.html')
