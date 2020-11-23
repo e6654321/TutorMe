@@ -9,6 +9,9 @@ class HomePageView(TemplateView):
 class MainView(TemplateView):
     template_name = 'main.html'
 
+class RequestSchedView(TemplateView):
+	template_name = 'RequestSched.html'
+
 class NotesPageView(TemplateView):
     template_name='notes.html'
 
