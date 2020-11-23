@@ -1,0 +1,174 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block title %}<title>TutorMe</title>{% endblock %}
+
+{% block pageCSS %}
+<style type="text/css">
+
+
+    .center-component {
+        height: 89vh;
+        position: relative;
+        overflow-y: scroll;
+    }
+
+
+</style>
+{% endblock %}
+
+{% block pageBody %}
+    <div class="main-container">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col">
+            {% include 'components/header.html' %}
+            <div class="row">
+                <div class="center-component col-9">
+                 
+                    <div class="main-content shadow-rounded">
+                        
+                        <form>
+
+                            <h3 style="text-align: center; margin-top: 15px;">GENERAL INFORMATION</h3>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Firstname</label>
+                                    <input type="text" class="form-control" value="Jennie Ruby Jane" name="fname" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Middlename</label>
+                                    <input type="text" class="form-control" value="" name="mname">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Lastname</label>
+                                    <input type="text" class="form-control" value="Kim" name="lname" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Gender</label>
+                                    <input type="text" class="form-control" value="Female" name="gender">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Status</label>
+                                    <input type="text" class="form-control" value="" name="status">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Birthdate</label>
+                                    <input type="date" class="form-control" value="" name="bday">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Email Address</label>
+                                    <input type="text" class="form-control" value="jenniekim@icloud.com" name="email" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Contact Number</label>
+                                    <input type="number" class="form-control" value="09205303103" name="number" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Username</label>
+                                    <input type="text" class="form-control" value="cheekscheeks" name="username" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Password</label>
+                                    <input type="password" class="form-control" value="1234567" name="pass" required>
+                                </div>
+
+                            </div>
+
+                            <h3 style="text-align: center; margin-top: 55px;">ADDRESS</h3>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Street</label>
+                                    <input type="text" class="form-control" value="" name="street">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Barangay</label>
+                                    <input type="text" class="form-control" value="Sto. Niño" name="brgy" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for="">City</label>
+                                    <input type="text" class="form-control" value="Toledo" name="city" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col">
+                                    <label for="">Province</label>
+                                    <input type="text" class="form-control" value="Cebu" name="province" required>
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Region</label>
+                                    <input type="text" class="form-control" value="" name="region">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Zip</label>
+                                    <input type="number" class="form-control" value="6038" name="zip" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row" style="margin: 40px 0px;">
+
+                                <div class="col"></div>
+
+                                <div class="col">
+                                    <button type="submit" id = "btnUpdate" name = "btnUpdate" class="btn btn-primary">UPDATE</button> 
+                                </div>
+
+                                <div class="col">
+                                                                     
+                                <button type="submit" id = "cancelUpdate" name = "cancelUpdate" class="btn btn-secondary" data-dismiss="modal">CANCEL</button> 
+                                </div>
+
+                                <div class="col"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                        
+                </div>
+                {% include "components/sidebar.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block pageJS %}
+<script type="text/javascript">
+    console.log("Login");
+</script>
+{% endblock %}

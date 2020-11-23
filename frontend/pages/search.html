@@ -1,0 +1,129 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <title>Tutorme | Notes</title>
+{% endblock %}
+
+{% block pageCSS %}
+    <style type="text/css">
+        .center-component{
+            height: 89vh;
+            width: 80%;
+            position: relative;
+            overflow-y: scroll;
+        }
+        .notes-table{
+            width: 100%;
+            padding: 2%;
+            margin-top: 1%;
+            border-top-right-radius: 5%;
+            border-right: lightgrey 1px;
+            box-shadow: 5px 2px lightgrey;
+            border-bottom-right-radius: 5%;
+        }
+        .notes-container{
+            display: flex;
+            flex-direction: column;
+            padding: 1.5% 1.5% 5px 1.5%;
+            background-color: skyblue;
+            border-left: solid blue 5px;
+            border-radius: 0px 10px 10px 0px;
+        }
+        .notes-header{
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+{% endblock %}
+
+{% block pageBody %}
+    <div class="main-container">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col">
+            {% include 'components/header.html' %}
+            <div class="row">
+                <div class="center-component col-9">
+                    <div class="notes-table">
+                        <div class="notes-container">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>10:00 - 11:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Special Topics in Mathematics</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>13:00 - 15:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Aldren Kim Concordia</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Intelligent Systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #C4BEFF; border-left-color: #948BFF;">
+                            <div class="notes-header">
+                                <h5>October 30</h5>
+                                <p>9:00 - 10:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jonah Marc Batomalaque</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Information Management</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #FF6E6E; border-left-color: #FD3030;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>10:00 - 11:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jhosie Charles Espantaleon</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Life and Works of Rizal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "components/sidebar.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block pageJS %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

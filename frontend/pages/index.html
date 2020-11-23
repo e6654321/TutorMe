@@ -45,10 +45,10 @@
 {% block pageBody %}
 <div class="container">
     <div class="imageContainer">
-        <img src="{% static '/assets/img/TutorMe.png' %}" />
+        <img src="{% static '/assets/img/TutorMeTag.png' %}" />
     </div>
     <div class="card text-center rounded shadow p-3 rounded loginContainer">
-        <form class="form-signin" action="{% url 'pages:index' %}">
+        <form class="form-signin" action="{% url 'pages:main' %}">
           <div class="card-body">
             <div class="form-label-group mb-3">
                 <input type="text" id="inputUserame" class="form-control" placeholder="Username" required autofocus>

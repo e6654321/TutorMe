@@ -1,0 +1,9 @@
+{% load static %}
+
+<div class="left-sidebar col-1">
+    <a href="{% url 'pages:message' %}"><img src="{% static 'assets/icons/email.png' %}" alt=""></a>
+    <a href="{% url 'pages:geo' %}"><img src="{% static 'assets/icons/map.png' %}" alt=""></a>
+    <a href="{% url 'pages:search' %}"><img src="{% static 'assets/icons/magnifying.png' %}" alt=""></a>
+    <a href="{% url 'pages:notes' %}"><img src="{% static 'assets/icons/notes.png' %}" alt=""></a>
+    <a href="{% url 'pages:create-sub' %}"><img src="{% static 'assets/icons/calendar.png' %}" alt=""></a>
+</div>

@@ -11,6 +11,34 @@ class MainView(TemplateView):
 
 class RequestSchedView(TemplateView):
 	template_name = 'RequestSched.html'
-	def post(self, request):
-		if request.method == 'POST':
-			return render(request, 'cardDetails.html')
+	
+class NotesPageView(TemplateView):
+    template_name='notes.html'
+
+class SearchView(TemplateView):
+    template_name = 'search.html'
+
+class GeolocationView(TemplateView):
+    template_name = 'geolocation.html'
+
+class ProfileView(TemplateView):
+    template_name = 'profile.html'
+
+class PaymentView(TemplateView):
+    template_name = 'payment.html'
+
+class SettingsView(TemplateView):
+    template_name = 'settings.html'
+
+class MessagingView(TemplateView):
+    template_name='messaging.html'
+
+class CreateSubjectView(TemplateView):
+    template_name= 'create-subject.html'
+
+class ScheduleSubjectView(TemplateView):
+    template_name= 'schedule-page.html'
+
+class MentorProfileView(TemplateView):
+    template_name = 'mentor-profile.html'
+>>>>>>> c77d609a3bc45773f0b02a6b0f5be7e35ecb28ca
