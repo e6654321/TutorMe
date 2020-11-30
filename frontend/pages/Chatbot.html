@@ -1,13 +1,106 @@
-<!DOCTYPE html>
-<html>
-    <head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <title>My first bot</title>
-        
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block pageCSS %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+.open-button {
+  background-color: #781b1b;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+  border-radius: 40px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width textarea */
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 200px;
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+{% endblock %}
+
+        <title>TutorChatBot</title> 
     </head>
-    <body  style="text-align:center;">         <textarea readonly="true" id="botChat" style="text-align:left; position:fixed; display:block; top:3vh; border:1px solid black; width:92.5vw; margin-left:1%; margin-right:2.25%; height:75vh; resize:none; font-family:Courier; overflow-y:auto; user-select:none; font-size:3vw;"></textarea>        <p style="position:absolute; border:1px solid black; top:78vh; left:12.25vw; width:75vw;">        <input type="text" placeholder="Ask a question" onKeypress="enterButton(event, document.getElementsByTagName('input')[0].value);" style="color:red; background-color:black; width:79%;">         <button onClick="answer(document.getElementsByTagName('input')[0].value)">Talk To Me</button></p>        <script>
+{% block pageBody %}
+<button class="open-button" onclick="openForm()">TutorMe ChatBot</button>
+
+<div class="chat-popup" id="myForm">
+  <div class="form-container">
+    <h1>Chat</h1>
+
+    <label for="msg"><b>Message</b></label>
+    <textarea readonly="true" id="botChat"></textarea>
+        <input type="text" placeholder="Ask a question" onKeypress="enterButton(event, document.getElementsByTagName('input')[0].value);" style="color:white; background-color:black; width:79%;">
+        <button onClick="answer(document.getElementsByTagName('input')[0].value)" class="btn btn-primary btn-lg">Talk To Me</button></p>
+        <button type="button" class="btn btn-primary btn-lg" onclick="closeForm()">Close</button>
+  </div>
+</div>
+{% endblock %}  
+
+{% block pageJS %}
+<script>
     
 var you = "Me";
-botSays("Thanks for checking out my Simple chatBot.\nMy language knowledge is progressing. I recently learned 20 html tags. 6/11/17 \n\nType !name x where x = yourName to change your name.\nTo chat, click Talk to me or press Enter(pc) or Go(android)\nType help for a hint\n\n\n***")
             // Recognized Speech Patterns for Question Responses
 var Hello = ["HI", "HEY", "HOWDY", "HEYA", "HOLA", "HELLO", "SUP", "KONNICHIWA", "ALOHA"]
 var Goodbye = ["BYE", "SEE YA", "CYA", "LATER", "ADIOS", "SAYONARA", "SEEYA"]
@@ -78,7 +171,7 @@ function answer(x) {
                 for (i = 0; i < 10; i++) {
             /*          EMPTY RESPONSE          */                    
                 if (question === "" || null) {
-                    setTimeout( function() { botSays("\nBot : What? You shy?"); botChat.scrollTop = botChat.scrollHeight;}, 600);
+                    setTimeout( function() { botSays("\nTutorBot : What? You shy?"); botChat.scrollTop = botChat.scrollHeight;}, 600);
                 return; }
                 /*          COMMAND MENU RESPONSES         */                    
                 else if (question === "!MENU" ) {
@@ -102,8 +195,8 @@ function answer(x) {
                     botSays("\n\n**What? I don't have a tutorial. Read my code, I'm not going to explain myself."); botChat.scrollTop = botChat.scrollHeight;
                 return;
                 }
-                else if (question.slice(0,10).includes("!BOTSAY") ) {
-                    botSays("\nBot : " + x.slice(8)); botChat.scrollTop = botChat.scrollHeight;
+                else if (question.slice(0,10).includes("!TUTORBOTSAY") ) {
+                    botSays("\nTutorBot : " + x.slice(8)); botChat.scrollTop = botChat.scrollHeight;
                 return;
                 } else if (question.slice(0,4).includes("!ME") ) {
                     youDo(x.slice(4)); botChat.scrollTop = botChat.scrollHeight;
@@ -113,39 +206,21 @@ function answer(x) {
                 if (question.includes(Goodbye[i])) {
                     Else = false;
                     setTimeout(botSays, 600, "\
-                                 Bot : Godspeed. Leave an upvote?")
+                                 TutorBot : Godspeed. Leave an upvote?")
                 } else if (question.includes(Name[i])) {
-                    Else = false; setTimeout(botSays, 600, "\nBot : My name is BotOne. You can call me tonE.")
+                    Else = false; setTimeout(botSays, 600, "\nTutorBot : My name is BotOne. You can call me tonE.")
                 } else if ( question.includes(HTMLTags1[i]) ) {
                     /*HTML Tag Definitions Courtesy of W3Schools.com*/
-                    Else = false; if (HTMLTags1[i] === "<P>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<p>' Defines a paragraph.") } else if (HTMLTags1[i] === "<I>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<i>' Defines a part of text in an alternate voice or mood. Italics.") } else if (HTMLTags1[i] === "<SPAN>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<Span>' Defines a section in a document.") } else if (HTMLTags1[i] === "<A>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<Span>' Defines a section in a document.") }
+                    Else = false; if (HTMLTags1[i] === "<P>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<p>' Defines a paragraph.") } else if (HTMLTags1[i] === "<I>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<i>' Defines a part of text in an alternate voice or mood. Italics.") } else if (HTMLTags1[i] === "<SPAN>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<Span>' Defines a section in a document.") } else if (HTMLTags1[i] === "<A>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<Span>' Defines a section in a document.") }
                 } else if ( question.includes(HTMLTags2[i]) ) {
                     /*HTML Tag Definitions Courtesy of W3Schools.com*/
-                    Else = false; if (HTMLTags2[i] === "<ABBR>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<abbr>' Defines an abbreviation or acronym.") } else if (HTMLTags2[i] === "<ACRONYM>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<acronym>' Not supported in HTML5, use '<abbr>' instead.") } else if (HTMLTags2[i] === "<ADDRESS>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<address>' Defines contact information for the author/owner of a document.") } else if (HTMLTags2[i] === "<APPLET>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<applet>' Not supported in HTML5, use '<embed>' or '<object>' instead.") }else if (HTMLTags2[i] === "<AREA>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<area>' Defines an area inside an image map") } else if (HTMLTags2[i] === "<ARTICLE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<article>' Defines an article.") } else if (HTMLTags2[i] === "<ASIDE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<aside>' Defines content aside from the page content.") }  else if (HTMLTags2[i] === "<AUDIO>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<audio>' Defines sound content.") } else if (HTMLTags2[i] === "<B>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<B>' Defines bold text.") }
+                    Else = false; if (HTMLTags2[i] === "<ABBR>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<abbr>' Defines an abbreviation or acronym.") } else if (HTMLTags2[i] === "<ACRONYM>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<acronym>' Not supported in HTML5, use '<abbr>' instead.") } else if (HTMLTags2[i] === "<ADDRESS>" ) { setTimeout(botSays, 600, "\nTutorBot : The HTML tag '<address>' Defines contact information for the author/owner of a document.") } else if (HTMLTags2[i] === "<APPLET>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<applet>' Not supported in HTML5, use '<embed>' or '<object>' instead.") }else if (HTMLTags2[i] === "<AREA>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<area>' Defines an area inside an image map") } else if (HTMLTags2[i] === "<ARTICLE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<article>' Defines an article.") } else if (HTMLTags2[i] === "<ASIDE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<aside>' Defines content aside from the page content.") }  else if (HTMLTags2[i] === "<AUDIO>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<audio>' Defines sound content.") } else if (HTMLTags2[i] === "<B>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<B>' Defines bold text.") }
                 } else if ( question.includes(HTMLTags3[i]) ) {
                     Else = false;
                     if (HTMLTags3[i] === "<BASE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<base>' Specifies the base URL/target for all relative URLs in a document") } else if (HTMLTags3[i] === "<BASEFONT>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<basefont>' Not supported in HTML5. Use CSS instead.  Specifies a default color, size, and font for all text in a document. ") } else if (HTMLTags3[i] === "<BDI>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<bdi>' Isolates a part of text that might be formatted in a different direction from other text outside it. ") } else if (HTMLTags3[i] === "<BDO>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<bdo>' Overrides the current text direction. ") } else if (HTMLTags3[i] === "<BIG>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<big>' Not supported in HTML5, use CSS instead. Defines big text. ") } else if (HTMLTags3[i] === "<BLOCKQUOTE>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<blockquote>' Defines a section that is quoted from another source. ") } else if (HTMLTags3[i] === "<BODY>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<body>' Defines a document's body. ") } else if (HTMLTags3[i] === "<BR>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<br>' Defines a single line break. ") } else if (HTMLTags3[i] === "<BUTTON>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<button>' Defines a clickable button. ") } else if (HTMLTags3[i] === "<CANVAS>" ) { setTimeout(botSays, 600, "\nBot : The HTML tag '<canvas>' Used to draw graphics, on the fly, via scripting. Usually Javascript. ") }         
-                    
-                /*} else if ( question.includes(HTMLTags4[i]) ) {
 
-                } else if ( question.includes(HTMLTags5[i]) ) {
-                    
-                } else if ( question.includes(HTMLTags6[i]) ) {    */
-                /*} else if ( question.includes(HTMLTags7[i]) ) {
-
-                } else if ( question.includes(HTMLTags8[i]) ) {
-                    
-                } else if ( question.includes(HTMLTags9[i]) ) {    */
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                 }else if (question.includes(Actions[i])) {
-                    Else = false; if (question.includes("CHALLENGE")) { setTimeout(botSays, 600, "\nBot : Challenge my creator. Go for it.") } else { setTimeout(botSays, 600, "\nBot : How can I help?  Use my commands !Menu & !Tutorial to see what I can do.") }
+                    Else = false; if (question.includes("CHALLENGE")) { setTimeout(botSays, 600, "\nBot : Challenge my creator. Go for it.") } else { setTimeout(botSays, 600, "\nBot : How can I help?") }
                 } else if (question.includes(Questions[i])) {
                     Else = false; if (Questions[i].includes("HTML")) { setTimeout(botSays, 600, "\nBot : Ask my creator. Go for it. Post your question in the comments, he'll try to help you. I'm just a code, I don't know HOW to code.") } else { setTimeout(botSays, 600, "\nBot : How can I help? Use my commands !Menu & !Tutorial to see what I can do.") }
                 } else if ( question.includes(Greeting[i]) ) {
@@ -175,4 +250,12 @@ function answer(x) {
             } function youSay(x) { botSays("\n"+ you + " \ : " + x)
             }
             function youDo(x) { botSays("\n"+ you + " " + x)                                            
-            } function enterButton(e, x) { if (e.keyCode == 13) { answer(x); }   }    </script></body></html>
+            } function enterButton(e, x) { if (e.keyCode == 13) { answer(x); }   }    
+        function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}</script>
+{% endblock %}
