@@ -41,3 +41,6 @@ class ScheduleSubjectView(TemplateView):
 
 class MentorProfileView(TemplateView):
     template_name = 'mentor-profile.html'
+
+class ChatBotView(TemplateView):
+    template_name = 'Chatbot.html'

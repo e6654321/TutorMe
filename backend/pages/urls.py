@@ -27,6 +27,7 @@ from pages.views import (
 	ScheduleSubjectView,
 	MentorProfileView,
 	RequestSchedView,
+	ChatBotView,
 )
 
 app_name = 'pages'
@@ -46,4 +47,6 @@ urlpatterns = [
 	path('create-subject/',CreateSubjectView.as_view(),name='create-sub'),
 	path('schedule/',ScheduleSubjectView.as_view(),name='subject-view'),
 	path('mentor-profile/',MentorProfileView.as_view(),name='mentor-profile'),
+	path('ChatBot/',ChatBotView.as_view(),name='chatbot'),
+
 ]
