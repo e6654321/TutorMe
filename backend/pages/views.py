@@ -18,7 +18,7 @@ class HomePageView(TemplateView):
 
         if user is not None:
             login(request, user)
-            return render(request, 'search.html')
+            return redirect('pages:search')
         else:
             messages.info(request, "Username or password incorrect")
             return render(request, 'index.html')
@@ -37,9 +37,9 @@ class RegisterView(TemplateView):
         if form.is_valid():
             form.save()
             user = form.cleaned_data.get('username')
-            messages.success(request, 'Account created' + user)
+            messages.success(request, 'Account created ' + user)
             context = {'form':form}
-            return render(request, 'index.html', context)
+            return redirect('pages:login')
         else:
             messages.error(request, 'Check inputs and try again')
 
