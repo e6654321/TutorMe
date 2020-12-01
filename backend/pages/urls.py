@@ -1,18 +1,5 @@
 from django.urls import path
-from .views import (
-	HomePageView, 
-# 	# DashboardPageView,
-# 	# LoginPageView,
-# 	# RegCustomerPageView,
-# 	# RegProductPageView,
-# 	# TableCustomerPageView,
-# 	# TableProductPageView,
-# 	# TableOrderPageView,
-# 	# ErrorPageView
-	MainView,
-	RequestSchedView,
-	)
-
+from django.contrib.auth.decorators import login_required
 from pages.views import (
 	HomePageView,
 	NotesPageView, 
@@ -28,6 +15,8 @@ from pages.views import (
 	MentorProfileView,
 	RequestSchedView,
 	ChatBotView,
+	RegisterView,
+	logoutUser,
 )
 
 app_name = 'pages'
@@ -48,5 +37,19 @@ urlpatterns = [
 	path('schedule/',ScheduleSubjectView.as_view(),name='subject-view'),
 	path('mentor-profile/',MentorProfileView.as_view(),name='mentor-profile'),
 	path('ChatBot/',ChatBotView.as_view(),name='chatbot'),
-
+	path('login/',HomePageView.as_view(),name='login'),
+	path('register/',RegisterView.as_view(),name='register'),
+	path('RequestSched/',login_required(login_url='pages:login')(RequestSchedView.as_view()), name = 'RequestSched'),
+	path('notes/',login_required(login_url='pages:login')(NotesPageView.as_view()),name='notes'),
+	path('',login_required(login_url='pages:login')(SearchView.as_view()),name='main'),
+	path('search/',login_required(login_url='pages:login')(SearchView.as_view()),name='search'),
+	path('geolocation/',login_required(login_url='pages:login')(GeolocationView.as_view()),name='geo'),
+	path('profile/',login_required(login_url='pages:login')(ProfileView.as_view()),name='profile'),
+	path('settings/',login_required(login_url='pages:login')(SettingsView.as_view()),name='settings'),
+	path('payment/',login_required(login_url='pages:login')(PaymentView.as_view()),name='payment'),
+	path('messaging/',login_required(login_url='pages:login')(MessagingView.as_view()),name='message'),
+	path('create-subject/',login_required(login_url='pages:login')(CreateSubjectView.as_view()),name='create-sub'),
+	path('schedule/',login_required(login_url='pages:login')(ScheduleSubjectView.as_view()),name='subject-view'),
+	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
+	path('logout/',logoutUser.as_view(),name='logout'),
 ]
