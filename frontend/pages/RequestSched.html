@@ -3,298 +3,296 @@
 
 
 {% block title %}<title>TutorMe</title>{% endblock %}
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
-  <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js'></script>
-  <link href='https://use.fontawesome.com/releases/v5.8.1/css/all.css'>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-</head>
-{% block pageBody %}
-	<link rel="stylesheet" type="text/css" href="{% static '/css/styles1.css' %}">
-	<link rel="stylesheet" href="{% static '/css/stars.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static '/css/chatbot.css' %}">
-	<!-- <link rel="stylesheet" type="text/css" href="{% static '/css/payment.css' %}"> -->
-    <div class="row">
-        <div class="" style="margin-top: 1px;">
 
-            <a href="" style="vertical-align: middle; margin-left: 50px; margin-top: 35px;">
-                <img src="{% static '/assets/img/logoTutorMe_v4.png' %}" style="width:200px; height: 100px;">
-            </a>
-    
-            <div style="display: block;">
-            	<button type="button" class="btn btn-link" style="margin-top: 65px; margin-left: 100px;"><i class="fas fa-gift" style="font-size: 50px;"></i></button><br>
-            
-	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-envelope" style="font-size: 50px;"></i></button><br>
-	            
-	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-book-reader" style="font-size: 50px;"></i></button><br>
-	            
-	            <button type="button" class="btn btn-link" style="margin-top: 25px; margin-left: 100px;"><i class="fas fa-calendar-check" style="font-size: 50px;"></i></button><br>
-	            
-	            <button type="button" class="btn btn-link" style="margin-top: 105px; margin-left: 100px;" href="{% static 'pages/Chatbot.html' %}"></button><br>
-            </div>
-            
-    
-        </div>
-    
-        <div class="col-7"> 
-    
-            <div class="search-bar">
-                <input class="form-control" type="text" placeholder="Search" readonly>
-                <button type="button" class="btn btn-outline-primary"><i class="fas fa-search"></i></button>
-                <button type="button" class="btn btn-outline-primary"><i class="fas fa-map-marker-alt"></i></button>
-            </div>
-    
-            <div class="main">
-                <div class="main-content" align="center">
-                	<h4 style="margin-top:" align="center">SCHEDULE A TUTORIAL</h4><br>
+{% block pageCSS %}
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-                	<div class="suggestions" style="border-style: solid; border-color: #ffb10d; border-width: 3px; width: 310px; height: 310px; display: block; border-radius: 8px;">
+    <!-- Timepicker -->
+    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
 
-                      <div class="row1" style="text-align: center;">
+<style type="text/css">
 
-                            <img src="{% static '/assets/img/costumer.jpg' %}" class="border border-warning rounded-circle z-depth-0"
-                                        alt="avatar image" style="width: 100px; height: 100px; margin-right: 5px; margin-top: 50px;">
-                            <div align="center">
-		                		<h5>Aldren Kim Concordia</h5><h6>Special Topics in Mathematics</h6>
-		                		<div class="star-ratings-css" title=".875"></div>
-		                	</div>
-                      </div>
-                    </div>
- 
-                	<br>
-                	<div class="dropdown-divider"></div>
-                	<div>
-                		<h5 align="center">Date of Tutorial : </h5>
-                		<i>Slots Available: 12</i><br>
-                		<input type="DATE" name="">
-                	</div><br>
-                	
+    .center-component {
+        height: 89vh;
+        position: relative;
+        overflow-y: scroll;
+    }
 
-                		<h5 align="center">Time Available : </h5>
-                		<div class="container" style="position: relative;">
-	                		<button class="btn btn-outline-primary" style="margin-left: 25px; margin-right: 10px;">8:30-9:30 AM</button>
-	                		<button class="btn btn-outline-primary" style="margin-right: 10px;">10:30-11:30 AM</button>
-	                		<button class="btn btn-outline-primary" style="margin-right: 10px;">1:00-2:00 PM</button>
-	                		<button class="btn btn-outline-primary" style="margin-right: 10px;">3:00-4:00 PM</button>
-                		</div>
-                		<label><i>Set Custom Time: </i></label><br>
-                		<input type="text" name="" class="form btn-outline-primary" style="margin-left: 15px;"><br>
-
-                		<br>
-
-                		<h6>Rate Per Hour</h6>
-                		<input class="form-control" type="text" id="rate" name="rate" value="P50.00" readonly style="text-align: center;"><br>
-
-                		<!-- <form action="" method="POST"> -->
-                			{% csrf_token %}
-                			<div>
-	                			<i>Mentee / Your Contact Information:</i>
-	                			<h6 align="left">Name</h6>
-	                			<input class="form-control" type="text" id="rate" name="rate" value="Jhosie Charles Espantaleon" readonly><br>
-	                			<h6 align="left">Contact Number</h6>
-	                			<input class="form-control" type="text" id="rate" name="rate" value="0917XXXXXXX" readonly><br>
-	                			<h6 align="left">Email</h6>
-	                			<input class="form-control" type="text" id="rate" name="rate" value="thisisfake@email.com" readonly><br>
-	                		</div>
-
-	                		<div class="container" style="position: relative;">
-								  <h5>Method Payment</h5>
-								  <!-- Trigger the modal with a button -->
-								  <button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal">Credit / Debit Card</button>
-
-								  <button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModalE-Wallet" style="margin-left: 10px;">E-Wallet</button>
-
-								   <button type="button" class="btn btn-info " data-toggle="modal" data-target="#" style="margin-left: 10px;">Cash on Meet-up &times; </button>
-
-
-								  <!-- Modal Credit -->
-								  <div class="modal fade" id="myModal" role="dialog">
-								    <div class="modal-dialog modal-sm">
-								      <div class="modal-content">
-								        <div class="modal-header">
-								          <h4 class="modal-title">Payment Details</h4>
-								           <button type="button" class="close" data-dismiss="modal">&times;</button>
-								        </div>
-
-								        <div class="modal-body">
-								          <label for="fname">Accepted Cards</label><br>
-
-								            <div class="icon-container">
-								              <i class="fa fa-cc-visa" style="color:navy;"></i>
-								              <i class="fa fa-cc-amex" style="color:blue;"></i>
-								              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-								              <i class="fa fa-cc-discover" style="color:orange;"></i>
-								            </div><br>
-
-								            <label for="cname">Name on Card</label>
-									            <input type="text" id="cname" name="cardname" placeholder="John More Doe">
-									            <label for="ccnum">Credit card number</label>
-									            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"><br>
-									            <label for="expmonth">Exp Month</label><br>
-									            <input type="text" id="expmonth" name="expmonth" placeholder="September"><br>
-									            <label for="expyear">Exp Year</label><br>
-									            <input type="text" id="expyear" name="expyear" placeholder="2018"><br>
-									            <label for="cvv">CVV</label><br>
-									            <input type="text" id="cvv" name="cvv" placeholder="352">
-								        </div>
-
-								        <div class="modal-footer">
-								          <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
-								        </div>
-								      </div>
-								    </div>
-								  </div>
-								</div>
-								<!-- End of credit modal -->
-
-								<!-- Modal E-Wallet -->
-								<div class="modal fade" id="myModalE-Wallet" role="dialog">
-								    <div class="modal-dialog modal-sm">
-								      <div class="modal-content">
-								        <div class="modal-header">
-								          <h4 class="modal-title">Payment Details</h4>
-								           <button type="button" class="close" data-dismiss="modal">&times;</button>
-								        </div>
-
-								        <div class="modal-body">
-								        	<!-- GCASH INFO -->
-								         	 <h5>G-CASH</h5>
-						                        <p> <button type="button" class="btn btn-primary "><i class=""></i> Log into my G-CASH</button> </p>
-
-								            <!-- Paypal info -->
-						                    	<h5>PAYPAL</h5>
-						                        <h6 class="pb-2">Select your paypal account type</h6>
-						                        <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
-						                        <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
-						                        <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
-						                    <!-- </div> End -->
-								        </div>
-
-								        <div class="modal-footer">
-								          <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
-								        </div>
-								      </div>
-								    </div>
-								</div>
-								<!-- End of E-wallet modal -->	
-	                		<div align="center">
-	                			<button type="button" class="btn btn-warning" style="width: 50%; margin-top: 20px;" >Request Schedule</button>
-	                		</div>
-                </div>  
-            </div> 
-        </div>
-    
-        <div class="col" style="margin-left: 0px; margin-right: 25px;">
-
-            <div class="btn-group">
-
-                <img src="{% static '/assets/img/pp1.jpg' %}" class="rounded-circle z-depth-0"
-                  alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                  Jennie Ruby Jane
-                </button>
-
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Payment</a>
-                  <a class="dropdown-item" href="#">Settings</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Logout</a>
-                </div>
-
-            </div>
-    
-            <div class="suggestions" style="margin-top: 82px; border-style: solid; border-color: #007BFF; border-width: 1px; height: 310px; border-radius: 8px;">
-
-                      <p style="margin-top: 5px; font-size: medium; font-weight: normal;">SUGGESTED TUTOR</p>
-                      
-                      <div class="row1" style="text-align: center;">
-
-                            <img src="{% static '/assets/img/pp2.jpg' %}" class="rounded-circle z-depth-0"
-                                        alt="avatar image" style="width: 40px; height: 40px; margin-right: 5px;">
-                            <p style="font-size: small; font-weight: bolder;">Lalalisa Manoban</p>
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></p>
-
-                      </div>
-
-                      <div class="row2" style="text-align: center; line-height: -2px;">
-
-                        <p  style="background-color: #ffb10d;">
-                            Math
-                        </p>
-
-                        <p style="background-color: #ffb10d;">
-                            Science
-                        </p>
-
-                        <p  style="background-color: #ffb10d;">
-                            History
-                        </p>
-
-                      </div>
-
-                      <div class="row3">
-
-                        <h6><i>Rate</i></h6>
-
-                            <div class="rate" style="float: right;">
-                                <h6>150/hr</h6>
-                            </div>
-
-                      </div>
-            </div>
-    
-            <div class="calendar" style="margin-top: 22px;" style="border-style: solid; border-color: #ffb10d; border-width: 1px;">
-
-                <div class="calendar-content" style="max-width: 18rem;">
-
-                      <h5 class="card-title">CALENDAR</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-    
-            </div>
-
-            <div class="becomeMentor" style="margin-top: 30px;">
-                <button type="button" class="btn btn-outline-primary" style="width: 100%;">Become a Mentor</button>
-            </div>    
-        </div>
-
-        <button class="openChatBtn btn btn-link" onclick="openForm()"><i class="fas fa-robot" style="font-size: 50px;"></i></button>
-				<div class="openChat">
-    				<form>
-        				<h1>TutorMe ChatBot</h1>
-        				<label for="msg"><b>Hi! How can I help you?</b></label>
-        				<textarea placeholder="Type message.." name="msg" required></textarea>
-        				<button type="submit" class="btn">Send</button>
-        				<button type="button" class="btn close" onclick="closeForm()">
-        				Close
-        				</button>
-    				</form>
-				</div>
-
-    
-    </div>
-
+    .date-group
+        {
+            padding-top: 20px;
+            display: flex;
+            justify-content:center;
+            height: 10%;
+        }
+        .date-group > img{
+            height: 30px;
+            width: auto;
+        }
+        .date-group > input{
+            height: 30px;
+            padding-left: 15px;
+            padding-right: 0;
+            border-radius: 20px;
+            border: 1px solid lightgrey;
+        }
+        .date-group > input:focus{
+            outline: none;
+            border: 1px solid black;
+        }
+        .time-group{
+            padding-top: 20px;
+            display: flex;
+            justify-content:center;
+            height: 10%;
+        }
+        .time-group > img{
+            height: 30px;
+            width: auto;
+        }
+        .time-group > input{
+            height: 30px;
+            width: 120px;
+            padding-left: 15px;
+            padding-right: 0;
+            border-radius: 20px;
+            border: 1px solid lightgrey;
+        }
+        .time-group > input:focus{
+            outline: none;
+            border: 1px solid black;
+        }
+        .middle-content{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .category-group{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .subject-category{
+            display: flex;
+            flex-direction:row;
+            justify-content: center;
+            width: 100%;
+        }
+        .subject-category > p{
+            margin: 0;
+        }
+        .category-group > div > p{
+            padding: 0px 10px 0px 10px;
+            border-radius: 20px;
+            border: 1px solid lightgrey;
+            color: white;
+        }
+        .below-button{
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .below-button > button{
+            width: 300px;
+        }
+</style>
 {% endblock %}
 
+{% block pageBody %}
+<link rel="stylesheet" href="{% static '/css/stars.css' %}">
+    <div class="main-container">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col">
+            {% include 'components/header.html' %}
+            <div class="row">
+                <div class="center-component col-9">
+                 
+                    <div class="main-content shadow-rounded" style="display: flex; justify-content: center; align-items: center;">
+                        
+                        <form>
+
+                            <h3 style="text-align: center; margin-top: 15px;">Schedule a Tutorial</h3>
+
+                            <div class="form-row">
+
+                               <div class="suggestions" style="border-style: solid; border-color: #ffb10d; border-width: 3px; width: 250px; height: 250px; display: block; border-radius: 8px; margin: auto;">
+                                <div class="row1" style="text-align: center;">
+                                  <img src="{% static '/assets/img/costumer.jpg' %}" class="border border-warning rounded-circle z-depth-0" alt="avatar image" style="width: 100px; height: 100px; margin-right: 5px; margin-top: 15px;">
+                                    <div align="center">
+                                      <h5>Aldren Kim Concordia</h5><h6>Special Topics in Mathematics</h6>
+                                        <div class="star-ratings-css" title=".875"></div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                            <hr style="width: 750px;">
+                            <hr style="width: 750px;">
+                            <div class="form-row">
+                              <div style="margin: auto;">
+                                <h5 align="center">Date of Tutorial  </h5>
+                                <i>Slots Available: 12</i>
+                                <div class="middle-content">
+                                  <div class="date-group">
+                                    <img src="{% static 'assets/icons/calendar.png' %}" alt="">
+                                    <input type="text" id="datepicker" name="date" autocomplete="off" placeholder="dd/mm/yyyy">
+                                  </div>
+                                </div>
+                              </div><br>
+                            
+                              
+                            </div>
+
+                            <div class="form-row">
+                              <div style="margin: auto;"><br>
+                                <h5 align="center">Time Available : </h5>
+                                <div class="container" style="position: relative; margin: auto;">
+                                  <button class="btn btn-warning" style="margin-left: 25px; margin-right: 10px;">8:30-9:30 AM</button>
+                                  <button class="btn btn-warning" style="margin-right: 10px;">10:30-11:30 AM</button>
+                                  <button class="btn btn-warning" style="margin-right: 10px;">1:00-2:00 PM</button>
+                                  <button class="btn btn-warning" style="margin-right: 10px;">3:00-4:00 PM</button>
+                                </div>
+
+                                <div class="time-group">
+                                  <label><i>Set Custom Time: </i></label>
+                                  <img src="{% static 'assets/icons/clock.png' %}" alt="" style="margin-left: 5px;">
+                                  <input type="text" name="time" id="timepicker" placeholder="00:00 AM/PM">
+                                  <p>_</p>
+                                  <input type="text" name="time" id="timepicker1" placeholder="00:00 AM/PM">
+                                </div>
+                              </div>
+                            </div>
+
+                            <h6 style="margin-top: 10px;" align="center"><u><i>Rate Per Hour</i></u></h6>
+                              <input class="form-control" type="text" id="rate" name="rate" value="P50.00" readonly style="text-align: center;"><br>
+                              <hr>
+                            <div class="form-row">
+                              <div style="margin: auto;">
+                                <i>Mentee / Your Contact Information:</i>
+                                <h6 align="left">Name</h6>
+                                <input class="form-control" type="text" id="rate" name="rate" value="Jhosie Charles Espantaleon" readonly><br>
+                                <h6 align="left">Contact Number</h6>
+                                <input class="form-control" type="text" id="rate" name="rate" value="0917XXXXXXX" readonly><br>
+                                <h6 align="left">Email</h6>
+                                <input class="form-control" type="text" id="rate" name="rate" value="thisisfake@email.com" readonly><br>
+                              </div>                                
+                            </div>
+                            <hr>
+                            <div class="form-row">
+                              <div style="margin: auto;">
+                                <h5 align="center">Method Payment</h5>
+                                <!-- Trigger the modal with a button -->
+                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">Credit / Debit Card</button>
+
+                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModalE-Wallet" style="margin-left: 10px;">E-Wallet</button>
+
+                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#" style="margin-left: 10px;">Cash on Meet-up</button>
+
+                                <!-- Modal Credit -->
+                              <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog modal-sm">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Payment Details</h4>
+                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                      <label for="fname">Accepted Cards</label><br>
+
+                                        <div class="icon-container">
+                                          <i class="fa fa-cc-visa" style="color:navy;"></i>
+                                          <i class="fa fa-cc-amex" style="color:blue;"></i>
+                                          <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                                          <i class="fa fa-cc-discover" style="color:orange;"></i>
+                                        </div><br>
+
+                                        <label for="cname">Name on Card</label>
+                                          <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+                                          <label for="ccnum">Credit card number</label>
+                                          <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"><br>
+                                          <label for="expmonth">Exp Month</label><br>
+                                          <input type="text" id="expmonth" name="expmonth" placeholder="September"><br>
+                                          <label for="expyear">Exp Year</label><br>
+                                          <input type="text" id="expyear" name="expyear" placeholder="2018"><br>
+                                          <label for="cvv">CVV</label><br>
+                                          <input type="text" id="cvv" name="cvv" placeholder="352">
+                                    </div>
+
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <!-- End of credit modal -->
+
+                            <!-- Modal E-Wallet -->
+                            <div class="modal fade" id="myModalE-Wallet" role="dialog">
+                                <div class="modal-dialog modal-sm">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Payment Details</h4>
+                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                      <!-- GCASH INFO -->
+                                       <h5>G-CASH</h5>
+                                                <p> <button type="button" class="btn btn-primary "><i class=""></i> Log into my G-CASH</button> </p>
+
+                                        <!-- Paypal info -->
+                                              <h5>PAYPAL</h5>
+                                                <h6 class="pb-2">Select your paypal account type</h6>
+                                                <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
+                                                <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
+                                                <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                                            <!-- </div> End -->
+                                    </div>
+
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <!-- End of E-wallet modal -->  
+                            <div align="center">
+                              <button type="button" class="btn btn-warning" style="width: 50%; margin-top: 20px;" >Request Schedule</button>
+                            </div>
+                              </div>
+                            </div>
+                        </form>
+                    </div>                        
+                </div>
+                {% include "components/sidebar.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block pageJS %}
-<script>
-   document .querySelector(".openChatBtn") .addEventListener("click", openForm);
-   document.querySelector(".close").addEventListener("click", closeForm);
-   function openForm() {
-      document.querySelector(".openChat").style.display = "block";
-   }
-   function closeForm() {
-      document.querySelector(".openChat").style.display = "none";
-   }
+<script type="text/javascript">
+    console.log("Login");
 </script>
 
+    <!-- Datepicker JS -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <!-- Timepicker -->
+    <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+    <script src="{% static 'js/jquery.timepicker.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $("#datepicker").datepicker();
+            $( "#datepicker" ).datepicker( "option", "dateFormat", "d, MM yy" );
+            $("#timepicker").timepicker();
+            $("#timepicker1").timepicker();
+        })
+    </script>
 {% endblock %}

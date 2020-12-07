@@ -16,6 +16,7 @@ from pages.views import (
 	RequestSchedView,
 	RegisterView,
 	logoutUser,
+	ChatBotView,
 )
 
 app_name = 'pages'
@@ -23,6 +24,7 @@ urlpatterns = [
 	path('login/',HomePageView.as_view(),name='login'),
 	path('register/',RegisterView.as_view(),name='register'),
 	path('RequestSched/',login_required(login_url='pages:login')(RequestSchedView.as_view()), name = 'RequestSched'),
+	path('Chatbot/',login_required(login_url='pages:login')(ChatBotView.as_view()), name = 'Chatbot'),
 	path('notes/',login_required(login_url='pages:login')(NotesPageView.as_view()),name='notes'),
 	path('',login_required(login_url='pages:login')(SearchView.as_view()),name='main'),
 	path('search/',login_required(login_url='pages:login')(SearchView.as_view()),name='search'),
