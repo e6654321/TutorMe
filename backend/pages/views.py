@@ -94,7 +94,18 @@ class GeolocationView(TemplateView):
     template_name = 'geolocation.html'
 
 class ProfileView(TemplateView):
-    template_name = 'profile.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            current_user = request.user
+            print(current_user)
+            for attr in dir(current_user):
+                try:
+                    print('%s: %s' % (attr, getattr(current_user, attr)))
+                except Exception as e:
+                    print('%s: %s' % (attr, e))
+            return render(request, 'profile.html', {"user": current_user})
+            # else:
+            #     return redirect('pages:addpayment')
 
 class PaymentView(TemplateView):
     def get(self, request):
