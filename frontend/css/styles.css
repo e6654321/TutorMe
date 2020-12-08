@@ -3,6 +3,11 @@ html, body {
   width: 100vw;
 }
 
+form{
+    margin:0px;
+    padding:0px;
+}
+
 .rounded {
   border-radius: 30px !important;
 }
