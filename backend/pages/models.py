@@ -1,8 +1,4 @@
 from django.db import models
-<<<<<<< Updated upstream
-
-# Create your models here.
-=======
 from django.utils import timezone
 from datetime import datetime
 
@@ -161,4 +157,3 @@ class Review(models.Model):
 
     class Meta:
         db_table = "Review"
->>>>>>> Stashed changes
