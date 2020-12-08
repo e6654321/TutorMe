@@ -1,10 +1,56 @@
 {% load static %}
 
 <div class="header row">
-    <div class="search col-9">
-        <a href="{% url 'pages:search' %}"><img src="{% static 'assets/icons/filter.png' %}" style="width: 30px; height: 30px;" alt=""></a>
-        <input type="text" class="search-bar" id="search-bar" placeholder="Search by Name/Subject/Date..." onchange="search()"><i class="fas fa-search"></i>
-    </div>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="search col-9">
+                <!-- <a href=""><img src="{% static 'assets/icons/filter.png' %}" 
+                    style="width: 30px; height: 30px; margin-left: 10px;" alt="" data-toggle="modal" data-target="#exampleModalCenter"></a> -->
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-filter"></i></button>
+                <input type="submit" name="btnSubmit" id="btnSubmit" class="fas fa-search">
+                <input type="text" class="search-bar" id="search" name="search" placeholder="Search by Subject/Mentor..."  
+                        style="width: 900px;">
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Sort by:</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      
+                        <div class="row">
+
+                            <div class="col">
+                                <select class="browser-default custom-select" name="sort">
+                                    <option value="subjectName" selected>Subject Name, A-Z</option>
+                                    <option value="-subjectName">Subject Name, Z-A</option>
+                                    <option value="mentorID__firstName">Mentor Name, A-Z</option>
+                                    <option value="-mentorID__firstName">Mentor Name, Z-A</option>
+                                    <option value="ratePerHour">Rate per hour, low to high</option>
+                                    <option value="-ratePerHour">Rate per hour, high to low</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" name="btnSort" id="btnSort" class="btn btn-primary">Sort</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+        </form>
+
     <div class="btn-group col-3">
         <a class="col-2" href="#"><img src="{% static 'assets/icons/bell.png' %}"></a>
 

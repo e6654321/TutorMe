@@ -39,18 +39,28 @@
                                     </ul>
                                 </div> <!-- End -->
                                 
-                                <!-- Credit card form content -->
-                                <div class="tab-content">
-                                    <!-- credit card info-->
-                                    <div  id="credit-card" class="tab-pane fade show active pt-3">
-                                        <form role="form">
+                                <!-- tab content -->
+
+                                <div class="tab-content" id="pills-tabContent">
+                        
+                                    <div class="tab-pane fade show active" id="pills-credit-card" role="tabpanel" aria-labelledby="pills-credit-card-tab">
+                                        
+                                        <form role="form" method="POST">
+                    
+                                            {% csrf_token %}
+
+                                            
+                                            {% for d in details %}
+
+                                            <input type="integer" name="id" value="{{d.detailID__id}}" hidden>
+                    
                                             <div class="form-group"> <label for="username">
-                                                    <h6>Card Owner</h6>
-                                                </label> <input type="text" name="username" placeholder="Card Owner Name" required class="form-control "> </div>
+                                                <h6>Card Owner</h6>
+                                            </label> <input type="text" name="cardOwnerName" value="{{d.detailID__cardOwnerName}}" placeholder="Card Owner Name" required class="form-control "> </div>
                                             <div class="form-group"> <label for="cardNumber">
                                                     <h6>Card number</h6>
                                                 </label>
-                                                <div class="input-group"> <input type="text" name="cardNumber" placeholder="Valid card number" class="form-control " required>
+                                                <div class="input-group"> <input type="text" name="cardNum" value="{{d.detailID__cardNumber}}" placeholder="Valid card number" class="form-control " required>
                                                     <div class="input-group-append"> <span class="input-group-text text-muted"> <i class="fab fa-cc-visa mx-1"></i> <i class="fab fa-cc-mastercard mx-1"></i> <i class="fab fa-cc-amex mx-1"></i> </span> </div>
                                                 </div>
                                             </div>
@@ -59,31 +69,44 @@
                                                     <div class="form-group"> <label><span class="hidden-xs">
                                                                 <h6>Expiration Date</h6>
                                                             </span></label>
-                                                        <div class="input-group"> <input type="number" placeholder="MM" name="" class="form-control" required> <input type="number" placeholder="YY" name="" class="form-control" required> </div>
+                                                        <div class="input-group"> 
+                                                            <input type="number" value="{{d.detailID__expire_month}}" placeholder="MM" name="month" class="form-control" required> 
+                                                            <input type="number" value="{{d.detailID__expire_year}}" placeholder="YY" name="year" class="form-control" required> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="form-group mb-4"> <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
                                                             <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
-                                                        </label> <input type="text" required class="form-control"> </div>
+                                                        </label> <input type="text" value="{{d.detailID__cvc}}" name="cvc" required class="form-control"> </div>
                                                 </div>
                                             </div>
-                                            <div class="card-footer"> <button type="button" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button>
+                                            
+                    
+                                            <div class="card-footer"> 
+                                                <button type="submit" name="btnDeleteCard" class="subscribe btn btn-secondary btn-block shadow-sm"> Delete Data </button>
+                                                <button type="submit" name="btnUpdateCard" class="subscribe btn btn-primary btn-block shadow-sm"> Update Data </button>
+                                            </div>
+
+                                            
+                                            {% endfor %}
+
                                         </form>
+                    
                                     </div>
-                                </div> <!-- End -->
-
-                                <!-- Paypal info -->
-                                <div id="paypal" class="tab-pane fade pt-3">
-                                    <h6 class="pb-2">Select your paypal account type</h6>
-                                    <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
-                                    <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
-                                    <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
-                                </div> <!-- End -->
-
-                                <!-- bank transfer info -->
-                                <div id="net-banking" class="tab-pane fade pt-3">
-                                    <div class="form-group "> <label for="Select Your Bank">
+                    
+                                    <div class="tab-pane fade show" id="pills-paypal" role="tabpanel" aria-labelledby="pills-paypal-tab">
+                                        
+                                        <h6 class="pb-2">Select your paypal account type</h6>
+                                                                <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
+                                                                <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
+                                                                <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                                                    
+                                    </div>
+                    
+                                    <div class="tab-pane fade show" id="pills-net-banking" role="tabpanel" aria-labelledby="pills-net-banking-tab">
+                                        
+                                        <div class="form-group "> <label for="Select Your Bank">
                                             <h6>Select your Bank</h6>
                                         </label> <select class="form-control" id="ccmonth">
                                             <option value="" selected disabled>--Please select your Bank--</option>
@@ -102,7 +125,11 @@
                                         <p> <button type="button" class="btn btn-primary "><i class="fas fa-mobile-alt mr-2"></i> Proceed Pyment</button> </p>
                                     </div>
                                     <p class="text-muted">Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
-                                </div> <!-- End -->
+                                
+                    
+                                    </div>
+                    
+                                </div>
                                 
                                 
                             </div>
