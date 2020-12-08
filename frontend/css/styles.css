@@ -8,6 +8,70 @@ form{
     padding:0px;
 }
 
+.bg-yellow1 {
+  background-color: #FFDF16;
+}
+
+.bg-gold {
+  background-color: #F8C400;
+}
+
+.bg-maroon1 {
+  background-color: #8C383E;
+}
+
+.bg-grey {
+  background-color: #EBEBEB;
+}
+
+.bg-yellow2 {
+  background-color: #DCC532;
+}
+
+.bg-dark-yellow {
+  background-color: #F8C400;
+}
+
+.bg-maroon2 {
+  background-color: #781B1B;
+}
+
+.bg-dark-maroon {
+  background-color: #610A0C;
+}
+
+.color-yellow1 {
+  color: #FFDF16;
+}
+
+.color-gold {
+  color: #F8C400;
+}
+
+.color-maroon1 {
+  color: #8C383E;
+}
+
+.color-grey {
+  color: #EBEBEB;
+}
+
+.color-yellow2 {
+  color: #DCC532;
+}
+
+.color-dark-yellow {
+  color: #AA8F0B;
+}
+
+.color-maroon2 {
+  color: #781B1B;
+}
+
+.color-dark-maroon {
+  color: #610A0C;
+}
+
 .rounded {
   border-radius: 30px !important;
 }
@@ -158,7 +222,7 @@ form{
   bottom: 0;
   right: 0;
   overflow: hidden; 
-  color: #25255D;
+  color: #8C383E;
 }
 
 #fullDiv ul {
@@ -176,7 +240,7 @@ form{
 
 #fullDiv li:nth-child(n+1):nth-child(-n+7) {
   font-weight: 900;
-  color: #25255D;
+  color: #8C383E;
 }
 
 #fullDiv li:nth-child(n+39), #fullDiv li:nth-child(n+8):nth-child(-n+16) {
@@ -186,13 +250,13 @@ form{
 
 #fullDiv li:hover:nth-child(n+8):nth-child(-n+38), #fullDiv li:nth-child(17){
   border-radius: 10%;
-  background-color: #FF565D;
+  background-color: #F8C400;
   color: #fff;
 }
 
 .becomeMentor button{
-  color: #25255D;
-  background-color: #6BE960;
+  color: #F8C400;
+  background-color: #8C383E;
   width: 100%;
   height: 40px;
 }
