@@ -1,0 +1,154 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block title %}<title>TutorMe</title>{% endblock %}
+
+{% block pageCSS %}
+<style type="text/css">
+
+    .main-content {
+        padding: 20px 0px;
+        height: 100%;
+    }
+
+</style>
+{% endblock %}
+
+{% block pageBody %}
+
+    <div class="main-container row">
+        {% include 'components/navigation.html' %}
+
+        <div class="body-container col-11   ">
+            {% include 'components/header.html' %}
+    
+            <div class="row"> 
+                <div class="main col-9">
+
+                    <div class="main-content shadow-rounded">
+                        
+                        <div class="card ">
+                            <div class="card-header">
+                                    <!-- Credit card form tabs -->
+                                    <div class="card-header">
+
+                                        <ul class="nav bg-light nav-pills rounded nav-fill mb-3" id="pills-tab" role="tablist" style="align-items: center; text-align: center;">
+                                            <li class="nav-item">
+                                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-credit-card" role="tab" aria-controls="pills-credit-card" aria-selected="true">
+                                                <i class="fas fa-credit-card mr-2"></i>Credit Card
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-paypal" role="tab" aria-controls="pills-paypal" aria-selected="false">
+                                                <i class="fab fa-paypal mr-2"></i>Paypal
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-net-banking" role="tab" aria-controls="pills-net-banking" aria-selected="false">
+                                                <i class="fas fa-mobile-alt mr-2"></i>Net Banking
+                                            </a>
+                                            </li>
+                                        </ul>
+
+                                    </div> <br>
+                        
+                                    <div class="tab-content" id="pills-tabContent">
+                        
+                                        <div class="tab-pane fade show active" id="pills-credit-card" role="tabpanel" aria-labelledby="pills-credit-card-tab">
+                                            
+                                            <form role="form" method="POST">
+                        
+                                                {% csrf_token %}
+                        
+                                                <div class="form-group"> <label for="username">
+                                                    <h6>Card Owner</h6>
+                                                </label> <input type="text" name="cardOwnerName" value="" placeholder="Card Owner Name" required class="form-control "> </div>
+                                                <div class="form-group"> <label for="cardNumber">
+                                                        <h6>Card number</h6>
+                                                    </label>
+                                                    <div class="input-group"> <input type="text" name="cardNum" value="" placeholder="Valid card number" class="form-control " required>
+                                                        <div class="input-group-append"> <span class="input-group-text text-muted"> <i class="fab fa-cc-visa mx-1"></i> <i class="fab fa-cc-mastercard mx-1"></i> <i class="fab fa-cc-amex mx-1"></i> </span> </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        <div class="form-group"> <label><span class="hidden-xs">
+                                                                    <h6>Expiration Date</h6>
+                                                                </span></label>
+                                                            <div class="input-group"> <input type="number" value="" placeholder="MM" name="month" class="form-control" required> <input type="number" value="" placeholder="YY" name="year" class="form-control" required> </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group mb-4"> <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
+                                                                <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                                            </label> <input type="text" value="" name="cvc" required class="form-control"> </div>
+                                                    </div>
+                                                </div>
+                                                
+                        
+                                                <div class="card-footer"> 
+                                                    <button type="submit" name="btnUpdateCard" class="subscribe btn btn-primary btn-block shadow-sm"> Add Data </button>
+                                                </div>
+                                            </form>
+                        
+                                        </div>
+                        
+                                        <div class="tab-pane fade show" id="pills-paypal" role="tabpanel" aria-labelledby="pills-paypal-tab">
+                                            
+                                            <h6 class="pb-2">Select your paypal account type</h6>
+                                                                    <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
+                                                                    <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
+                                                                    <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                                                        
+                                        </div>
+                        
+                                        <div class="tab-pane fade show" id="pills-net-banking" role="tabpanel" aria-labelledby="pills-net-banking-tab">
+                                            
+                                            <div class="form-group "> <label for="Select Your Bank">
+                                                <h6>Select your Bank</h6>
+                                            </label> <select class="form-control" id="ccmonth">
+                                                <option value="" selected disabled>--Please select your Bank--</option>
+                                                <option>Bank 1</option>
+                                                <option>Bank 2</option>
+                                                <option>Bank 3</option>
+                                                <option>Bank 4</option>
+                                                <option>Bank 5</option>
+                                                <option>Bank 6</option>
+                                                <option>Bank 7</option>
+                                                <option>Bank 8</option>
+                                                <option>Bank 9</option>
+                                                <option>Bank 10</option>
+                                            </select> </div>
+                                        <div class="form-group">
+                                            <p> <button type="button" class="btn btn-primary "><i class="fas fa-mobile-alt mr-2"></i> Proceed Pyment</button> </p>
+                                        </div>
+                                        <p class="text-muted">Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                                    
+                        
+                                        </div>
+                        
+                                    </div>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                            
+                </div>
+        
+                    {% include "components/sidebar.html" %}\
+        
+            </div>
+    
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block pageJS %}
+<script type="text/javascript">
+    console.log("Login");
+</script>
+{% endblock %}

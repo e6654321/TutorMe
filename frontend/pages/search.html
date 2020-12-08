@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    <title>Tutorme</title>
+    <title>TutorMe</title>
 {% endblock %}
 
 {% block pageCSS %}
@@ -47,24 +47,38 @@
             <div class="row">
                 <div class="center-component col-9">
                     <div class="notes-table">
-                        <div class="notes-container">
+
+                        {% for s in subject %}
+
+                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
                             <div class="notes-header">
-                                <h5>October 24</h5>
-                                <p>10:00 - 11:00</p>
+                                <h6>{{s.session_date}}</h6>
+                                <h6>{{s.session_time}}</h6>
                             </div>
                             <div class="notes-details">
+
                                 <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
-                                    <img src="{% static 'assets/icons/elram.png' %}">
-                                    <p style="padding: 0px 0px 0px 10px;">Elram Espra</p>
+                                    <!-- <img src="{% static 'assets/icons/elram.png' %}"> -->
+                                    <i class="fas fa-chalkboard-teacher" style="height: 5%; width: 5%;"></i>
+                                    <p style="padding: 0px 0px 0px 10px; font-size: larger;">
+                                        <i>{{s.mentorID__firstName}} {{s.mentorID__lastName}}</i> 
+                                    </p>
                                 </div>
+
                                 <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <img src="{% static 'assets/icons/math_logo.png' %}">
-                                    <p>Special Topics in Mathematics</p>
+                                    <!-- <img src="{% static 'assets/icons/math_logo.png' %}"> -->
+                                    <i class="fas fa-book" style="height: 2%; width: 2%; margin-right: 5px;"></i>
+                                    <h5>{{s.subjectName}}</h5>
+                                    <h6 style="position: absolute; right: 50px;">{{s.ratePerHour}}/hour</h6>
                                 </div>
                             </div>
                         </div>
                         <br>
-                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+
+                        {% endfor %}
+
+
+                        <!-- <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
                             <div class="notes-header">
                                 <h5>October 24</h5>
                                 <p>13:00 - 15:00</p>
@@ -113,7 +127,12 @@
                                     <p>Life and Works of Rizal</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+
+                         
+
+                        
+
                     </div>
                 </div>
                 {% include "components/sidebar.html" %}
