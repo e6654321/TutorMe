@@ -54,7 +54,7 @@ class Subject(models.Model):
     subjectName = models.CharField(max_length=100)
     ratePerHour = models.DecimalField(max_digits=5, decimal_places=2, default='0')
     session_date = models.DateField(default=None)
-    session_time = models.TimeField(default=None)
+    session_time = models.CharField(max_length=20, default=None)
     readonly_fields = ('id',)
 
     class Meta:
