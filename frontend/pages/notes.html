@@ -33,8 +33,6 @@
         display: flex;
         flex-direction: column;
         padding: 1.5% 1.5% 5px 1.5%;
-        background-color: skyblue;
-        border-left: solid blue 5px;
         border-bottom: 1px solid grey;
     }
     .notes-header{
@@ -45,6 +43,19 @@
     .empty{
         color: white;
         background-color: white;
+    }
+    .bg-maroon{
+        background-color: #FF565D;
+        border-left: solid #FFA848 5px;
+    }
+
+    .bg-yellow{
+        background-color: #FFA848;
+    }
+
+    .bg-default{
+        background-color: skyblue;
+        border-left: solid blue 5px;
     }
 </style>
 {% endblock %}
@@ -59,17 +70,20 @@
             <div class="row">
                 <div class="center-component col-9">
                     <div class="notes-table">
-                        <div class="notes-container">
+                        {% for n in notes %}
+                        <div class="notes-container {% if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-maroon {% else %} bg-default {% endif %}">
+                            <input type="text" name="notes_id" id="notes_id" value="{{n.id}}" hidden>
                             <div class="notes-header">
-                                <h5>Special Topics PDF LINK</h5>
+                                <h5>{{n.notesTitle}}</h5>
                             </div>
                             <div class="notes-details">
                                 <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>attachment.pdf</p>
+                                    <p>{{n.notes}}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+                        {% endfor %}
+                        <!-- <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
                             <div class="notes-header">
                                 <h5>Gen Math Vid</h5>
                             </div>
@@ -108,7 +122,7 @@
                                     <p>Intelligent Systems</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
