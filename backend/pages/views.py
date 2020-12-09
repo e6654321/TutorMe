@@ -64,7 +64,8 @@ class NotesPageView(TemplateView):
     # template_name='notes.html'
     def get(self, request):
         if request.user.is_authenticated:
-            n = Notes.objects.all()
+            n = Notes.objects.all().values('menteeID','mentorID','subjectID','notes',
+                'notesTitle', 'subjectID__subjectName')
             data ={
                 "notes":n
             }
@@ -75,14 +76,23 @@ class NotesPageView(TemplateView):
             if 'btnSort' in request.POST:
                 item = request.POST.get("search")
                 sort = request.POST.get("sort")
-        s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
-                                | Q(mentorID__lastName__icontains=item)).values('subjectName', 'ratePerHour',
-                                    'session_date', 'session_time',
-                                    'mentorID__firstName', 'mentorID__lastName').order_by(sort)
+                print(sort)
+                if sort=='subjectName':
+                    sort='subjectID__subjectName'
+                if sort=='ratePerHour':
+                    sort= 'subjectID__ratePerHour'
+                if sort=='-subjectName':
+                    sort= '-subjectID__subjectName'
+                if sort=='-ratePerHour':
+                    sort= '-subjectID__ratePerHour'
+        n = Notes.objects.all()
+        n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
+                                | Q(mentorID__lastName__icontains=item)).values('subjectID__subjectName',
+                                    'mentorID__firstName', 'mentorID__lastName', 'subjectID__ratePerHour', 'notes','notesTitle').order_by(sort)
         data = {
-            "subject": s1
+            "notes": n
         }
-        return render(request, 'search.html', data)
+        return render(request, 'notes.html', data)
 
 
 class SearchView(TemplateView):
