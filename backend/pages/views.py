@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, Schedule, Subject, Mentor, Details, Account
+from .models import User, Schedule, Subject, Mentor, Details, Account, Notes
 from .forms import CreateUserForm, CardDetailsForm
 from django.db.models import Q
 
@@ -61,7 +61,15 @@ class RequestSchedView(TemplateView):
 	template_name = 'RequestSched.html'
 
 class NotesPageView(TemplateView):
-    template_name='notes.html'
+    # template_name='notes.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            n = Notes.objects.all()
+            data ={
+                "notes":n
+            }
+            return render(request, 'notes.html', data)
+
 
 class SearchView(TemplateView):
     def get(self, request):
