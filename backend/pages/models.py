@@ -157,3 +157,15 @@ class Review(models.Model):
 
     class Meta:
         db_table = "Review"
+
+class Notes(models.Model):
+
+    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
+    subjectID = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
+    notes = models.CharField(max_length=500, null=True, default=' ')
+    notesTitle = models.CharField(max_length=500, default=' ', null=True)
+    readonly_fields=('id',)
+
+    class Meta:
+        db_table = "Notes"
