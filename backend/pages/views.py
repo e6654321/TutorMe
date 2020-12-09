@@ -69,6 +69,20 @@ class NotesPageView(TemplateView):
                 "notes":n
             }
             return render(request, 'notes.html', data)
+            
+    def post(self, request):
+        if request.method == 'POST':
+            if 'btnSort' in request.POST:
+                item = request.POST.get("search")
+                sort = request.POST.get("sort")
+        s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
+                                | Q(mentorID__lastName__icontains=item)).values('subjectName', 'ratePerHour',
+                                    'session_date', 'session_time',
+                                    'mentorID__firstName', 'mentorID__lastName').order_by(sort)
+        data = {
+            "subject": s1
+        }
+        return render(request, 'search.html', data)
 
 
 class SearchView(TemplateView):
