@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User, Schedule, Subject, Mentor, Details, Account
-from .forms import CreateUserForm, CardDetailsForm
+from .forms import CreateUserForm, CardDetailsForm, AccountForm
 from django.db.models import Q
 
 class HomePageView(TemplateView):
@@ -100,6 +100,7 @@ class PaymentView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             current_user = request.user
+            print("user")
             print(current_user.id)
             acc = Account.objects.filter(userID__id=current_user.id)
             if acc.exists():
@@ -117,9 +118,12 @@ class PaymentView(TemplateView):
         if request.method == 'POST':
             print(request.POST)
             if 'btnUpdateCard' in request.POST:
-                print("Update product button clicked!")
+                print("Update detail button clicked!")
                 did = request.POST.get('id')
                 cardOwnerName = request.POST.get('cardOwnerName')
+                cardNum = request.POST.get('cardNum')
+                month = request.POST.get('month')
+                year = request.POST.get('year')
                 cvc= request.POST.get('cvc')
                 update_details = Details.objects.filter(id = did).update(cardOwnerName=cardOwnerName, 
                                     cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
@@ -146,9 +150,10 @@ class AddPaymentView(TemplateView):
 
     def post(self, request):
         form = CardDetailsForm(request.POST)
+        accForm = AccountForm(request.POST) 
         print(form.errors)
-        if request.method == 'POST':
-            return redirect('pages:search')
+        print(accForm.errors)
+        current_user = request.user
 
         if form.is_valid():
             cardOwnerName = request.POST.get('cardOwnerName')
@@ -159,12 +164,12 @@ class AddPaymentView(TemplateView):
             form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
                             expire_month=month, expire_year=year, cvc=cvc)
             form.save()
+            acc_details = Account(userID=current_user.id, detailID=form.id)
+            accForm.save()
             return redirect('pages:payment')
         else:
             messages.error(request, 'Check inputs and try again')
             return render(request, 'addpayment.html')
-        
-
 
 class SettingsView(TemplateView):
     template_name = 'settings.html'
