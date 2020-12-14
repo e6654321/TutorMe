@@ -1,298 +1,501 @@
-{% extends "components/base.html" %}
-{% load static %}
+{% extends "components/base.html" %} {% load static %} {% block title%}
+<title>TutorMe</title>{% endblock %} {% block pageCSS %}
+<!-- Datepicker CSS -->
+<link
+  rel="stylesheet"
+  href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+/>
 
-
-{% block title %}<title>TutorMe</title>{% endblock %}
-
-{% block pageCSS %}
-    <!-- Datepicker CSS -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    <!-- Timepicker -->
-    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}">
+<!-- Timepicker -->
+<link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'css/jquery.timepicker.min.css' %}" />
 
 <style type="text/css">
+  .center-component {
+    height: 89vh;
+    position: relative;
+    overflow-y: scroll;
+  }
 
-    .center-component {
-        height: 89vh;
-        position: relative;
-        overflow-y: scroll;
-    }
-
-    .date-group
-        {
-            padding-top: 20px;
-            display: flex;
-            justify-content:center;
-            height: 10%;
-        }
-        .date-group > img{
-            height: 30px;
-            width: auto;
-        }
-        .date-group > input{
-            height: 30px;
-            padding-left: 15px;
-            padding-right: 0;
-            border-radius: 20px;
-            border: 1px solid lightgrey;
-        }
-        .date-group > input:focus{
-            outline: none;
-            border: 1px solid black;
-        }
-        .time-group{
-            padding-top: 20px;
-            display: flex;
-            justify-content:center;
-            height: 10%;
-        }
-        .time-group > img{
-            height: 30px;
-            width: auto;
-        }
-        .time-group > input{
-            height: 30px;
-            width: 120px;
-            padding-left: 15px;
-            padding-right: 0;
-            border-radius: 20px;
-            border: 1px solid lightgrey;
-        }
-        .time-group > input:focus{
-            outline: none;
-            border: 1px solid black;
-        }
-        .middle-content{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .category-group{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .subject-category{
-            display: flex;
-            flex-direction:row;
-            justify-content: center;
-            width: 100%;
-        }
-        .subject-category > p{
-            margin: 0;
-        }
-        .category-group > div > p{
-            padding: 0px 10px 0px 10px;
-            border-radius: 20px;
-            border: 1px solid lightgrey;
-            color: white;
-        }
-        .below-button{
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .below-button > button{
-            width: 300px;
-        }
+  .date-group {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    height: 10%;
+  }
+  .date-group > img {
+    height: 30px;
+    width: auto;
+  }
+  .date-group > input {
+    height: 30px;
+    padding-left: 15px;
+    padding-right: 0;
+    border-radius: 20px;
+    border: 1px solid lightgrey;
+  }
+  .date-group > input:focus {
+    outline: none;
+    border: 1px solid black;
+  }
+  .time-group {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    height: 10%;
+  }
+  .time-group > img {
+    height: 30px;
+    width: auto;
+  }
+  .time-group > input {
+    height: 30px;
+    width: 120px;
+    padding-left: 15px;
+    padding-right: 0;
+    border-radius: 20px;
+    border: 1px solid lightgrey;
+  }
+  .time-group > input:focus {
+    outline: none;
+    border: 1px solid black;
+  }
+  .middle-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .category-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  .subject-category {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  .subject-category > p {
+    margin: 0;
+  }
+  .category-group > div > p {
+    padding: 0px 10px 0px 10px;
+    border-radius: 20px;
+    border: 1px solid lightgrey;
+    color: white;
+  }
+  .below-button {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .below-button > button {
+    width: 300px;
+  }
 </style>
-{% endblock %}
+{% endblock %} {% block pageBody %}
+<link rel="stylesheet" href="{% static '/css/stars.css' %}" />
+<div class="main-container">
+  {% include 'components/navigation.html' %}
 
-{% block pageBody %}
-<link rel="stylesheet" href="{% static '/css/stars.css' %}">
-    <div class="main-container">
-        {% include 'components/navigation.html' %}
-
-        <div class="body-container col">
-            {% include 'components/header.html' %}
-            <div class="row">
-                <div class="center-component col-9">
-                 
-                    <div class="main-content shadow-rounded" style="display: flex; justify-content: center; align-items: center;">
-                        
-                        <form>
-
-                            <h3 style="text-align: center; margin-top: 15px;">Schedule a Tutorial</h3>
-
-                            <div class="form-row">
-
-                               <div class="suggestions" style="border-style: solid; border-color: #ffb10d; border-width: 3px; width: 250px; height: 250px; display: block; border-radius: 8px; margin: auto;">
-                                <div class="row1" style="text-align: center;">
-                                  <img src="{% static '/assets/img/costumer.jpg' %}" class="border border-warning rounded-circle z-depth-0" alt="avatar image" style="width: 100px; height: 100px; margin-right: 5px; margin-top: 15px;">
-                                    <div align="center">
-                                      <h5>Aldren Kim Concordia</h5><h6>Special Topics in Mathematics</h6>
-                                        <div class="star-ratings-css" title=".875"></div>
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                            <hr style="width: 750px;">
-                            <hr style="width: 750px;">
-                            <div class="form-row">
-                              <div style="margin: auto;">
-                                <h5 align="center">Date of Tutorial  </h5>
-                                <i>Slots Available: 12</i>
-                                <div class="middle-content">
-                                  <div class="date-group">
-                                    <img src="{% static 'assets/icons/calendar.png' %}" alt="">
-                                    <input type="text" id="datepicker" name="date" autocomplete="off" placeholder="dd/mm/yyyy">
-                                  </div>
-                                </div>
-                              </div><br>
-                            
-                              
-                            </div>
-
-                            <div class="form-row">
-                              <div style="margin: auto;"><br>
-                                <h5 align="center">Time Available : </h5>
-                                <div class="container" style="position: relative; margin: auto;">
-                                  <button class="btn btn-warning" style="margin-left: 25px; margin-right: 10px;">8:30-9:30 AM</button>
-                                  <button class="btn btn-warning" style="margin-right: 10px;">10:30-11:30 AM</button>
-                                  <button class="btn btn-warning" style="margin-right: 10px;">1:00-2:00 PM</button>
-                                  <button class="btn btn-warning" style="margin-right: 10px;">3:00-4:00 PM</button>
-                                </div>
-
-                                <div class="time-group">
-                                  <label><i>Set Custom Time: </i></label>
-                                  <img src="{% static 'assets/icons/clock.png' %}" alt="" style="margin-left: 5px;">
-                                  <input type="text" name="time" id="timepicker" placeholder="00:00 AM/PM">
-                                  <p>_</p>
-                                  <input type="text" name="time" id="timepicker1" placeholder="00:00 AM/PM">
-                                </div>
-                              </div>
-                            </div>
-
-                            <h6 style="margin-top: 10px;" align="center"><u><i>Rate Per Hour</i></u></h6>
-                              <input class="form-control" type="text" id="rate" name="rate" value="P50.00" readonly style="text-align: center;"><br>
-                              <hr>
-                            <div class="form-row">
-                              <div style="margin: auto;">
-                                <i>Mentee / Your Contact Information:</i>
-                                <h6 align="left">Name</h6>
-                                <input class="form-control" type="text" id="rate" name="rate" value="Jhosie Charles Espantaleon" readonly><br>
-                                <h6 align="left">Contact Number</h6>
-                                <input class="form-control" type="text" id="rate" name="rate" value="0917XXXXXXX" readonly><br>
-                                <h6 align="left">Email</h6>
-                                <input class="form-control" type="text" id="rate" name="rate" value="thisisfake@email.com" readonly><br>
-                              </div>                                
-                            </div>
-                            <hr>
-                            <div class="form-row">
-                              <div style="margin: auto;">
-                                <h5 align="center">Method Payment</h5>
-                                <!-- Trigger the modal with a button -->
-                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">Credit / Debit Card</button>
-
-                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModalE-Wallet" style="margin-left: 10px;">E-Wallet</button>
-
-                                <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#" style="margin-left: 10px;">Cash on Meet-up</button>
-
-                                <!-- Modal Credit -->
-                              <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog modal-sm">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h4 class="modal-title">Payment Details</h4>
-                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                      <label for="fname">Accepted Cards</label><br>
-
-                                        <div class="icon-container">
-                                          <i class="fa fa-cc-visa" style="color:navy;"></i>
-                                          <i class="fa fa-cc-amex" style="color:blue;"></i>
-                                          <i class="fa fa-cc-mastercard" style="color:red;"></i>
-                                          <i class="fa fa-cc-discover" style="color:orange;"></i>
-                                        </div><br>
-
-                                        <label for="cname">Name on Card</label>
-                                          <input type="text" id="cname" name="cardname" placeholder="John More Doe">
-                                          <label for="ccnum">Credit card number</label>
-                                          <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444"><br>
-                                          <label for="expmonth">Exp Month</label><br>
-                                          <input type="text" id="expmonth" name="expmonth" placeholder="September"><br>
-                                          <label for="expyear">Exp Year</label><br>
-                                          <input type="text" id="expyear" name="expyear" placeholder="2018"><br>
-                                          <label for="cvv">CVV</label><br>
-                                          <input type="text" id="cvv" name="cvv" placeholder="352">
-                                    </div>
-
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            <!-- End of credit modal -->
-
-                            <!-- Modal E-Wallet -->
-                            <div class="modal fade" id="myModalE-Wallet" role="dialog">
-                                <div class="modal-dialog modal-sm">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h4 class="modal-title">Payment Details</h4>
-                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                      <!-- GCASH INFO -->
-                                       <h5>G-CASH</h5>
-                                                <p> <button type="button" class="btn btn-primary "><i class=""></i> Log into my G-CASH</button> </p>
-
-                                        <!-- Paypal info -->
-                                              <h5>PAYPAL</h5>
-                                                <h6 class="pb-2">Select your paypal account type</h6>
-                                                <div class="form-group "> <label class="radio-inline"> <input type="radio" name="optradio" checked> Domestic </label> <label class="radio-inline"> <input type="radio" name="optradio" class="ml-5">International </label></div>
-                                                <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Log into my Paypal</button> </p>
-                                                <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
-                                            <!-- </div> End -->
-                                    </div>
-
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-warning" data-dismiss="modal">Continue to Request</button>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            <!-- End of E-wallet modal -->  
-                            <div align="center">
-                              <button type="button" class="btn btn-warning" style="width: 50%; margin-top: 20px;" >Request Schedule</button>
-                            </div>
-                              </div>
-                            </div>
-                        </form>
-                    </div>                        
+  <div class="body-container col">
+    {% include 'components/header.html' %}
+    <div class="row">
+      <div class="center-component col-9">
+        <div
+          class="main-content shadow-rounded"
+          style="display: flex; justify-content: center; align-items: center"
+        >
+          <form method="POST">
+            {% csrf_token %}
+            <h3 style="text-align: center; margin-top: 15px">
+              Schedule a Tutorial
+            </h3>
+            {% for s in subject %}
+            <div class="form-row">
+              <div
+                class="suggestions"
+                style="
+                  border-style: solid;
+                  border-color: #ffb10d;
+                  border-width: 3px;
+                  width: 250px;
+                  height: 250px;
+                  display: block;
+                  border-radius: 8px;
+                  margin: auto;
+                "
+              >
+                <div class="row1" style="text-align: center">
+                  <img
+                    src="{% static '/assets/img/costumer.jpg' %}"
+                    class="border border-warning rounded-circle z-depth-0"
+                    alt="avatar image"
+                    style="
+                      width: 100px;
+                      height: 100px;
+                      margin-right: 5px;
+                      margin-top: 15px;
+                    "
+                  />
+                  <div align="center">
+                    <h5>{{s.mentorID__firstName}} {{s.mentorID__lastName}}</h5>
+                    <h6>{{s.subjectName}}</h6>
+                    <div class="star-ratings-css" title=".875"></div>
+                  </div>
                 </div>
-                {% include "components/sidebar.html" %}
-        </div>
-    </div>
-</div>
-{% endblock %}
+              </div>
+            </div>
+            <hr style="width: 750px" />
+            <hr style="width: 750px" />
+            <div class="form-row">
+              <div style="margin: auto">
+                <h5 align="center">Date of Tutorial</h5>
+                {% comment %} <i>Slots Available: 12</i> {% endcomment %}
+                <div class="middle-content">
+                  <div class="date-group">
+                    <img
+                      src="{% static 'assets/icons/calendar.png' %}"
+                      alt=""
+                    />
+                    <input
+                      type="text"
+                      id="datepicker"
+                      name="datepicker"
+                      autocomplete="off"
+                      placeholder="{{s.session_date|date:'Y-m-d'}}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <br />
+            </div>
 
-{% block pageJS %}
+            <div class="form-row">
+              <div style="margin: auto">
+                <br />
+                <h5 align="center">Time Available :</h5>
+                <div class="container" style="position: relative; margin: auto">
+                  <input
+                    class="btn btn-warning"
+                    id="time"
+                    name="time"
+                    style="margin-left: 100px; margin-right: 10px"
+                    value="{{s.session_time_start}}-{{s.session_time_end}}"
+                  >
+                  </input>
+                  {% comment %}
+                  <button class="btn btn-warning" style="margin-right: 10px">
+                    10:30-11:30 AM
+                  </button>
+                  <button class="btn btn-warning" style="margin-right: 10px">
+                    1:00-2:00 PM
+                  </button>
+                  <button class="btn btn-warning" style="margin-right: 10px">
+                    3:00-4:00 PM
+                  </button>
+                  {% endcomment %}
+                </div>
+
+                <div class="time-group">
+                  <label><i>Set Custom Time: </i></label>
+                  <img
+                    src="{% static 'assets/icons/clock.png' %}"
+                    alt=""
+                    style="margin-left: 5px"
+                  />
+                  <input
+                    type="text"
+                    name="time"
+                    id="timepicker"
+                    name="timepicker"
+                    placeholder="00:00 AM/PM"
+                  />
+                  <p>_</p>
+                  <input
+                    type="text"
+                    name="time"
+                    id="timepicker1"
+                    name="timepicker1"
+                    placeholder="00:00 AM/PM"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <h6 style="margin-top: 10px" align="center">
+              <u><i>Rate Per Hour</i></u>
+            </h6>
+            <input
+              class="form-control"
+              type="text"
+              id="rate"
+              name="rate"
+              value="{{s.ratePerHour}}"
+              readonly
+              style="text-align: center"
+            /><br />
+            <hr />
+            <div class="form-row">
+              <div style="margin: auto">
+                <i>Mentee / Your Contact Information:</i>
+                <h6 align="left">Name</h6>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="name"
+                  name="name"
+                  value="Jhosie Charles Espantaleon"
+                  readonly
+                /><br />
+                <h6 align="left">Contact Number</h6>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  value="0917XXXXXXX"
+                  readonly
+                /><br />
+                <h6 align="left">Email</h6>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="email"
+                  name="email"
+                  value="thisisfake@email.com"
+                  readonly
+                /><br />
+              </div>
+            </div>
+            <hr />
+            <div class="form-row">
+              <div style="margin: auto">
+                <h5 align="center">Method Payment</h5>
+                <!-- Trigger the modal with a button -->
+                <input
+                  type="button"
+                  id="credit"
+                  name="credit"
+                  class="btn btn-warning"
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  value="Credit / Debit Card"
+                >
+                </input>
+
+                <input
+                  type="button"
+                  id="ewallet"
+                  name="ewallet"
+                  class="btn btn-warning"
+                  data-toggle="modal"
+                  data-target="#myModalE-Wallet"
+                  style="margin-left: 10px"
+                  value="E-Wallet"
+                >
+                </input>
+
+                <input
+                 id="com"
+                  name="com"
+                  type="button"
+                  class="btn btn-warning"
+                  data-toggle="modal"
+                  data-target="#"
+                  style="margin-left: 10px"
+                  value=" Cash on Meet-up"
+                >  
+                </input>
+                <!-- Modal Credit -->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Payment Details</h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                        >
+                          &times;
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <label for="fname">Accepted Cards</label><br />
+
+                        <div class="icon-container">
+                          <i class="fa fa-cc-visa" style="color: navy"></i>
+                          <i class="fa fa-cc-amex" style="color: blue"></i>
+                          <i class="fa fa-cc-mastercard" style="color: red"></i>
+                          <i
+                            class="fa fa-cc-discover"
+                            style="color: orange"
+                          ></i>
+                        </div>
+                        <br />
+
+                        <label for="cname">Name on Card</label>
+                        <input
+                          type="text"
+                          id="cname"
+                          name="cardname"
+                          placeholder="John More Doe"
+                        />
+                        <label for="ccnum">Credit card number</label>
+                        <input
+                          type="text"
+                          id="ccnum"
+                          name="cardnumber"
+                          placeholder="1111-2222-3333-4444"
+                        /><br />
+                        <label for="expmonth">Exp Month</label><br />
+                        <input
+                          type="text"
+                          id="expmonth"
+                          name="expmonth"
+                          placeholder="September"
+                        /><br />
+                        <label for="expyear">Exp Year</label><br />
+                        <input
+                          type="text"
+                          id="expyear"
+                          name="expyear"
+                          placeholder="2018"
+                        /><br />
+                        <label for="cvv">CVV</label><br />
+                        <input
+                          type="text"
+                          id="cvv"
+                          name="cvv"
+                          placeholder="352"
+                        />
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-warning"
+                          data-dismiss="modal"
+                        >
+                          Continue to Request
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of credit modal -->
+
+                <!-- Modal E-Wallet -->
+                <div class="modal fade" id="myModalE-Wallet" role="dialog">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Payment Details</h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                        >
+                          &times;
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <!-- GCASH INFO -->
+                        <h5>G-CASH</h5>
+                        <p>
+                          <button type="button" class="btn btn-primary">
+                            <i class=""></i> Log into my G-CASH
+                          </button>
+                        </p>
+
+                        <!-- Paypal info -->
+                        <h5>PAYPAL</h5>
+                        <h6 class="pb-2">Select your paypal account type</h6>
+                        <div class="form-group">
+                          <label class="radio-inline">
+                            <input type="radio" name="optradio" checked />
+                            Domestic
+                          </label>
+                          <label class="radio-inline">
+                            <input
+                              type="radio"
+                              name="optradio"
+                              class="ml-5"
+                            />International
+                          </label>
+                        </div>
+                        <p>
+                          <input type="button" class="btn btn-primary">
+                            <i class="fab fa-paypal mr-2"></i> Log into my
+                            Paypal
+                          </input>
+                        </p>
+                        <p class="text-muted">
+                          Note: After clicking on the button, you will be
+                          directed to a secure gateway for payment. After
+                          completing the payment process, you will be redirected
+                          back to the website to view details of your order.
+                        </p>
+                        <!-- </div> End -->
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-warning"
+                          data-dismiss="modal"
+                        >
+                          Continue to Request
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End of E-wallet modal -->
+                <div align="center">
+                  <button
+                    type="submit"
+                    name="submit"
+                    class="btn btn-warning"
+                    style="width: 50%; margin-top: 20px"
+                  >
+                    Request Schedule
+                  </button>
+                </div>
+              </div>
+            </div>
+            {%endfor%}
+          </form>
+        </div>
+      </div>
+      {% include "components/sidebar.html" %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block pageJS %}
 <script type="text/javascript">
-    console.log("Login");
+  console.log("Login");
 </script>
 
-    <!-- Datepicker JS -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Datepicker JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- Timepicker -->
-    <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
-    <script src="{% static 'js/jquery.timepicker.js' %}"></script>
+<!-- Timepicker -->
+<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+<script src="{% static 'js/jquery.timepicker.js' %}"></script>
 
-    <script type="text/javascript">
-        $(function(){
-            $("#datepicker").datepicker();
-            $( "#datepicker" ).datepicker( "option", "dateFormat", "d, MM yy" );
-            $("#timepicker").timepicker();
-            $("#timepicker1").timepicker();
-        })
-    </script>
+<script type="text/javascript">
+  $(function () {
+    $("#datepicker").datepicker();
+    $("#datepicker").datepicker("option", "dateFormat", "yy-m-d");
+    $("#timepicker").timepicker();
+    $("#timepicker1").timepicker();
+  });
+</script>
 {% endblock %}
