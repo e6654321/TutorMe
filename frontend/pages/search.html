@@ -42,8 +42,11 @@
 {% block pageBody %}
     <div class="main-container">
         {% include 'components/navigation.html' %}
+        <span style="z-index: 100">
+        {% include 'components/Chatbot.html' %}
+        </span>
 
-        <div class="body-container col">
+        <div class="body-container col" style="z-index: 1">
             {% include 'components/header.html' %}
             <div class="row">
                 <div class="center-component col-9">
