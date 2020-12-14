@@ -33,7 +33,6 @@
         display: flex;
         flex-direction: column;
         padding: 1.5% 1.5% 5px 1.5%;
-        background-color: skyblue;
         border-left: solid blue 5px;
         border-bottom: 1px solid grey;
     }
@@ -62,56 +61,29 @@
             <div class="row">
                 <div class="center-component col-9">
                     <div class="notes-table">
-                        <div class="notes-container">
+                        {% for n in notes %}
+                        <div class="notes-container {% if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-gold {% else %} bg-maroon1 {% endif %}">
                             <div class="notes-header">
-                                <h5>Special Topics PDF LINK</h5>
+                                <h5>{{n.notesTitle}}</h5>
                             </div>
                             <div class="notes-details">
                                 <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>attachment.pdf</p>
+                                    <p onclick="popUP()">{{n.notes}}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+                        {% empty %}
+                        <div class="notes-container empty" style="background-color: skyblue; border-left-color:blue;">
                             <div class="notes-header">
-                                <h5>Gen Math Vid</h5>
+                                <h5 style="color: black;">You got no notes yet!</h5>
                             </div>
                             <div class="notes-details">
                                 <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>https://www.youtube.com/watch?v=dQw4w9WgXcQ</p>
+                                    <p style="color: black;">Go and make some notes.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="notes-container empty" style="background-color: #fff; border-left-color: #fff;">
-                            <div class="notes-header">
-                                <h5>October 24</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>Intelligent Systems</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="notes-container empty" style="background-color: #fff; border-left-color: #fff;">
-                            <div class="notes-header">
-                                <h5>October 24</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>Intelligent Systems</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="notes-container empty" style="background-color: #fff; border-left-color: #fff;">
-                            <div class="notes-header">
-                                <h5>October 24</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p>Intelligent Systems</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -125,6 +97,9 @@
 
 {% block pageJS %}
 <script type="text/javascript">
-    console.log("Login");
+    $('.notes-container div p').css('cursor', 'pointer');
+    function popUP(){
+        alert("You will leave this page and download the file.");
+    }
 </script>
 {% endblock %}

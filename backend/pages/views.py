@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile, Schedule, Subject, Mentor, Details, Account, Notes
-from .forms import CreateUserForm, CardDetailsForm
+from .forms import CreateUserForm, CardDetailsForm, AccountForm, CreateSubjectForm
 from django.db.models import Q
 from django.core import serializers
 import json
@@ -67,18 +67,42 @@ class NotesPageView(TemplateView):
     # template_name='notes.html'
     def get(self, request):
         if request.user.is_authenticated:
-            n = Notes.objects.all()
+            n = Notes.objects.all().values('menteeID','mentorID','subjectID','notes',
+                'notesTitle', 'subjectID__subjectName')
             data ={
                 "notes":n
             }
             return render(request, 'notes.html', data)
+            
+    def post(self, request):
+        if request.method == 'POST':
+            if 'btnSort' in request.POST:
+                item = request.POST.get("search")
+                sort = request.POST.get("sort")
+                print(sort)
+                if sort=='subjectName':
+                    sort='subjectID__subjectName'
+                if sort=='ratePerHour':
+                    sort= 'subjectID__ratePerHour'
+                if sort=='-subjectName':
+                    sort= '-subjectID__subjectName'
+                if sort=='-ratePerHour':
+                    sort= '-subjectID__ratePerHour'
+        n = Notes.objects.all()
+        n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
+                                | Q(mentorID__lastName__icontains=item)).values('subjectID__subjectName',
+                                    'mentorID__firstName', 'mentorID__lastName', 'subjectID__ratePerHour', 'notes','notesTitle').order_by(sort)
+        data = {
+            "notes": n
+        }
+        return render(request, 'notes.html', data)
 
 
 class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             s1 = Subject.objects.all().values('subjectName', 'ratePerHour',
-                                        'session_date', 'session_time',
+                                        'session_date', 'session_time_start',
                                         'mentorID__firstName', 'mentorID__lastName')
             data = {
                 "subject": s1
@@ -92,7 +116,7 @@ class SearchView(TemplateView):
                 sort = request.POST.get("sort")
         s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
                                 | Q(mentorID__lastName__icontains=item)).values('subjectName', 'ratePerHour',
-                                    'session_date', 'session_time',
+                                    'session_date', 'session_time_start',
                                     'mentorID__firstName', 'mentorID__lastName').order_by(sort)
         data = {
             "subject": s1
@@ -135,6 +159,7 @@ class PaymentView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             current_user = request.user
+            print("user")
             print(current_user.id)
             acc = Account.objects.filter(userID__id=current_user.id)
             if acc.exists():
@@ -152,9 +177,12 @@ class PaymentView(TemplateView):
         if request.method == 'POST':
             print(request.POST)
             if 'btnUpdateCard' in request.POST:
-                print("Update product button clicked!")
+                print("Update detail button clicked!")
                 did = request.POST.get('id')
                 cardOwnerName = request.POST.get('cardOwnerName')
+                cardNum = request.POST.get('cardNum')
+                month = request.POST.get('month')
+                year = request.POST.get('year')
                 cvc= request.POST.get('cvc')
                 update_details = Details.objects.filter(id = did).update(cardOwnerName=cardOwnerName, 
                                     cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
@@ -181,9 +209,10 @@ class AddPaymentView(TemplateView):
 
     def post(self, request):
         form = CardDetailsForm(request.POST)
+        accForm = AccountForm(request.POST) 
         print(form.errors)
-        if request.method == 'POST':
-            return redirect('pages:search')
+        print(accForm.errors)
+        current_user = request.user
 
         if form.is_valid():
             cardOwnerName = request.POST.get('cardOwnerName')
@@ -194,12 +223,12 @@ class AddPaymentView(TemplateView):
             form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
                             expire_month=month, expire_year=year, cvc=cvc)
             form.save()
+            acc_details = Account(userID=current_user.id, detailID=form.id)
+            accForm.save()
             return redirect('pages:payment')
         else:
             messages.error(request, 'Check inputs and try again')
             return render(request, 'addpayment.html')
-        
-
 
 class SettingsView(TemplateView):
     template_name = 'settings.html'
@@ -208,7 +237,37 @@ class MessagingView(TemplateView):
     template_name='messaging.html'
 
 class CreateSubjectView(TemplateView):
-    template_name= 'create-subject.html'
+    # template_name= 'create-subject.html'
+    def get(self, request):
+        return render(request, 'create-subject.html')
+    
+    def post(self, request):
+        form = CreateSubjectForm(request.POST)
+        print(form.errors)
+        if request.user.is_authenticated:
+            current_user = request.user
+
+        if form.is_valid:
+            # mentor= request.user.id
+            subName = request.POST.get('subjectName')
+            subDate = request.POST.get('session_date')
+            timeStart = request.POST.get('session_time_start')
+            timeEnd = request.POST.get('session_time_end')
+            rate= request.POST.get('ratePerHour')
+            category = request.POST.get('category')
+            form = Subject(subjectName=subName,  session_date=subDate, 
+                session_time_start=timeStart, session_time_end=timeEnd, 
+                ratePerHour=rate, category=category, #mentorID=mentor    
+            )
+            form.save()
+            return redirect('pages:search')
+        else:
+            print(form.errors)
+            messages.error(request, 'Check inputs and try again')
+            return render(request, 'create-subject.html')
+
+
+
 
 class ScheduleSubjectView(TemplateView):
     template_name= 'schedule-page.html'
