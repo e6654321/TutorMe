@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, Schedule, Subject, Mentor, Details, Account
+from .models import User, Schedule, Subject, Mentor, Details, Account, Notes
 from .forms import CreateUserForm, CardDetailsForm, AccountForm
 from django.db.models import Q
 
@@ -61,7 +61,39 @@ class RequestSchedView(TemplateView):
 	template_name = 'RequestSched.html'
 
 class NotesPageView(TemplateView):
-    template_name='notes.html'
+    # template_name='notes.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            n = Notes.objects.all().values('menteeID','mentorID','subjectID','notes',
+                'notesTitle', 'subjectID__subjectName')
+            data ={
+                "notes":n
+            }
+            return render(request, 'notes.html', data)
+            
+    def post(self, request):
+        if request.method == 'POST':
+            if 'btnSort' in request.POST:
+                item = request.POST.get("search")
+                sort = request.POST.get("sort")
+                print(sort)
+                if sort=='subjectName':
+                    sort='subjectID__subjectName'
+                if sort=='ratePerHour':
+                    sort= 'subjectID__ratePerHour'
+                if sort=='-subjectName':
+                    sort= '-subjectID__subjectName'
+                if sort=='-ratePerHour':
+                    sort= '-subjectID__ratePerHour'
+        n = Notes.objects.all()
+        n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
+                                | Q(mentorID__lastName__icontains=item)).values('subjectID__subjectName',
+                                    'mentorID__firstName', 'mentorID__lastName', 'subjectID__ratePerHour', 'notes','notesTitle').order_by(sort)
+        data = {
+            "notes": n
+        }
+        return render(request, 'notes.html', data)
+
 
 class SearchView(TemplateView):
     def get(self, request):
@@ -94,7 +126,18 @@ class GeolocationView(TemplateView):
     template_name = 'geolocation.html'
 
 class ProfileView(TemplateView):
-    template_name = 'profile.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            current_user = request.user
+            print(current_user)
+            for attr in dir(current_user):
+                try:
+                    print('%s: %s' % (attr, getattr(current_user, attr)))
+                except Exception as e:
+                    print('%s: %s' % (attr, e))
+            return render(request, 'profile.html', {"user": current_user})
+            # else:
+            #     return redirect('pages:addpayment')
 
 class PaymentView(TemplateView):
     def get(self, request):
