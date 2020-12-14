@@ -68,7 +68,7 @@ class RequestSchedView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             current_user = request.user
-            sub = Subject.objects.filter(mentorID=4).values('mentorID', 'subjectName', 'ratePerHour',
+            sub = Subject.objects.filter(mentorID=1).values('mentorID', 'subjectName', 'ratePerHour',
                                                             'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__firstName', 'mentorID__lastName')
 
             print(current_user)
@@ -79,7 +79,7 @@ class RequestSchedView(TemplateView):
 
     def post(self, request):
         if request.method == 'POST':
-            subject = Subject.objects.filter(mentorID=4)
+            subject = Subject.objects.filter(mentorID=1)
             #menteeID = Mentee.objects.filter(menteeID=3)
             date = request.POST.get("datepicker")
             time = request.POST.get("time")
@@ -140,7 +140,7 @@ class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             s1 = Subject.objects.all().values('subjectName', 'ratePerHour',
-                                              'session_date', 'session_time_start', 'session_time_end',
+                                              'session_date', 'session_time_start',
                                               'mentorID__firstName', 'mentorID__lastName')
             data = {
                 "subject": s1

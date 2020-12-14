@@ -8,8 +8,13 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+
+class User(models.Model):
+    userName = models.CharField(
+        max_length=100, blank=False, null=False, unique=True)
+    password = models.CharField(
+        max_length=50, blank=False, null=False, default=None)
     firstName = models.CharField(max_length=100, blank=True, null=True)
     middleName = models.CharField(max_length=100, blank=True, null=True)
     lastName = models.CharField(max_length=100, blank=True, null=True)
@@ -138,9 +143,10 @@ class Receipt(models.Model):
 
 class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
-    userID = models.ForeignKey(Profile, null=True, blank=False, on_delete=models.SET_NULL)
-    detailID = models.ForeignKey(Details, null=True, blank=False, on_delete=models.SET_NULL)
-    receiptID = models.ForeignKey(Receipt, null=True, blank=False, on_delete=models.SET_NULL)
+    userID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    detailID = models.ForeignKey(Details, null=True, on_delete=models.SET_NULL)
+    receiptID = models.ForeignKey(
+        Receipt, null=True, on_delete=models.SET_NULL)
     readonly_fields = ('id',)
 
     class Meta:
