@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import User, Schedule, Subject, Mentor, Details, Account, Notes
-from .forms import CreateUserForm, CardDetailsForm, AccountForm
+from .forms import CreateUserForm, CardDetailsForm, AccountForm, CreateSubjectForm
 from django.db.models import Q
 
 class HomePageView(TemplateView):
@@ -99,7 +99,7 @@ class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             s1 = Subject.objects.all().values('subjectName', 'ratePerHour',
-                                        'session_date', 'session_time',
+                                        'session_date', 'session_time_start',
                                         'mentorID__firstName', 'mentorID__lastName')
             data = {
                 "subject": s1
@@ -113,7 +113,7 @@ class SearchView(TemplateView):
                 sort = request.POST.get("sort")
         s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__firstName__icontains=item)
                                 | Q(mentorID__lastName__icontains=item)).values('subjectName', 'ratePerHour',
-                                    'session_date', 'session_time',
+                                    'session_date', 'session_time_start',
                                     'mentorID__firstName', 'mentorID__lastName').order_by(sort)
         data = {
             "subject": s1
@@ -221,7 +221,37 @@ class MessagingView(TemplateView):
     template_name='messaging.html'
 
 class CreateSubjectView(TemplateView):
-    template_name= 'create-subject.html'
+    # template_name= 'create-subject.html'
+    def get(self, request):
+        return render(request, 'create-subject.html')
+    
+    def post(self, request):
+        form = CreateSubjectForm(request.POST)
+        print(form.errors)
+        if request.user.is_authenticated:
+            current_user = request.user
+
+        if form.is_valid:
+            # mentor= request.user.id
+            subName = request.POST.get('subjectName')
+            subDate = request.POST.get('session_date')
+            timeStart = request.POST.get('session_time_start')
+            timeEnd = request.POST.get('session_time_end')
+            rate= request.POST.get('ratePerHour')
+            category = request.POST.get('category')
+            form = Subject(subjectName=subName,  session_date=subDate, 
+                session_time_start=timeStart, session_time_end=timeEnd, 
+                ratePerHour=rate, category=category, #mentorID=mentor    
+            )
+            form.save()
+            return redirect('pages:search')
+        else:
+            print(form.errors)
+            messages.error(request, 'Check inputs and try again')
+            return render(request, 'create-subject.html')
+
+
+
 
 class ScheduleSubjectView(TemplateView):
     template_name= 'schedule-page.html'
