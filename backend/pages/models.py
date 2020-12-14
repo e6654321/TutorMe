@@ -51,10 +51,12 @@ class Mentor(User):
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
-    subjectName = models.CharField(max_length=100)
+    subjectName = models.CharField(max_length=100, default='')
     ratePerHour = models.DecimalField(max_digits=5, decimal_places=2, default='0')
     session_date = models.DateField(default=None)
-    session_time = models.CharField(max_length=20, default=None)
+    session_time_end = models.CharField(max_length=10,  default='00:00')
+    session_time_start = models.CharField(max_length=10, default='00:00')
+    category = models.CharField(max_length=30, default='')
     readonly_fields = ('id',)
 
     class Meta:
