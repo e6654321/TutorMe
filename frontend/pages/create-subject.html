@@ -13,8 +13,7 @@
 
     <style type="text/css">
         .center-component{
-            height: 100%;
-            overflow-y: scroll;
+            height: auto;
         }
         .create-body{
             width: 100%;
@@ -45,7 +44,7 @@
         }
         .subject-name > input{
             width: 50%;
-            height: 30px;
+            height: 50px;
             border-radius: 20px;
             border: 1px solid grey;
             color:black;
@@ -58,13 +57,14 @@
         }
         .date-group
         {
-            padding-top: 20px;
+            padding-top: 30px;
             display: flex;
             justify-content:center;
             height: 10%;
         }
         .date-group > img{
             height: 30px;
+            padding-right: 10px;
             width: auto;
         }
         .date-group > input{
@@ -86,7 +86,13 @@
         }
         .time-group > img{
             height: 30px;
+            padding-right: 10px;
             width: auto;
+        }
+        .time-group>p{
+            margin: 0;
+            padding: 0 7px 0 7px;
+            font-size: large;
         }
         .time-group > input{
             height: 30px;
@@ -101,14 +107,14 @@
             border: 1px solid black;
         }
         .capacity-group{
-            padding: 20px;
+            padding-top:20px;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 10%;
         }
         .capacity-group > input{
-            width: 120px;
+            width: 100px;
             padding-left: 15px;
             padding-right: 0;
             border-radius: 20px;
@@ -147,65 +153,91 @@
         .below-button > button{
             width: 300px;
         }
+        .row-height{
+            height: 80%;
+        }
+        form > .date-group, .time-group, .capacity-group, .category-group{
+            padding-top:50px;
+        }
+        form> .subject-name, .above{
+            padding-bottom: 20px;
+        }
+        select{
+            width: 150px;
+            padding: 5px 35px 5px 10px;
+            font-size: 16px;
+            border: 1px solid #CCC;
+            height: 34px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
     </style>
 {% endblock %}
 
 {% block pageBody %}
 
-    <div class="main-container row">
+    <div class="main-container  ">
         {% include 'components/navigation.html' %}
 
-        <div class="body-container col-11   ">
+        <div class="body-container col-11">
             {% include 'components/header.html' %}
     
-            <div class="row"> 
+            <div class="row row-height">
                 <div class="center-component col-9">
                     <div class="create-body shadow-rounded">
                         <div class="above-bar">
                             <a href="#"><img src="{% static 'assets/icons/arrow-blue.png' %}" alt=""></a>
                         </div>
                         <div class="middle-content">
-                            <div class="above">
-                                <h1>Create New Schedule</h1>
-                            </div>
-                            <div class="subject-name">
-                                <input type="text" name="subject-name" id="subject" placeholder="Subject Name">
-                            </div>
-                            <div class="date-group">
-                                <img src="{% static 'assets/icons/calendar.png' %}" alt="">
-                                <input type="text" id="datepicker" name="date" autocomplete="off" placeholder="dd/mm/yyyy">
-                            </div>
-                            <div class="time-group">
-                                <img src="{% static 'assets/icons/clock.png' %}" alt="">
-                                <input type="text" name="time" id="timepicker" placeholder="00:00 AM/PM">
-                                <p>_</p>
-                                <input type="text" name="time" id="timepicker1" placeholder="00:00 AM/PM">
-                            </div>
-                            <div class="capacity-group">
-                                <h5 style="padding-right: 10px;">Capacity</h5>
-                                <input type="number" name="capacity" id="capacity">
-                            </div>
-                            <div class="category-group">
-                                <h5 style="padding-right: 10px;">Category</h5>
-                                <div class="subject-category">
-                                    <p class="text-center" style="background-color: #2BC8D9;">English</p>
-                                    <p class="text-center" style="background-color: #FF9B2B;">Math</p>
-                                    <p class="text-center" style="background-color: #948BFF;">Science</p>
-                                    <p class="text-center" style="background-color: #FF6D6E;">Literature</p>
-                                    <p class="text-center" style="background-color: #FFFFFF; color: #4565EC;">+ New</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="this_user" id="this_user" value="{{request.user.id}}" hidden>
+                                <div class="above">
+                                    <h1>Create New Schedule</h1>
                                 </div>
-                            </div>
-                            <div class="below-button">
-                                <button class="btn btn-primary btn-lg" type="submit">Create</button>
-                            </div>
+                                <div class="subject-name">
+                                    <input type="text" name="subjectName" id="subjectName" placeholder="Subject Name">
+                                </div>
+                                <div class="date-group">
+                                    <img src="{% static 'assets/icons/calendar.png' %}" alt="">
+                                    <input type="text" id="session_date" name="session_date" autocomplete="off" placeholder="dd/mm/yyyy">
+                                </div>
+                                <div class="time-group">
+                                    <img src="{% static 'assets/icons/clock.png' %}" alt="">
+                                    <input type="text" name="session_time_start" id="session_time_start" placeholder="00:00 AM/PM">
+                                    <p>&#8208</p>
+                                    <input type="text" name="session_time_end" id="session_time_end" placeholder="00:00 AM/PM">
+                                </div>
+                                <div class="capacity-group">
+                                    <h5 style="padding-right: 10px;">Rate</h5>
+                                    <input type="text" name="ratePerHour" id="ratePerHour">
+                                </div>
+                                <div class="category-group">
+                                    <h5 style="padding-right: 10px;">Category</h5>
+                                    <select name="category" id="category" style="background: url({% static 'assets/logo.png' %}) 96% / 15% no-repeat #EEE;">
+                                        <option value="English" selected><p class="text-center" style="background-color: #2BC8D9;">English</p></option>
+                                        <option value="Math"><p class="text-center" style="background-color: #FF9B2B;">Math</p></option>
+                                        <option value="Science"><p class="text-center" style="background-color: #948BFF;">Science</p></option>
+                                        <option value="Literature"><p class="text-center" style="background-color: #FF6D6E;">Literature</p></option>
+                                    </select>
+                                </div>
+                                {% for message in messages %}
+                                <p class="messages">{{message}}</p>
+                                {% endfor %}
+                                <div class="below-button">
+                                    <button class="btn btn-primary btn-lg" type="submit">Create</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
-        
+                </div>    
+
                 {% include "components/sidebar.html" %}
             </div>
-    
+
         </div>
+    
     </div>
 
 {% endblock %}
@@ -220,10 +252,11 @@
 
     <script type="text/javascript">
         $(function(){
-            $("#datepicker").datepicker();
-            $( "#datepicker" ).datepicker( "option", "dateFormat", "d, MM yy" );
-            $("#timepicker").timepicker();
-            $("#timepicker1").timepicker();
+            $("#session_date").datepicker();
+            $( "#session_date" ).datepicker( "option", "dateFormat", "yy-m-d" );
+            $("#session_time_start").timepicker();
+            $("#session_time_end").timepicker();
         })
+        
     </script>
 {% endblock %}
