@@ -161,9 +161,9 @@ class PaymentView(TemplateView):
             current_user = request.user
             print("user")
             print(current_user.id)
-            acc = Account.objects.filter(userID__id=current_user.id)
+            acc = Account.objects.filter(userID=request.user)
             if acc.exists():
-                s1 = Account.objects.filter(userID__id=current_user.id).value('detailID__cardOwnerName', 'detailID__cardNumber', 
+                s1 = Account.objects.filter(userID=request.user).value('detailID__cardOwnerName', 'detailID__cardNumber', 
                 'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
                 data = {
                     "details": s1
@@ -222,9 +222,10 @@ class AddPaymentView(TemplateView):
             cvc= request.POST.get('cvc')
             form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
                             expire_month=month, expire_year=year, cvc=cvc)
-            form.save()
-            acc_details = Account(userID=current_user.id, detailID=form.id)
+            accForm = Account(userID=request.user, detailID=form.id, receiptID=None)
+            card = form.save()
             accForm.save()
+
             return redirect('pages:payment')
         else:
             messages.error(request, 'Check inputs and try again')
