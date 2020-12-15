@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Details, Account, Notes, Subject
+from .models import Details, Account, Notes, Subject, Receipt
 from django import forms
 
 class CreateUserForm(UserCreationForm):
@@ -24,3 +24,8 @@ class CreateSubjectForm(ModelForm):
         model= Subject
         exclude = ['mentorID']
         fields= '__all__'
+
+class ReceiptForm(ModelForm):
+    class Meta:
+        model= Receipt
+        fields = '__all__'

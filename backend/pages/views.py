@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Profile, Schedule, Subject, Mentor, Details, Account, Notes
-from .forms import CreateUserForm, CardDetailsForm, AccountForm, CreateSubjectForm
+from .models import Profile, Schedule, Subject, Mentor, Details, Account, Notes, Receipt
+from .forms import CreateUserForm, CardDetailsForm, AccountForm, CreateSubjectForm, ReceiptForm
 from django.db.models import Q
 from django.core import serializers
 import json
@@ -159,12 +159,14 @@ class PaymentView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             current_user = request.user
-            print("user")
-            print(current_user.id)
-            acc = Account.objects.filter(userID__id=current_user.id)
-            if acc.exists():
-                s1 = Account.objects.filter(userID__id=current_user.id).value('detailID__cardOwnerName', 'detailID__cardNumber', 
-                'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
+            profile = Profile.objects.get(id=current_user.id)
+            print(profile)
+            acc = Account.objects.filter(userID=profile).count()
+            print(acc)
+            if (acc > 0):
+                print(acc)
+                s1 = Account.objects.filter(userID=profile).values('id', 'detailID__id', 'detailID__cardOwnerName', 'detailID__cardNumber', 
+                'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc', 'receiptID__id')
                 data = {
                     "details": s1
                 }
@@ -178,7 +180,8 @@ class PaymentView(TemplateView):
             print(request.POST)
             if 'btnUpdateCard' in request.POST:
                 print("Update detail button clicked!")
-                did = request.POST.get('id')
+                did = request.POST.get('did')
+                print(did)
                 cardOwnerName = request.POST.get('cardOwnerName')
                 cardNum = request.POST.get('cardNum')
                 month = request.POST.get('month')
@@ -188,20 +191,20 @@ class PaymentView(TemplateView):
                                     cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
                 print(update_details)
                 print("Details updated!")
+                return redirect('pages:payment')
             elif 'btnDeleteCard' in request.POST:
                 print("Delete product button clicked!")
-                did = request.POST.get("id")
+                did = request.POST.get('did')
+                rid = request.POST.get('rid')
+                aid = request.POST.get('aid')
                 details = Details.objects.filter(pk = did).delete()
+                receipt = Receipt.objects.filter(pk = rid).delete()
+                acc = Account.objects.filter(pk = aid).delete()
                 print(details)
+                print(receipt)
+                print(acc)
                 print("Record deleted!")
-        current_user = request.user
-        print(current_user.id)
-        s1 = Account.objects.filter(userID__id=current_user.id).value('detailID__cardOwnerName', 'detailID__cardNumber', 
-        'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
-        data = {
-            "details": s1
-        }
-        return redirect('pages:addpayment')
+                return redirect('pages:addpayment')
 
 class AddPaymentView(TemplateView):
     def get(self, request):
@@ -209,9 +212,10 @@ class AddPaymentView(TemplateView):
 
     def post(self, request):
         form = CardDetailsForm(request.POST)
-        accForm = AccountForm(request.POST) 
+        # receiptForm = ReceiptForm(request.POST)
+        print("error") 
         print(form.errors)
-        print(accForm.errors)
+        # print(receiptForm.errors)
         current_user = request.user
 
         if form.is_valid():
@@ -222,9 +226,13 @@ class AddPaymentView(TemplateView):
             cvc= request.POST.get('cvc')
             form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
                             expire_month=month, expire_year=year, cvc=cvc)
+            receiptForm = Receipt(receipt="")
+            profile = Profile.objects.get(id=current_user.id)
+            accForm = Account(userID=profile, detailID=form, receiptID=receiptForm)
             form.save()
-            acc_details = Account(userID=current_user.id, detailID=form.id)
+            receiptForm.save()
             accForm.save()
+
             return redirect('pages:payment')
         else:
             messages.error(request, 'Check inputs and try again')

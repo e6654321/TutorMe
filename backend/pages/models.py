@@ -121,9 +121,9 @@ class Receipt(models.Model):
 
 class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
-    userID = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
-    detailID = models.ForeignKey(Details, null=True, on_delete=models.SET_NULL)
-    receiptID = models.ForeignKey(Receipt, null=True, on_delete=models.SET_NULL)
+    userID = models.ForeignKey(Profile, null=True, blank=False, on_delete=models.SET_NULL)
+    detailID = models.ForeignKey(Details, null=True, blank=False, on_delete=models.SET_NULL)
+    receiptID = models.ForeignKey(Receipt, null=True, blank=False, on_delete=models.SET_NULL)
     readonly_fields = ('id',)
 
     class Meta:
