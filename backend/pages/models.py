@@ -28,6 +28,24 @@ class Meta:
     db_table = "Profile"
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile')
+
+
+firstName = models.CharField(max_length=100, blank=True, null=True)
+middleName = models.CharField(max_length=100, blank=True, null=True)
+lastName = models.CharField(max_length=100, blank=True, null=True)
+email = models.EmailField(blank=True, null=True)
+contactNo = models.IntegerField(blank=True, null=True)
+#userID = models.AutoField(primary_key=True, default=None)
+readonly_fields = ('id',)
+
+
+class Meta:
+    db_table = "Profile"
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
