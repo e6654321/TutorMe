@@ -28,11 +28,8 @@
 
     <div class="main-container row">
         {% include 'components/navigation.html' %}
-        <span style="z-index: 100">
-        {% include 'components/Chatbot.html' %}
-        </span>
 
-        <div class="body-container col-11" style="z-index: 1">
+        <div class="body-container col-11   ">
             {% include 'components/header.html' %}
     
             <div class="row"> 
@@ -59,14 +56,6 @@
 {% block pageJS %}
 <script type="text/javascript">
     var mymap = L.map('mapid').setView([10.2956476,123.880471], 13);
-    var scheds = JSON.parse('{{ scheds|escapejs }}');
-    var mentors = JSON.parse('{{ mentors|escapejs }}');
-    var subjects = JSON.parse('{{ subjects|escapejs }}');
-    var profiles = JSON.parse('{{ profiles|escapejs }}');
-    console.log(scheds);
-    console.log(mentors);
-    console.log(subjects);
-    console.log(profiles);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
