@@ -21,8 +21,11 @@
 {% block pageBody %}
     <div class="main-container">
         {% include 'components/navigation.html' %}
+        <span style="z-index: 100">
+        {% include 'components/Chatbot.html' %}
+        </span>
 
-        <div class="body-container col">
+        <div class="body-container col" style="z-index: 1">
             {% include 'components/header.html' %}
             <div class="row">
                 <div class="center-component col-9">
@@ -37,17 +40,17 @@
 
                                 <div class="col">
                                     <label for="">Firstname</label>
-                                    <input type="text" class="form-control" value="{{user.first_name}}" name="fname" required>
+                                    <input type="text" class="form-control" value="{{user.profile.firstName}}" name="fname" required>
                                 </div>
 
                                 <div class="col">
                                     <label for="">Middlename</label>
-                                    <input type="text" class="form-control" value="" name="mname">
+                                    <input type="text" class="form-control" value="{{user.profile.middleName}}" name="mname">
                                 </div>
 
                                 <div class="col">
                                     <label for="">Lastname</label>
-                                    <input type="text" class="form-control" value="{{user.last_name}}" name="lname" required>
+                                    <input type="text" class="form-control" value="{{user.profile.lastName}}" name="lname" required>
                                 </div>
 
                             </div>
@@ -75,12 +78,12 @@
 
                                 <div class="col">
                                     <label for="">Email Address</label>
-                                    <input type="text" class="form-control" value="{{user.email}}" name="email" required>
+                                    <input type="text" class="form-control" value="{{user.profile.email}}" name="email" required>
                                 </div>
 
                                 <div class="col">
                                     <label for="">Contact Number</label>
-                                    <input type="number" class="form-control" value="" name="number" required>
+                                    <input type="number" class="form-control" value="{{user.profile.contactNo}}" name="number" required>
                                 </div>
 
                             </div>
@@ -90,11 +93,6 @@
                                 <div class="col">
                                     <label for="">Username</label>
                                     <input type="text" class="form-control" value="{{user.username}}" name="username" required>
-                                </div>
-
-                                <div class="col">
-                                    <label for="">Password</label>
-                                    <input type="password" class="form-control" value="{{user}}" name="pass" required>
                                 </div>
 
                             </div>

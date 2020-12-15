@@ -1,8 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from datetime import datetime
-
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
+
+<< << << < HEAD
 
 
 class User(models.Model):
@@ -10,19 +14,42 @@ class User(models.Model):
         max_length=100, blank=False, null=False, unique=True)
     password = models.CharField(
         max_length=50, blank=False, null=False, default=None)
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    middleName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    contactNo = models.IntegerField(blank=True, null=True)
-    #userID = models.AutoField(primary_key=True, default=None)
-    readonly_fields = ('id',)
-
-    class Meta:
-        db_table = "User"
 
 
-class Admin(User):
+== == == =
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile')
+
+
+>>>>>> > upstream/main
+firstName = models.CharField(max_length=100, blank=True, null=True)
+middleName = models.CharField(max_length=100, blank=True, null=True)
+lastName = models.CharField(max_length=100, blank=True, null=True)
+email = models.EmailField(blank=True, null=True)
+contactNo = models.IntegerField(blank=True, null=True)
+#userID = models.AutoField(primary_key=True, default=None)
+readonly_fields = ('id',)
+
+
+class Meta:
+    db_table = "Profile"
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+
+class Admin(Profile):
     #adminID = models.AutoField(primary_key=True, default=None)
     position = models.CharField(
         max_length=50, blank=False, null=False, default=None)
@@ -32,7 +59,7 @@ class Admin(User):
         db_table = "Admin"
 
 
-class Mentee(User):
+class Mentee(Profile):
     #menteeID = models.AutoField(primary_key=True, default=None)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
@@ -42,7 +69,7 @@ class Mentee(User):
         db_table = "Mentee"
 
 
-class Mentor(User):
+class Mentor(Profile):
     #mentorID = models.AutoField(primary_key=True, default=None)
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
@@ -83,6 +110,8 @@ class Schedule(models.Model):
     payment_method = models.CharField(max_length=10,  default='', null=True)
     status = models.BooleanField(default=False)
     readonly_fields = ('id',)
+    latitude = models.FloatField(default=10.3344277)
+    longitude = models.FloatField(default=123.8791918)
 
     class Meta:
         db_table = "Schedule"
@@ -124,7 +153,7 @@ class Receipt(models.Model):
 
 class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
-    userID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    userID = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
     detailID = models.ForeignKey(Details, null=True, on_delete=models.SET_NULL)
     receiptID = models.ForeignKey(
         Receipt, null=True, on_delete=models.SET_NULL)

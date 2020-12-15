@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, Schedule, Subject, Mentor, Details, Account, Notes, Mentee
+from .models import Profile, Schedule, Subject, Mentor, Details, Account, Notes, Mentee
 from .forms import CreateUserForm, CardDetailsForm, AccountForm, CreateSubjectForm
 from django.db.models import Q
-from itertools import chain
+from django.core import serializers
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 class HomePageView(TemplateView):
@@ -55,7 +57,7 @@ class RegisterView(TemplateView):
 class logoutUser(TemplateView):
     def get(self, request):
         logout(request)
-        return render(request, 'index.html')
+        return redirect('pages:addpayment')
 
 
 class MainView(TemplateView):
@@ -161,7 +163,24 @@ class SearchView(TemplateView):
 
 
 class GeolocationView(TemplateView):
-    template_name = 'geolocation.html'
+    def get(self, request):
+        if request.user.is_authenticated:
+            json_serializer = serializers.get_serializer("json")()
+            scheds = json_serializer.serialize(
+                Schedule.objects.all().order_by('id'))
+            mentors = json_serializer.serialize(
+                Mentor.objects.all().order_by('id'))
+            subjects = json_serializer.serialize(
+                Subject.objects.all().order_by('id'))
+            profiles = json.dumps(list(Mentor.objects.all().values(
+                'id', 'firstName', 'lastName')), cls=DjangoJSONEncoder)
+            data = {
+                "scheds": scheds,
+                "mentors": mentors,
+                "subjects": subjects,
+                "profiles": profiles,
+            }
+            return render(request, 'geolocation.html', data)
 
 
 class ProfileView(TemplateView):
