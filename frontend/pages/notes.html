@@ -1,102 +1,98 @@
-{% extends "components/base.html" %}
-{% load static %}
-
-
-{% block title %}<title>TutorMe</title>{% endblock %}
-
-{% block pageCSS %}
+{% extends "components/base.html" %} {% load static %} {% block title
+%}<title>TutorMe</title>{% endblock %} {% block pageCSS %}
 <style type="text/css">
-    .main-content {
-        height: 100%;
-        width: 100%;
-    }
+  .main-content {
+    height: 100%;
+    width: 100%;
+  }
 
-    .suggestions .row3 h6{
-        float: left;
-    }
-    .center-component{
-        height: 89vh;
-        width: 80%;
-        position: relative;
-        overflow-y: scroll;
-    }
-    .notes-table{
-        width: 100%;
-        padding: 2%;
-        margin-top: 1%;
-        border-top-right-radius: 5%;
-        border-right: lightgrey 1px;
-        box-shadow: 5px 2px lightgrey;
-        border-bottom-right-radius: 5%;
-    }
-    .notes-container{
-        display: flex;
-        flex-direction: column;
-        padding: 1.5% 1.5% 5px 1.5%;
-        border-left: solid blue 5px;
-        border-bottom: 1px solid grey;
-    }
-    .notes-header{
-        display: flex;
-        justify-content: space-between;
-    }
+  .suggestions .row3 h6 {
+    float: left;
+  }
+  .center-component {
+    height: 89vh;
+    width: 80%;
+    position: relative;
+    overflow-y: scroll;
+  }
+  .notes-table {
+    width: 100%;
+    padding: 2%;
+    margin-top: 1%;
+    border-top-right-radius: 5%;
+    border-right: lightgrey 1px;
+    box-shadow: 5px 2px lightgrey;
+    border-bottom-right-radius: 5%;
+  }
+  .notes-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5% 1.5% 5px 1.5%;
+    border-left: solid blue 5px;
+    border-bottom: 1px solid grey;
+  }
+  .notes-header {
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .empty{
-        color: white;
-        background-color: white;
-    }
+  .empty {
+    color: white;
+    background-color: white;
+  }
 </style>
-{% endblock %}
+{% endblock %} {% block pageBody %}
 
-{% block pageBody %}
+<div class="main-container row">
+  {% include 'components/navigation.html' %}
+  <span style="z-index: 100"> {% include 'components/Chatbot.html' %} </span>
 
-    <div class="main-container row">
-        {% include 'components/navigation.html' %}
-
-        <div class="body-container col-11   ">
-            {% include 'components/header.html' %}
-            <div class="row">
-                <div class="center-component col-9">
-                    <div class="notes-table">
-                        {% for n in notes %}
-                        <div class="notes-container {% if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-gold {% else %} bg-maroon1 {% endif %}">
-                            <div class="notes-header">
-                                <h5>{{n.notesTitle}}</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p onclick="popUP()">{{n.notes}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div class="notes-container empty" style="background-color: skyblue; border-left-color:blue;">
-                            <div class="notes-header">
-                                <h5 style="color: black;">You got no notes yet!</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p style="color: black;">Go and make some notes.</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                {% include "components/sidebar.html" %}
+  <div class="body-container col-11" style="z-index: 1">
+    {% include 'components/header.html' %}
+    <div class="row">
+      <div class="center-component col-9">
+        <div class="notes-table">
+          {% for n in notes %}
+          <div
+            class="notes-container {% if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-gold {% else %} bg-maroon1 {% endif %}"
+          >
+            <div class="notes-header">
+              <h5>{{n.notesTitle}}</h5>
             </div>
-    
+            <div class="notes-details">
+              <div class="detail-subj" style="display: flex; padding-top: 8px">
+                <p onclick="popUP()">{{n.notes}}</p>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div
+            class="notes-container empty"
+            style="background-color: skyblue; border-left-color: blue"
+          >
+            <div class="notes-header">
+              <h5 style="color: black">You got no notes yet!</h5>
+            </div>
+            <div class="notes-details">
+              <div class="detail-subj" style="display: flex; padding-top: 8px">
+                <p style="color: black">Go and make some notes.</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
         </div>
+      </div>
+
+      {% include "components/sidebar.html" %}
     </div>
+  </div>
+</div>
 
-{% endblock %}
-
-{% block pageJS %}
+{% endblock %} {% block pageJS %}
 <script type="text/javascript">
-    $('.notes-container div p').css('cursor', 'pointer');
-    function popUP(){
-        alert("You will leave this page and download the file.");
-    }
+  $(".notes-container div p").css("cursor", "pointer");
+  function popUP() {
+    alert("You will leave this page and download the file.");
+  }
 </script>
 {% endblock %}
