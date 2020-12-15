@@ -12,3 +12,15 @@ $("#fullDiv li").css("height", height);
 $(".search-bar").change(function(){
   window.location.href = "/search";
 });
+
+var message = $("#messages").text();
+const reDirect = ()=>{
+    if(message == "You are not a mentor. You will be redirected momentarily."){      
+      setTimeout(()=>{
+        window.location.href="/search";
+      }, 5000);
+  }
+};
+
+
+reDirect();

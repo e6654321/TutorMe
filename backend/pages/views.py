@@ -132,7 +132,7 @@ class GeolocationView(TemplateView):
             scheds = json_serializer.serialize(Schedule.objects.all().order_by('id'))
             mentors = json_serializer.serialize(Mentor.objects.all().order_by('id'))
             subjects = json_serializer.serialize(Subject.objects.all().order_by('id'))
-            profiles = json.dumps(list(Mentor.objects.all().values('id','firstName', 'lastName')), cls=DjangoJSONEncoder)
+            profiles = json.dumps(list(Mentor.objects.all().values('id', 'firstName', 'lastName')), cls=DjangoJSONEncoder)
             data = {
                 "scheds": scheds,
                 "mentors":mentors,
@@ -254,7 +254,6 @@ class CreateSubjectView(TemplateView):
         mentors=''
         if request.user.is_authenticated:
             current_user = request.user
-            print(current_user.id)
             mentors = Mentor.objects.get(user_id=current_user.id)
         
 
