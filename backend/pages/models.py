@@ -6,8 +6,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
 
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile')
     firstName = models.CharField(max_length=100, blank=True, null=True)
     middleName = models.CharField(max_length=100, blank=True, null=True)
     lastName = models.CharField(max_length=100, blank=True, null=True)
@@ -16,21 +18,26 @@ class Profile(models.Model):
     #userID = models.AutoField(primary_key=True, default=None)
     readonly_fields = ('id',)
 
-    class Meta:
-        db_table = "Profile"
+
+class Meta:
+    db_table = "Profile"
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+
 class Admin(Profile):
     #adminID = models.AutoField(primary_key=True, default=None)
-    position = models.CharField(max_length=50, blank=False, null=False, default=None)
+    position = models.CharField(
+        max_length=50, blank=False, null=False, default=None)
     readonly_fields = ('id',)
 
     class Meta:
@@ -39,7 +46,8 @@ class Admin(Profile):
 
 class Mentee(Profile):
     #menteeID = models.AutoField(primary_key=True, default=None)
-    bio = models.CharField(max_length=100, blank=False, null=False, default=None)
+    bio = models.CharField(max_length=100, blank=False,
+                           null=False, default=None)
     readonly_fields = ('id',)
 
     class Meta:
@@ -60,8 +68,9 @@ class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectName = models.CharField(max_length=100, default='')
-    ratePerHour = models.DecimalField(max_digits=5, decimal_places=2, default='0')
-    session_date = models.DateField(default=None)
+    ratePerHour = models.DecimalField(
+        max_digits=5, decimal_places=2, default='0')
+    session_date = models.DateField(blank=True, null=True)
     session_time_end = models.CharField(max_length=10,  default='00:00')
     session_time_start = models.CharField(max_length=10, default='00:00')
     category = models.CharField(max_length=30, default='')
@@ -74,9 +83,16 @@ class Subject(models.Model):
 class Schedule(models.Model):
     #scheduleId = models.AutoField(primary_key=True, default=None)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
-    mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
-    curr_date = models.DateTimeField(default=datetime.now, blank=True)
-    curr_time = models.DateTimeField(default=datetime.now, blank=True)
+    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    date = models.DateField(blank=True, null=True)
+    time = models.CharField(max_length=10,  default='00:00-00:00', null=True)
+    custom_time_start = models.CharField(
+        max_length=10,  default='00:00', null=True)
+    custom_time_end = models.CharField(
+        max_length=10,  default='00:00', null=True)
+    ratePrHour = models.DecimalField(
+        max_digits=5, decimal_places=2, default='0', null=True)
+    payment_method = models.CharField(max_length=10,  default='', null=True)
     status = models.BooleanField(default=False)
     readonly_fields = ('id',)
     latitude = models.FloatField(default=10.3344277)
@@ -89,7 +105,8 @@ class Schedule(models.Model):
 class TutorialPayment(models.Model):
     #TPaymentID = models.AutoField(primary_key=True, default=None)
     id = models.AutoField(primary_key=True, default=None)
-    scheduleID = models.ForeignKey(Schedule, null=True, on_delete=models.SET_NULL)
+    scheduleID = models.ForeignKey(
+        Schedule, null=True, on_delete=models.SET_NULL)
     total = models.FloatField()
     readonly_fields = ('id',)
 
@@ -123,7 +140,8 @@ class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
     userID = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
     detailID = models.ForeignKey(Details, null=True, on_delete=models.SET_NULL)
-    receiptID = models.ForeignKey(Receipt, null=True, on_delete=models.SET_NULL)
+    receiptID = models.ForeignKey(
+        Receipt, null=True, on_delete=models.SET_NULL)
     readonly_fields = ('id',)
 
     class Meta:
@@ -170,14 +188,16 @@ class Review(models.Model):
     class Meta:
         db_table = "Review"
 
+
 class Notes(models.Model):
 
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
-    subjectID = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
+    subjectID = models.ForeignKey(
+        Subject, null=True, on_delete=models.SET_NULL)
     notes = models.CharField(max_length=500, null=True, default=' ')
     notesTitle = models.CharField(max_length=500, default=' ', null=True)
-    readonly_fields=('id',)
+    readonly_fields = ('id',)
 
     class Meta:
         db_table = "Notes"
