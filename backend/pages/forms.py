@@ -40,10 +40,3 @@ class ReceiptForm(ModelForm):
     class Meta:
         model= Receipt
         fields = '__all__'
-        fields = '__all__'
-
-
-class RequestSchedForm(ModelForm):
-    class Meta:
-        model = Schedule
-        fields = '__all__'
