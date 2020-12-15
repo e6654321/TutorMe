@@ -48,14 +48,17 @@
                         
                                     <div class="tab-pane fade show active" id="pills-credit-card" role="tabpanel" aria-labelledby="pills-credit-card-tab">
                                         
-                                        <form role="form" method="POST">
+                                        <form role="form" method="POST" name="myForm"  onsubmit="return validateForm()">
                     
                                             {% csrf_token %}
 
                                             
                                             {% for d in details %}
 
-                                            <input type="integer" name="id" value="{{d.detailID__id}}" hidden>
+                                            <input type="text" name="did" value="{{d.detailID__id}}" readonly hidden>
+                                            <input type="text" name="aid" value="{{d.id}}" readonly hidden>
+                                            <input type="text" name="rid" value="{{d.receiptID__id}}" readonly hidden>
+                                            <br>
                     
                                             <div class="form-group"> <label for="username">
                                                 <h6>Card Owner</h6>

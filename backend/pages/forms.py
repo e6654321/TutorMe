@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Details, Account, Notes, Subject, Schedule
+from .models import Details, Account, Notes, Subject, Schedule, Receipt
 from django import forms
 
 
@@ -33,4 +33,10 @@ class CreateSubjectForm(ModelForm):
 class RequestSchedForm(ModelForm):
     class Meta:
         model = Schedule
+        fields = '__all__'
+        fields= '__all__'
+
+class ReceiptForm(ModelForm):
+    class Meta:
+        model= Receipt
         fields = '__all__'

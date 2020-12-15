@@ -94,7 +94,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('subjectName', models.CharField(default='', max_length=100)),
                 ('ratePerHour', models.DecimalField(decimal_places=2, default='0', max_digits=5)),
-                ('session_date', models.DateField(blank=True, null=True)),
+                ('session_date', models.DateField(default=None)),
                 ('session_time_end', models.CharField(default='00:00', max_length=10)),
                 ('session_time_start', models.CharField(default='00:00', max_length=10)),
                 ('category', models.CharField(default='', max_length=30)),
