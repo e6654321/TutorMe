@@ -1,23 +1,10 @@
 {% load static %}
 
 <div class="left-sidebar col-1">
-  <a href="{% url 'pages:message' %}" data-toggle="tooltip" title="Messaging"
-    ><img src="{% static 'assets/icons/email.png' %}" alt=""
-  /></a>
-  <a href="{% url 'pages:geo' %}" data-toggle="tooltip" title="Geolocation"
-    ><img src="{% static 'assets/icons/map.png' %}" alt=""
-  /></a>
-  <a href="{% url 'pages:search' %}" data-toggle="tooltip" title="Search"
-    ><img src="{% static 'assets/icons/magnifying.png' %}" alt=""
-  /></a>
-  <a href="{% url 'pages:notes' %}" data-toggle="tooltip" title="Personal Notes"
-    ><img src="{% static 'assets/icons/notes.png' %}" alt=""
-  /></a>
-  <a
-    href="{% url 'pages:create-sub' %}"
-    data-toggle="tooltip"
-    title="Create Schedule	"
-    ><img src="{% static 'assets/icons/calendar.png' %}" alt=""
-  /></a>
-  <a><span style="height: 100px"></span></a>
+    <a href="{% url 'pages:message' %}" data-toggle="tooltip" title="Messaging"><img src="{% static 'assets/icons/email.png' %}" alt=""></a>
+    <a href="{% url 'pages:geo' %}" data-toggle="tooltip" title="Geolocation"><img src="{% static 'assets/icons/map.png' %}" alt=""></a>
+    <a href="{% url 'pages:search' %}" data-toggle="tooltip" title="Search"><img src="{% static 'assets/icons/magnifying.png' %}" alt=""></a>
+    <a href="{% url 'pages:notes' %}" data-toggle="tooltip" title="Personal Notes"><img src="{% static 'assets/icons/notes.png' %}" alt=""></a>
+    <a href="{% url 'pages:create-sub' %}" data-toggle="tooltip" title="Create Schedule	"><img src="{% static 'assets/icons/calendar.png' %}" alt=""></a>
+    <a><span style="height: 100px"></span></a>
 </div>

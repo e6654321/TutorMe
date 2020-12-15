@@ -1,44 +1,72 @@
-{% extends "components/base.html" %} {% load static %} {% block title
-%}<title>TutorMe</title>{% endblock %} {% block pageCSS %}
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block title %}<title>TutorMe</title>{% endblock %}
+
+{% block pageCSS %}
 <style type="text/css">
-  .main {
-    width: 100%;
-  }
-  .main-content {
-    margin: 8px;
-    height: 100%;
-    padding: 15px;
-    align-content: center;
-  }
 
-  #mapid {
-    height: 80vh;
-  }
+    .main {
+        width: 100%;
+    }
+    .main-content{
+        margin: 8px;
+        height: 100%;
+        padding: 15px;
+        align-content: center;
+    }
+
+    #mapid {
+        height: 80vh;
+    }
+
 </style>
-{% endblock %} {% block pageBody %}
+{% endblock %}
 
-<div class="main-container row">
-  {% include 'components/navigation.html' %}
-  <span style="z-index: 100"> {% include 'components/Chatbot.html' %} </span>
+{% block pageBody %}
 
-  <div class="body-container col-11" style="z-index: 1">
-    {% include 'components/header.html' %}
+    <div class="main-container row">
+        {% include 'components/navigation.html' %}
+        <span style="z-index: 100">
+        {% include 'components/Chatbot.html' %}
+        </span>
 
-    <div class="row">
-      <div class="main col-9">
-        <div class="main-content shadow-rounded">
-          <div center id="mapid"></div>
+        <div class="body-container col-11" style="z-index: 1">
+            {% include 'components/header.html' %}
+    
+            <div class="row"> 
+                <div class="main col-9">
+
+                    <div class="main-content shadow-rounded">
+                        
+                        <div center id="mapid"></div>
+
+                    </div>
+                            
+                </div>
+               
+        
+                {% include "components/sidebar.html" %}
+            </div>
+    
         </div>
-      </div>
-
-      {% include "components/sidebar.html" %}
     </div>
-  </div>
-</div>
 
-{% endblock %} {% block pageJS %}
+{% endblock %}
+
+
+{% block pageJS %}
 <script type="text/javascript">
     var mymap = L.map('mapid').setView([10.2956476,123.880471], 13);
+    var scheds = JSON.parse('{{ scheds|escapejs }}');
+    var mentors = JSON.parse('{{ mentors|escapejs }}');
+    var subjects = JSON.parse('{{ subjects|escapejs }}');
+    var profiles = JSON.parse('{{ profiles|escapejs }}');
+    console.log(scheds);
+    console.log(mentors);
+    console.log(subjects);
+    console.log(profiles);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
@@ -50,13 +78,13 @@
         zoomOffset: -1
     }).addTo(mymap);
 
-    subjects.map((s) => {
+    scheds.map((s) => {
         var mentor = mentors.find((m) => m.pk == s.fields.mentorID);
-        var subject = scheds.find((sub) => sub.pk == s.fields.subject);
+        var subject = subjects.find((sub) => sub.pk == s.fields.subject);
         var profile = profiles.find((prof) => prof.id == s.fields.mentorID);console.log(s);
 
         L.marker([s.fields.latitude,s.fields.longitude]).addTo(mymap)
-            .bindPopup("<b>"+ profile.firstName+ " " + profile.lastName +"</b><br />"+ s.fields.subjectName +", Php "+ s.fields.ratePerHour +"/hr").openPopup();
+            .bindPopup("<b>"+ profile.firstName+ " " + profile.lastName +"</b><br />"+ subject.fields.subjectName +", Php "+ subject.fields.ratePerHour +"/hr").openPopup();
     })
     
 
@@ -68,39 +96,8 @@
             .setContent("No mentor available at " + e.latlng.toString())
             .openOn(mymap);
     }
-  ).addTo(mymap);
 
-  scheds.map((s) => {
-    var mentor = mentors.find((m) => m.pk == s.fields.mentorID);
-    var subject = subjects.find((sub) => sub.pk == s.fields.subject);
-    var profile = profiles.find((prof) => prof.id == s.fields.mentorID);
-    console.log(s);
+    mymap.on('click', onMapClick);
 
-    L.marker([s.fields.latitude, s.fields.longitude])
-      .addTo(mymap)
-      .bindPopup(
-        "<b>" +
-          profile.firstName +
-          " " +
-          profile.lastName +
-          "</b><br />" +
-          subject.fields.subjectName +
-          ", Php " +
-          subject.fields.ratePerHour +
-          "/hr"
-      )
-      .openPopup();
-  });
-
-  var popup = L.popup();
-
-  function onMapClick(e) {
-    popup
-      .setLatLng(e.latlng)
-      .setContent("No mentor available at " + e.latlng.toString())
-      .openOn(mymap);
-  }
-
-  mymap.on("click", onMapClick);
 </script>
 {% endblock %}

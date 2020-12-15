@@ -1,265 +1,225 @@
-{% extends "components/base.html" %} {% load static %} {% block title
-%}<title>TutorMe</title>{% endblock %} {% block pageCSS %}
+{% extends "components/base.html" %}
+{% load static %}
+
+
+{% block title %}<title>TutorMe</title>{% endblock %}
+
+{% block pageCSS %}
 <style type="text/css">
+
   .main-content {
     height: 97%;
     padding: 20px 0px;
   }
 
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
 
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-  }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-  }
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  input:checked + .slider {
-    background-color: #2196f3;
-  }
+input:checked + .slider {
+  background-color: #2196F3;
+}
 
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
-  }
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
 
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
 
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
 
-  .slider.round:before {
-    border-radius: 50%;
-  }
+.slider.round:before {
+  border-radius: 50%;
+}
+
 </style>
-{% endblock %} {% block pageBody %}
+{% endblock %}
 
-<div class="main-container row">
-  {% include 'components/navigation.html' %}
-  <span style="z-index: 100"> {% include 'components/Chatbot.html' %} </span>
+{% block pageBody %}
 
-  <div class="body-container col-11" style="z-index: 1">
-    {% include 'components/header.html' %}
+    <div class="main-container row">
+        {% include 'components/navigation.html' %}
+        <span style="z-index: 100">
+        {% include 'components/Chatbot.html' %}
+        </span>
 
-    <div class="row">
-      <div class="center-component col-9">
-        <div class="main-content shadow-rounded">
-          <div
-            class="card"
-            style="margin-right: 20px; margin-left: 20px; margin-top: 25px"
-          >
-            <nav class="navbar navbar-light bg-light">
-              <h3 style="float: right">Email Notifications</h3>
+        <div class="body-container col-11" style="z-index: 1">
+            {% include 'components/header.html' %}
+    
+            <div class="row"> 
+                <div class="center-component col-9">
+                    <div class="main-content shadow-rounded">
 
-              <label class="switch" style="float: right">
-                <input
-                  type="checkbox"
-                  id="emailswitch"
-                  onchange="emailNotif()"
-                />
-                <span class="slider round"></span>
-              </label>
-            </nav>
+                            <div class="card" style="margin-right: 20px; margin-left: 20px; margin-top: 25px;">
 
-            <div
-              class="checkbox"
-              style="margin-top: 5px; margin-left: 10px; margin-bottom: 5px"
-            >
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck1"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck1"
-                  >Changes made to your account</label
-                >
-              </div>
+                                <nav class="navbar navbar-light bg-light">
 
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck2"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck2"
-                  >Schedule Requests</label
-                >
-              </div>
+                                    <h3 style="float: right;">Email Notifications</h3>
+    
+                                    <label class="switch" style="float: right;">
+                                        <input type="checkbox" id="emailswitch" onchange="emailNotif()">
+                                        <span class="slider round"></span>
+                                    </label>
+    
+                                </nav>
 
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck3"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck3"
-                  >Upcoming Schedules</label
-                >
-              </div>
+                                <div class="checkbox" style="margin-top: 5px; margin-left: 10px; margin-bottom: 5px;">
 
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck4"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck4"
-                  >Messages</label
-                >
-              </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1" disabled>
+                                        <label class="custom-control-label" for="customCheck1">Changes made to your account</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck2" disabled>
+                                        <label class="custom-control-label" for="customCheck2">Schedule Requests</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck3" disabled>
+                                        <label class="custom-control-label" for="customCheck3">Upcoming Schedules</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck4" disabled>
+                                        <label class="custom-control-label" for="customCheck4">Messages</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                              
+                             <br>
+
+                            <div class="card" style="margin-right: 20px; margin-left: 20px; margin-top: 25px;">
+
+                                <nav class="navbar navbar-light bg-light">
+
+                                    <h3 style="float: right;">Push Notifications</h3>
+    
+                                    <label class="switch" style="float: right;">
+                                        <input type="checkbox" id="pushswitch" onchange="pushNotif()">
+                                        <span class="slider round"></span>
+                                    </label>
+    
+                                </nav>
+
+                                <div class="checkbox" style="margin-top: 5px; margin-left: 10px; margin-bottom: 5px;">
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck5" disabled>
+                                        <label class="custom-control-label" for="customCheck5">Changes made to your account</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck6" disabled>
+                                        <label class="custom-control-label" for="customCheck6">Schedule Requests</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck7" disabled>
+                                        <label class="custom-control-label" for="customCheck7">Upcoming Schedules</label>
+                                    </div>
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck8" disabled>
+                                        <label class="custom-control-label" for="customCheck8">Messages</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                    </div>
+                            
+                </div>
+        
+        
+                {% include "components/sidebar.html" %}
             </div>
-          </div>
-
-          <br />
-
-          <div
-            class="card"
-            style="margin-right: 20px; margin-left: 20px; margin-top: 25px"
-          >
-            <nav class="navbar navbar-light bg-light">
-              <h3 style="float: right">Push Notifications</h3>
-
-              <label class="switch" style="float: right">
-                <input type="checkbox" id="pushswitch" onchange="pushNotif()" />
-                <span class="slider round"></span>
-              </label>
-            </nav>
-
-            <div
-              class="checkbox"
-              style="margin-top: 5px; margin-left: 10px; margin-bottom: 5px"
-            >
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck5"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck5"
-                  >Changes made to your account</label
-                >
-              </div>
-
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck6"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck6"
-                  >Schedule Requests</label
-                >
-              </div>
-
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck7"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck7"
-                  >Upcoming Schedules</label
-                >
-              </div>
-
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck8"
-                  disabled
-                />
-                <label class="custom-control-label" for="customCheck8"
-                  >Messages</label
-                >
-              </div>
-            </div>
-          </div>
+    
         </div>
-      </div>
-
-      {% include "components/sidebar.html" %}
     </div>
-  </div>
-</div>
 
-{% endblock %} {% block pageJS %}
+{% endblock %}
+
+{% block pageJS %}
 <script type="text/javascript">
-  function emailNotif() {
-    if (!$("#emailswitch").is(":checked")) {
-      $("#customCheck1").prop("checked", false);
-      $("#customCheck2").prop("checked", false);
-      $("#customCheck3").prop("checked", false);
-      $("#customCheck4").prop("checked", false);
-      $("#customCheck1").attr("disabled", true);
-      $("#customCheck2").attr("disabled", true);
-      $("#customCheck3").attr("disabled", true);
-      $("#customCheck4").attr("disabled", true);
-    } else {
-      $("#customCheck1").attr("disabled", false);
-      $("#customCheck2").attr("disabled", false);
-      $("#customCheck3").attr("disabled", false);
-      $("#customCheck4").attr("disabled", false);
+  function emailNotif(){
+    if(!$('#emailswitch').is(":checked")){
+      $('#customCheck1').prop('checked', false);
+      $('#customCheck2').prop('checked', false);
+      $('#customCheck3').prop('checked', false);
+      $('#customCheck4').prop('checked', false);
+      $('#customCheck1').attr("disabled", true);
+      $('#customCheck2').attr("disabled", true);
+      $('#customCheck3').attr("disabled", true);
+      $('#customCheck4').attr("disabled", true);
+    }
+    else {
+      $('#customCheck1').attr("disabled", false);
+      $('#customCheck2').attr("disabled", false);
+      $('#customCheck3').attr("disabled", false);
+      $('#customCheck4').attr("disabled", false);
     }
   }
 
-  function pushNotif() {
-    if (!$("#pushswitch").is(":checked")) {
-      $("#customCheck5").prop("checked", false);
-      $("#customCheck6").prop("checked", false);
-      $("#customCheck7").prop("checked", false);
-      $("#customCheck8").prop("checked", false);
-      $("#customCheck5").attr("disabled", true);
-      $("#customCheck6").attr("disabled", true);
-      $("#customCheck7").attr("disabled", true);
-      $("#customCheck8").attr("disabled", true);
-    } else {
-      $("#customCheck5").attr("disabled", false);
-      $("#customCheck6").attr("disabled", false);
-      $("#customCheck7").attr("disabled", false);
-      $("#customCheck8").attr("disabled", false);
+  function pushNotif(){
+    if(!$('#pushswitch').is(":checked")){
+      $('#customCheck5').prop('checked', false);
+      $('#customCheck6').prop('checked', false);
+      $('#customCheck7').prop('checked', false);
+      $('#customCheck8').prop('checked', false);
+      $('#customCheck5').attr("disabled", true);
+      $('#customCheck6').attr("disabled", true);
+      $('#customCheck7').attr("disabled", true);
+      $('#customCheck8').attr("disabled", true);
+    }
+    else {
+      $('#customCheck5').attr("disabled", false);
+      $('#customCheck6').attr("disabled", false);
+      $('#customCheck7').attr("disabled", false);
+      $('#customCheck8').attr("disabled", false);
     }
   }
 </script>
