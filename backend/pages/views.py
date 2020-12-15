@@ -140,8 +140,8 @@ class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             s1 = Subject.objects.all().values('subjectName', 'ratePerHour',
-                                              'session_date', 'session_time_start',
-                                              'mentorID__firstName', 'mentorID__lastName')
+                                        'session_date', 'session_time_start', 'session_time_end',
+                                        'mentorID__firstName', 'mentorID__lastName')
             data = {
                 "subject": s1
             }
