@@ -102,7 +102,7 @@ class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             s1 = Subject.objects.all().values('subjectName', 'ratePerHour',
-                                        'session_date', 'session_time_start',
+                                        'session_date', 'session_time_start', 'session_time_end',
                                         'mentorID__firstName', 'mentorID__lastName')
             data = {
                 "subject": s1
@@ -132,7 +132,7 @@ class GeolocationView(TemplateView):
             scheds = json_serializer.serialize(Schedule.objects.all().order_by('id'))
             mentors = json_serializer.serialize(Mentor.objects.all().order_by('id'))
             subjects = json_serializer.serialize(Subject.objects.all().order_by('id'))
-            profiles = json.dumps(list(Mentor.objects.all().values('id','firstName', 'lastName')), cls=DjangoJSONEncoder)
+            profiles = json.dumps(list(Mentor.objects.all().values('id', 'firstName', 'lastName')), cls=DjangoJSONEncoder)
             data = {
                 "scheds": scheds,
                 "mentors":mentors,
@@ -239,16 +239,25 @@ class MessagingView(TemplateView):
 class CreateSubjectView(TemplateView):
     # template_name= 'create-subject.html'
     def get(self, request):
-        return render(request, 'create-subject.html')
+        mentors = Mentor.objects.all()
+        try:
+            mentors = Mentor.objects.get(user_id=request.user.id)
+            return render(request, 'create-subject.html')
+        except:
+            messages.error(request, 'You are not a mentor. You will be redirected momentarily.')
+            return render(request, 'create-subject.html')
+            
     
     def post(self, request):
         form = CreateSubjectForm(request.POST)
         print(form.errors)
+        mentors=''
         if request.user.is_authenticated:
             current_user = request.user
+            mentors = Mentor.objects.get(user_id=current_user.id)
+        
 
         if form.is_valid:
-            # mentor= request.user.id
             subName = request.POST.get('subjectName')
             subDate = request.POST.get('session_date')
             timeStart = request.POST.get('session_time_start')
@@ -257,13 +266,13 @@ class CreateSubjectView(TemplateView):
             category = request.POST.get('category')
             form = Subject(subjectName=subName,  session_date=subDate, 
                 session_time_start=timeStart, session_time_end=timeEnd, 
-                ratePerHour=rate, category=category, #mentorID=mentor    
+                ratePerHour=rate, category=category, mentorID=mentors    
             )
             form.save()
             return redirect('pages:search')
         else:
-            print(form.errors)
             messages.error(request, 'Check inputs and try again')
+            print(form.errors)
             return render(request, 'create-subject.html')
 
 
