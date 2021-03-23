@@ -78,13 +78,13 @@
         zoomOffset: -1
     }).addTo(mymap);
 
-    scheds.map((s) => {
+    subjects.map((s) => {
         var mentor = mentors.find((m) => m.pk == s.fields.mentorID);
-        var subject = subjects.find((sub) => sub.pk == s.fields.subject);
+        var subject = scheds.find((sub) => sub.pk == s.fields.subject);
         var profile = profiles.find((prof) => prof.id == s.fields.mentorID);console.log(s);
 
         L.marker([s.fields.latitude,s.fields.longitude]).addTo(mymap)
-            .bindPopup("<b>"+ profile.firstName+ " " + profile.lastName +"</b><br />"+ subject.fields.subjectName +", Php "+ subject.fields.ratePerHour +"/hr").openPopup();
+            .bindPopup("<b>"+ profile.firstName+ " " + profile.lastName +"</b><br />"+ s.fields.subjectName +", Php "+ s.fields.ratePerHour +"/hr").openPopup();
     })
     
 
