@@ -309,9 +309,13 @@ class CreateSubjectView(TemplateView):
             timeEnd = request.POST.get('session_time_end')
             rate = request.POST.get('ratePerHour')
             category = request.POST.get('category')
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+            print(latitude,longitude)
             form = Subject(subjectName=subName,  session_date=subDate,
                            session_time_start=timeStart, session_time_end=timeEnd,
-                           ratePerHour=rate, category=category, mentorID=mentors
+                           ratePerHour=rate, category=category, mentorID=mentors,
+                           latitude=latitude, longitude=longitude
                            )
             form.save()
             return redirect('pages:search')

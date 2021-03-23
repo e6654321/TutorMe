@@ -233,6 +233,8 @@
                                 {% for message in messages %}
                                 <p class="messages">{{message}}</p>
                                 {% endfor %}
+                                <input hidden name="latitude" id="latitude" value="0">
+                                <input hidden name="longitude" id="longitude" value="0">
                                 <div class="below-button">
                                     <button class="btn bg-maroon1 color-yellow1 btn-lg" type="submit">Create</button>
                                 </div>
@@ -261,6 +263,16 @@
     <script src="{% static 'js/jquery.timepicker.js' %}"></script>
 
     <script type="text/javascript">
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        }
+
+        function showPosition(position) {
+            $("#latitude").val(position.coords.latitude);
+            $("#longitude").val(position.coords.longitude);
+        }
         $(function(){
             $("#session_date").datepicker();
             $( "#session_date" ).datepicker( "option", "dateFormat", "yy-m-d" );
@@ -270,6 +282,8 @@
             $("#session_time_end").timepicker();
             $("#session_time_end").timepicker("option", "minTime", "8:00am");
             $("#session_time_end").timepicker("option", "maxTime", "9:00pm");
+
+            getLocation();
         });
     </script>
 {% endblock %}

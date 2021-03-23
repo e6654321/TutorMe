@@ -75,6 +75,8 @@ class Subject(models.Model):
     session_time_start = models.CharField(max_length=10, default='00:00')
     category = models.CharField(max_length=30, default='')
     readonly_fields = ('id',)
+    latitude = models.FloatField(default=10.3344277)
+    longitude = models.FloatField(default=123.8791918)
 
     class Meta:
         db_table = "Subject"
@@ -95,8 +97,6 @@ class Schedule(models.Model):
     payment_method = models.CharField(max_length=10,  default='', null=True)
     status = models.BooleanField(default=False)
     readonly_fields = ('id',)
-    latitude = models.FloatField(default=10.3344277)
-    longitude = models.FloatField(default=123.8791918)
 
     class Meta:
         db_table = "Schedule"
