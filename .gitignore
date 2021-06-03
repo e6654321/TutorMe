@@ -1,2 +1,3 @@
-backend/db.sqlite3
-backend/pages/migrations/
+**/db.sqlite3
+backend/**/migrations/**
+.vscode
