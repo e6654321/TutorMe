@@ -59,7 +59,11 @@
 
                 <div class="form-group row" style="margin-bottom: 10px;">
                     {{form.username.label}}
+                    <div style="
+                        margin: 0 10px 10px;
+                    ">
                     {{form.username}}
+                    </div>
                     <!-- <label for="username" class="col-sm-4 col-form-label">Username</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" id="username" name="usename" value="{{form.username}}">
@@ -69,7 +73,11 @@
 
                 <div class="form-label row" style="margin-bottom: 10px;">
                     {{form.email.label}}
+                    <div style="
+                        margin: 0 10px 10px;
+                    ">
                     {{form.email}}
+                    </div>
                     <!-- <label for="email" class="col-sm-4 col-form-label">Email</label>
                     <div class="col-sm-7">
                         <input type="email" class="form-control" id="email" name="email" value="{{form.email}}" placeholder="">
@@ -79,7 +87,11 @@
 
                 <div class="form-label row" style="margin-bottom: 10px;">
                     {{form.password1.label}}
+                    <div style="
+                        margin: 0 10px 10px;
+                    ">
                     {{form.password1}}
+                    </div>
                     <!-- <label for="password" class="col-sm-4 col-form-label">Password</label>
                     <div class="col-sm-7">
                         <input type="password" class="form-control" id="password" name="password" value="{{form.password1}}">
@@ -89,7 +101,35 @@
 
                 <div class="form-label row" style="margin-bottom: 10px;">
                     {{form.password2.label}}
+                    <div style="
+                        margin: 0 10px 10px;
+                    ">
                     {{form.password2}}
+                    </diiv>
+                    <!-- <label for="cpass" class="col-sm-4 col-form-label">Confirm password</label>
+                    <div class="col-sm-7">
+                        {{form.password2}}
+                    </div> -->
+
+                </div>
+
+                <div class="form-label row" style="margin-bottom: 10px;">
+                    <div style="
+                        margin-left: 20px;
+                    ">
+                    Are you a mentor?
+                    </div>
+                    <style>
+                        .isMentor input {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    </style>
+                    <div class="isMentor" style="
+                        margin: 0 10px 10px;
+                    ">
+                    {{form.is_staff}}
+                    <div>
                     <!-- <label for="cpass" class="col-sm-4 col-form-label">Confirm password</label>
                     <div class="col-sm-7">
                         {{form.password2}}

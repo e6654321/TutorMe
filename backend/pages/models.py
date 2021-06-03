@@ -6,53 +6,27 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
 
-
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-
-class User(models.Model):
-    userName = models.CharField(
-        max_length=100, blank=False, null=False, unique=True)
-    password = models.CharField(
-        max_length=50, blank=False, null=False, default=None)
-    firstName = models.CharField(max_length=100, blank=True, null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     middleName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     contactNo = models.IntegerField(blank=True, null=True)
     #userID = models.AutoField(primary_key=True, default=None)
     readonly_fields = ('id',)
 
-
-class Meta:
-    db_table = "Profile"
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='profile')
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    middleName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    contactNo = models.IntegerField(blank=True, null=True)
-    #userID = models.AutoField(primary_key=True, default=None)
-    readonly_fields = ('id',)
+    class Meta:
+        db_table = "Profile"
 
 
-class Meta:
-    db_table = "Profile"
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
 
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
 
 
 class Admin(Profile):
@@ -87,7 +61,7 @@ class Mentor(Profile):
 
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
-    mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
+    mentorID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     subjectName = models.CharField(max_length=100, default='')
     ratePerHour = models.DecimalField(
         max_digits=5, decimal_places=2, default='0')
@@ -106,7 +80,7 @@ class Subject(models.Model):
 class Schedule(models.Model):
     #scheduleId = models.AutoField(primary_key=True, default=None)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
-    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    menteeID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     date = models.DateField(blank=True, null=True)
     time = models.CharField(max_length=10,  default='00:00-00:00', null=True)
     custom_time_start = models.CharField(
@@ -159,7 +133,7 @@ class Receipt(models.Model):
 
 class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
-    userID = models.ForeignKey(Profile, null=True, blank=False, on_delete=models.SET_NULL)
+    userID = models.ForeignKey(User, null=True, blank=False, on_delete=models.SET_NULL)
     detailID = models.ForeignKey(Details, null=True, blank=False, on_delete=models.SET_NULL)
     receiptID = models.ForeignKey(Receipt, null=True, blank=False, on_delete=models.SET_NULL)
     readonly_fields = ('id',)

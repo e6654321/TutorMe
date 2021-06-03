@@ -100,6 +100,9 @@
 <link rel="stylesheet" href="{% static '/css/stars.css' %}" />
 <div class="main-container">
   {% include 'components/navigation.html' %}
+  <span style="z-index: 100">
+  {% include 'components/Chatbot.html' %}
+  </span>
 
   <div class="body-container col">
     {% include 'components/header.html' %}
@@ -142,7 +145,8 @@
                     "
                   />
                   <div align="center">
-                    <h5>{{s.mentorID__firstName}} {{s.mentorID__lastName}}</h5>
+                    <input hidden name="subjectID" value="{{s.id}}"></input>
+                    <h5>{{s.mentorID__first_name}} {{s.mentorID__last_name}}</h5>
                     <h6>{{s.subjectName}}</h6>
                     <div class="star-ratings-css" title=".875"></div>
                   </div>
@@ -162,11 +166,13 @@
                       alt=""
                     />
                     <input
+                      disabled
                       type="text"
                       id="datepicker"
                       name="datepicker"
                       autocomplete="off"
                       placeholder="{{s.session_date|date:'Y-m-d'}}"
+                      value="{{s.session_date}}"
                     />
                   </div>
                 </div>
@@ -180,6 +186,7 @@
                 <h5 align="center">Time Available :</h5>
                 <div class="container" style="position: relative; margin: auto">
                   <input
+                    disabled
                     class="btn btn-warning"
                     id="time"
                     name="time"
@@ -209,7 +216,7 @@
                   />
                   <input
                     type="text"
-                    name="time"
+                    name="timepicker"
                     id="timepicker"
                     name="timepicker"
                     placeholder="00:00 AM/PM"
@@ -217,7 +224,6 @@
                   <p>_</p>
                   <input
                     type="text"
-                    name="time"
                     id="timepicker1"
                     name="timepicker1"
                     placeholder="00:00 AM/PM"
@@ -230,6 +236,7 @@
               <u><i>Rate Per Hour</i></u>
             </h6>
             <input
+              disabled
               class="form-control"
               type="text"
               id="rate"
@@ -244,29 +251,32 @@
                 <i>Mentee / Your Contact Information:</i>
                 <h6 align="left">Name</h6>
                 <input
+                  disabled
                   class="form-control"
                   type="text"
                   id="name"
                   name="name"
-                  value="Jhosie Charles Espantaleon"
+                  value="{{user.first_name}} {{user.last_name}}"
                   readonly
                 /><br />
                 <h6 align="left">Contact Number</h6>
                 <input
+                  disabled
                   class="form-control"
                   type="text"
                   id="contact"
                   name="contact"
-                  value="0917XXXXXXX"
+                  value="{{profile.contactNo}}"
                   readonly
                 /><br />
                 <h6 align="left">Email</h6>
                 <input
+                  disabled
                   class="form-control"
                   type="text"
                   id="email"
                   name="email"
-                  value="thisisfake@email.com"
+                  value="{{user.email}}"
                   readonly
                 /><br />
               </div>
@@ -299,17 +309,14 @@
                 >
                 </input>
 
-                <input
-                 id="com"
+                <button
+                  id="com"
                   name="com"
-                  type="button"
-                  class="btn btn-warning"
-                  data-toggle="modal"
-                  data-target="#"
+                  type="submit"
                   style="margin-left: 10px"
-                  value=" Cash on Meet-up"
-                >  
-                </input>
+                  class="btn btn-warning"
+                > Cash on Meet-up
+                </button>
                 <!-- Modal Credit -->
                 <div class="modal fade" id="myModal" role="dialog">
                   <div class="modal-dialog modal-sm">
@@ -344,43 +351,43 @@
                           type="text"
                           id="cname"
                           name="cardname"
-                          placeholder="John More Doe"
+                          value="{{card.cardOwnerName}}"
                         />
                         <label for="ccnum">Credit card number</label>
                         <input
                           type="text"
                           id="ccnum"
                           name="cardnumber"
-                          placeholder="1111-2222-3333-4444"
+                          value="{{card.cardNumber}}"
                         /><br />
                         <label for="expmonth">Exp Month</label><br />
                         <input
                           type="text"
                           id="expmonth"
                           name="expmonth"
-                          placeholder="September"
+                          value="{{card.expire_month}}"
                         /><br />
                         <label for="expyear">Exp Year</label><br />
                         <input
                           type="text"
                           id="expyear"
                           name="expyear"
-                          placeholder="2018"
+                          value="{{card.expire_year}}"
                         /><br />
                         <label for="cvv">CVV</label><br />
                         <input
                           type="text"
                           id="cvv"
                           name="cvv"
-                          placeholder="352"
+                          value="{{card.cvc}}"
                         />
                       </div>
 
                       <div class="modal-footer">
                         <button
-                          type="button"
+                          type="submit"
                           class="btn btn-warning"
-                          data-dismiss="modal"
+                          name="card-btn"
                         >
                           Continue to Request
                         </button>
@@ -393,7 +400,8 @@
                 <!-- Modal E-Wallet -->
                 <div class="modal fade" id="myModalE-Wallet" role="dialog">
                   <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
+                    <div class="modal-content"
+                    >
                       <div class="modal-header">
                         <h4 class="modal-title">Payment Details</h4>
                         <button
@@ -409,7 +417,7 @@
                         <!-- GCASH INFO -->
                         <h5>G-CASH</h5>
                         <p>
-                          <button type="button" class="btn btn-primary">
+                          <button onClick="onGCash()" type="button" class="btn btn-primary">
                             <i class=""></i> Log into my G-CASH
                           </button>
                         </p>
@@ -431,7 +439,7 @@
                           </label>
                         </div>
                         <p>
-                          <input type="button" class="btn btn-primary">
+                          <input onClick="onPaypal()" type="button" class="btn btn-primary">
                             <i class="fab fa-paypal mr-2"></i> Log into my
                             Paypal
                           </input>
@@ -447,9 +455,9 @@
 
                       <div class="modal-footer">
                         <button
-                          type="button"
+                          type="submit"
                           class="btn btn-warning"
-                          data-dismiss="modal"
+                          name="e-wallet"
                         >
                           Continue to Request
                         </button>
@@ -458,7 +466,7 @@
                   </div>
                 </div>
                 <!-- End of E-wallet modal -->
-                <div align="center">
+                {% comment %} <div align="center">
                   <button
                     type="submit"
                     name="submit"
@@ -467,7 +475,7 @@
                   >
                     Request Schedule
                   </button>
-                </div>
+                </div> {% endcomment %}
               </div>
             </div>
             {%endfor%}
@@ -497,5 +505,13 @@
     $("#timepicker").timepicker();
     $("#timepicker1").timepicker();
   });
+
+  function onGCash() {
+    window.open('https://m.gcash.com/gcashapp/gcash-promotion-web/2.0.0/index.html#/?referralCode=hWlkIm1', '_blank');
+  }
+
+  function onPaypal() {
+    window.open('https://www.paypal.com/ph/signin', '_blank');
+    }
 </script>
 {% endblock %}

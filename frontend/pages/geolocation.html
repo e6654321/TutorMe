@@ -60,13 +60,11 @@
 <script type="text/javascript">
     var mymap = L.map('mapid').setView([10.2956476,123.880471], 13);
     var scheds = JSON.parse('{{ scheds|escapejs }}');
-    var mentors = JSON.parse('{{ mentors|escapejs }}');
+    var mentors = JSON.parse('{{ mentor|escapejs }}');
     var subjects = JSON.parse('{{ subjects|escapejs }}');
-    var profiles = JSON.parse('{{ profiles|escapejs }}');
     console.log(scheds);
     console.log(mentors);
     console.log(subjects);
-    console.log(profiles);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
@@ -79,12 +77,16 @@
     }).addTo(mymap);
 
     subjects.map((s) => {
-        var mentor = mentors.find((m) => m.pk == s.fields.mentorID);
-        var subject = scheds.find((sub) => sub.pk == s.fields.subject);
-        var profile = profiles.find((prof) => prof.id == s.fields.mentorID);console.log(s);
+        var mentor = mentors.find((m) => s.fields.mentorID === m.pk);
 
-        L.marker([s.fields.latitude,s.fields.longitude]).addTo(mymap)
-            .bindPopup("<b>"+ profile.firstName+ " " + profile.lastName +"</b><br />"+ s.fields.subjectName +", Php "+ s.fields.ratePerHour +"/hr").openPopup();
+        var marker = L.marker([s.fields.latitude,s.fields.longitude]).addTo(mymap);
+        var popup = L.DomUtil.create('div', 'infoWindow');
+        popup.innerHTML = "<div style='cursor: pointer;' id='sched'><b>"+ mentor.fields.first_name + " " + mentor.fields.last_name +"</b></div><br />"+ s.fields.subjectName +", Php "+ s.fields.ratePerHour +"/hr";
+        marker.bindPopup(popup);
+
+        $('#sched', popup).on('click', function() {
+            window.location.replace("/RequestSched?id="+s.pk);
+        });
     })
     
 
