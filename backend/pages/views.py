@@ -10,6 +10,10 @@ from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
+from .modelsFolder.AdminModel import AdminModel
+from .modelsFolder.ScheduleModel import ScheduleModel
+from .templatesFolder.AdminTemplate import AdminTemplate
+from .templatesFolder.CommonUserTemplate import CommonUserTemplate
 
 class HomePageView(TemplateView):
     def get(self, request):
@@ -41,21 +45,10 @@ class RegisterView(TemplateView):
 
     def post(self, request):
         form = request.POST.copy()
-        form = CreateUserForm(form)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            if (form.cleaned_data['is_staff']):
-                user.first_name = 'Jhosie'
-                user.last_name = 'Espantaleon'
-            else:
-                user.first_name = 'Elram'
-                user.last_name = 'Espra'
-            user.save()
-            print(user)
+        form = AdminModel.addUser(form)
+        if form:
             username = form.cleaned_data.get('username')
             messages.success(request, 'Account created ' + username)
-            context = {'form': form}
             return redirect('pages:login')
         else:
             messages.error(request, 'Check inputs and try again')
@@ -67,32 +60,14 @@ class RegisterView(TemplateView):
 
 class logoutUser(TemplateView):
     def get(self, request):
-        logout(request)
-        return redirect('pages:addpayment')
-
+        return AdminTemplate.logout(self, request)
 
 class MainView(TemplateView):
     template_name = 'main.html'
 
-
 class RequestSchedView(TemplateView):
     def get(self, request):
-        if request.user.is_authenticated:
-            schedId = request.GET.get('id')
-            print(schedId)
-            sub = Subject.objects.filter(id=schedId).values('id','mentorID', 'subjectName', 'ratePerHour',
-                                                            'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__first_name', 'mentorID__last_name')
-
-            profile = Profile.objects.filter(user_id=request.user.id)
-            account = Account.objects.filter(userID_id=request.user.id)
-            cardId = account.values('detailID_id')[0].get('detailID_id')
-            card = Details.objects.filter(id=cardId)
-            subject = {
-                'subject': sub,
-                'profile': profile[0],
-                'card': card[0]
-            }
-            return render(request, 'RequestSched.html', subject)
+        return AdminTemplate.viewSchedule(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -123,13 +98,7 @@ class RequestSchedView(TemplateView):
 class NotesPageView(TemplateView):
     # template_name='notes.html'
     def get(self, request):
-        if request.user.is_authenticated:
-            n = Notes.objects.all().values('menteeID', 'mentorID', 'subjectID', 'notes',
-                                           'notesTitle', 'subjectID__subjectName')
-            data = {
-                "notes": n
-            }
-            return render(request, 'notes.html', data)
+        return CommonUserTemplate.viewNotes(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -157,26 +126,7 @@ class NotesPageView(TemplateView):
 
 class SearchView(TemplateView):
     def get(self, request):
-        if request.user.is_authenticated:
-            userId = request.user.id
-            queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID.id else (Q(id=0))) for sched in Schedule.objects.all()]
-            
-            try:
-                query = queries.pop()
-                for item in queries:
-                    query |= item
-                print(query)
-                s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
-                                        'session_date', 'session_time_start', 'session_time_end',
-                                        'mentorID__first_name', 'mentorID__last_name')
-            except IndexError as e:
-                s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
-                                        'session_date', 'session_time_start', 'session_time_end',
-                                        'mentorID__first_name', 'mentorID__last_name')
-            data = {
-                "subject": s1
-            }
-            return render(request, 'search.html', data)
+        return CommonUserTemplate.search(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -207,70 +157,17 @@ class SearchView(TemplateView):
 
 class GeolocationView(TemplateView):
     def get(self, request):
-        if request.user.is_authenticated:
-            json_serializer = serializers.get_serializer("json")()
-            scheds = json_serializer.serialize(
-                Schedule.objects.all().order_by('id'))
-            mentor = json_serializer.serialize(
-                User.objects.all().order_by('id'))
-            subjects = json_serializer.serialize(
-                Subject.objects.all().order_by('id'))
-            data = {
-                "scheds": scheds,
-                "mentor": mentor,
-                "subjects": subjects,
-            }
-            return render(request, 'geolocation.html', data)
+        return CommonUserTemplate.geolocation(self, request)
 
 
 class ProfileView(TemplateView):
     def get(self, request):
-        current_user = request.user
-        user = User.objects.filter(id=current_user.id)
-        profile = Profile.objects.filter(user=current_user)
-        user[0].refresh_from_db()
-        if(profile):
-            return render(request, 'profile.html', {
-                "user": user[0],
-                "profile": profile[0],
-            })
-        else:
-            profile = {}
-            print("blank profile")
-            print(profile)
-
-            return render(request, 'profile.html', {
-                    "user": user[0],
-                    "profile": profile,
-            })
+        return CommonUserTemplate.viewProfile(self, request)
 
     def post(self, request):
         if request.method == 'POST':
             if 'btnUpdate' in request.POST:
-                fname = request.POST.get('fname')
-                mname = request.POST.get('mname')
-                lname = request.POST.get('lname')
-                email = request.POST.get('email')
-                number = request.POST.get('number')
-                username = request.POST.get('username')
-                User.objects.filter(
-                        id=request.user.id
-                    ).update(first_name=fname,last_name=lname, email=email, username=username)
-                
-                
-                profile = Profile.objects.filter(user=request.user)
-
-                if profile.exists():
-                    profile.update(middleName=mname,contactNo=number)
-                else:
-                    updateProfile = Profile(user=request.user,middleName=mname,contactNo=number)
-                    updateProfile.save()
-                print('update')
-
-                user = User.objects.filter(id=request.user.id)
-                profile = Profile.objects.filter(user=request.user)
-
-                print(profile[0])
+                AdminModel.updateUser(request)
                 return render(request, 'profile.html', {
                     "user": user[0],
                     "profile": profile[0],
@@ -281,28 +178,7 @@ class ProfileView(TemplateView):
 
 class PaymentView(TemplateView):
     def get(self, request):
-        if request.user.is_authenticated:
-            current_user = request.user
-            print("user")
-            acc = Account.objects.filter(userID=current_user)
-            print(acc)
-            if acc.exists():
-                s1 = Account.objects.filter(userID=current_user)
-                hasValue = bool(s1.values()[0].get('detailID_id'))
-                
-                if(hasValue):
-                    details = s1.values('detailID__id','detailID__cardOwnerName', 'detailID__cardNumber', 
-                'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
-                else:
-                    details = [Details()]
-                data = {
-                    "details": details
-                }
-                print('get')
-                print([details])
-                return render(request, 'payment.html', data)
-            else:
-                return redirect('pages:addpayment')
+        return CommonUserTemplate.viewPayment(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -397,7 +273,7 @@ class AddPaymentView(TemplateView):
 
 
 class SettingsView(TemplateView):
-    template_name = 'settings.html'
+    template_name = CommonUserTemplate.viewSettings('')
 
 
 class MessagingView(TemplateView):
@@ -407,18 +283,7 @@ class MessagingView(TemplateView):
 class CreateSubjectView(TemplateView):
     # template_name= 'create-subject.html'
     def get(self, request):
-        mentors = Mentor.objects.all()
-        try:
-            if (request.user.is_staff):
-                return render(request, 'create-subject.html')
-                
-            messages.error(
-                request, 'You are not a mentor. You will be redirected momentarily.')
-            return render(request, 'create-subject.html')
-        except:
-            messages.error(
-                request, 'You are not a mentor. You will be redirected momentarily.')
-            return render(request, 'create-subject.html')
+        return ScheduleModel.addSched(self, request)
 
     def post(self, request):
         form = CreateSubjectForm(request.POST)
