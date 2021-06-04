@@ -159,13 +159,13 @@ class SearchView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
             userId = request.user.id
-            queries = [(Q(id=sched.subject.id)&Q(mentorID_id=userId)) for sched in Schedule.objects.all()]
+            queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID.id else (Q(id=0))) for sched in Schedule.objects.all()]
             
             try:
                 query = queries.pop()
                 for item in queries:
                     query |= item
-                print(queries)
+                print(query)
                 s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
                                         'session_date', 'session_time_start', 'session_time_end',
                                         'mentorID__first_name', 'mentorID__last_name')
