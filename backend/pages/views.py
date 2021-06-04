@@ -185,22 +185,22 @@ class SearchView(TemplateView):
                 sort = request.POST.get("sort")
                 userId = request.user.id
                 queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID.id else (Q(id=0))) for sched in Schedule.objects.all()]
-                
+                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
+                                        | Q(mentorID__last_name__icontains=item))
+                print(s1)
                 try:
                     query = queries.pop()
                     for item in queries:
                         query |= item
                     print(query)
-                    s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
+                    s2 =s1.filter(~query).distinct()
+                except IndexError as e:
+                    s2 = s1.filter()
+                print(s2)
+                data = {
+                    "subject": s2.values('id','subjectName', 'ratePerHour',
                                             'session_date', 'session_time_start', 'session_time_end',
                                             'mentorID__first_name', 'mentorID__last_name').order_by(sort)
-                except IndexError as e:
-                    s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
-                                            'session_date', 'session_time_start', 'session_time_end',
-                                            'mentorID__first_name', 'mentorID__last_name')
-                data = {
-                    "subject": s1.filter(Q(subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                                        | Q(mentorID__last_name__icontains=item) | ~Q(id=0)).order_by(sort)
                 }
                 return render(request, 'search.html', data)
 
