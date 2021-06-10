@@ -45,7 +45,7 @@ class RegisterView(TemplateView):
 
     def post(self, request):
         form = request.POST.copy()
-        form = AdminModel.addUser(form)
+        form = AdminModel.addUser(self, form)
         if form:
             username = form.cleaned_data.get('username')
             messages.success(request, 'Account created ' + username)
