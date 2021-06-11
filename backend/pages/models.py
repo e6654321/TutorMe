@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.base import Model
+from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -39,25 +41,42 @@ class Admin(Profile):
         db_table = "Admin"
 
 
-class Mentee(Profile):
-    #menteeID = models.AutoField(primary_key=True, default=None)
+class Mentee(models.Model):
+    menteeID = models.OneToOneField(User, primary_key=True,  on_delete=models.CASCADE)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
-    readonly_fields = ('id',)
-
+    def addMentee(bio, userID):
+        try:
+            newMentee = Mentee()
+            newMentee.bio = bio
+            newMentee.menteeID=userID
+            newMentee.save()
+            print('saved')
+        except Exception as e:
+            print(e)
+    
     class Meta:
         db_table = "Mentee"
 
 
-class Mentor(Profile):
-    #mentorID = models.AutoField(primary_key=True, default=None)
+class Mentor(models.Model):
+    mentorID = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
-    readonly_fields = ('id',)
 
+    def addMentor(achvements, proofs, userID):
+        try:
+            newMentor = Mentor()
+            newMentor.achvemnts=achvements
+            newMentor.proofs=proofs
+            newMentor.mentorID=userID
+            newMentor.save()
+            print('saved')
+        except Exception as e:
+            print(e)
+    
     class Meta:
         db_table = "Mentor"
-
 
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
@@ -145,6 +164,7 @@ class Account(models.Model):
 class Messages(models.Model):
     #messageID = models.AutoField(primary_key=True, default=None)
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    messageID = models.AutoField(primary_key=True, default=0)
     message = models.TextField()
     readonly_fields = ('id',)
 
@@ -185,12 +205,13 @@ class Review(models.Model):
 
 class Notes(models.Model):
 
+    notesTitle = models.CharField(primary_key=True, max_length=500, default='Title' )
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectID = models.ForeignKey(
         Subject, null=True, on_delete=models.SET_NULL)
     notes = models.CharField(max_length=500, null=True, default=' ')
-    notesTitle = models.CharField(max_length=500, default=' ', null=True)
+    
     readonly_fields = ('id',)
 
     class Meta:

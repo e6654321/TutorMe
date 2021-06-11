@@ -45,16 +45,25 @@ class RegisterView(TemplateView):
 
     def post(self, request):
         form = request.POST.copy()
+        form1 = request.POST.copy()
         form = AdminModel.addUser(self, form)
+        id = request.GET.get('id')
+        try:
+            mentor = form.cleaned_data.get('is_staff')
+            if mentor==True:
+                print(Mentor.addMentor(achvements=True, proofs=True, userID = id))
+            else:
+                print(Mentee.addMentee(bio="hello", userID= id))
+        except Exception as e:
+            print(e)
         if form:
             username = form.cleaned_data.get('username')
             messages.success(request, 'Account created ' + username)
             return redirect('pages:login')
         else:
             messages.error(request, 'Check inputs and try again')
-            print(form.errors)
 
-        context = {'form': form}
+        context={'form': form}
         return render(request, 'register.html', context)
 
 

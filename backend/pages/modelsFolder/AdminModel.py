@@ -7,7 +7,6 @@ class AdminModel():
 
   def addUser(self, user):
     form = CreateUserForm(user)
-    
     if form.is_valid():
       newUser = form.save()
       newUser.refresh_from_db()
@@ -21,6 +20,7 @@ class AdminModel():
       print(newUser)
       return form
     else:
+      print(form.errors)
       return False
     
   def updateUser(self, user):

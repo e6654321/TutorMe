@@ -111,12 +111,12 @@ class CommonUserTemplate:
 
     profile = Profile.objects.filter(user_id=request.user.id)
     account = Account.objects.filter(userID_id=request.user.id)
-    cardId = account.values('detailID_id')[0].get('detailID_id')
+    cardId = account.values('detailID_id')
     card = Details.objects.filter(id=cardId)
     subject = {
         'subject': sub,
-        'profile': profile[0],
-        'card': card[0]
+        'profile': profile,
+        'card': card
     }
     return render(request, 'RequestSched.html', subject)
     
