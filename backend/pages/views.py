@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt
-from .forms import CreateUserForm, CreateProfileForm, CardDetailsForm, AccountForm, CreateSubjectForm, ReceiptForm, CreateMenteeForm, CreateMentorForm
+from .forms import CreateUserForm, CreateProfileForm, CardDetailsForm, AccountForm, CreateSubjectForm, NotesForm, ReceiptForm, CreateMenteeForm, CreateMentorForm
 from django.db.models import Q
 from django.core import serializers
 import json
@@ -14,6 +14,7 @@ from .modelsFolder.AdminModel import AdminModel
 from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
+from .modelsFolder.NotesModel import NotesModel
 
 class HomePageView(TemplateView):
     def get(self, request):
@@ -47,13 +48,14 @@ class RegisterView(TemplateView):
         form = request.POST.copy()
         form1 = request.POST.copy()
         form = AdminModel.addUser(self, form)
-        id = request.GET.get('id')
+        usn = form.cleaned_data.get('username')
+        id= User.objects.get(username=usn)
         try:
             mentor = form.cleaned_data.get('is_staff')
             if mentor==True:
-                print(Mentor.addMentor(achvements=True, proofs=True, userID = id))
+                Mentor.addMentor(achvements=True, proofs=True, userID = id)
             else:
-                print(Mentee.addMentee(bio="hello", userID= id))
+                Mentee.addMentee(bio="hello", userID= id)
         except Exception as e:
             print(e)
         if form:
@@ -104,33 +106,62 @@ class RequestSchedView(TemplateView):
             return HttpResponse('failed')
 
 
-class NotesPageView(TemplateView):
+class NotesPageView(View):
     # template_name='notes.html'
-    def get(self, request):
-        return CommonUserTemplate.viewNotes(self, request)
-
-    def post(self, request):
+    def createNotes(request):
         if request.method == 'POST':
-            if 'btnSort' in request.POST:
-                item = request.POST.get("search")
-                sort = request.POST.get("sort")
-                print(sort)
-                if sort == 'subjectName':
-                    sort = 'subjectID__subjectName'
-                if sort == 'ratePerHour':
-                    sort = 'subjectID__ratePerHour'
-                if sort == '-subjectName':
-                    sort = '-subjectID__subjectName'
-                if sort == '-ratePerHour':
-                    sort = '-subjectID__ratePerHour'
-        n = Notes.objects.all()
-        n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                     | Q(mentorID__last_name__icontains=item)).values('subjectID__subjectName',
-                                                                     'mentorID__first_name', 'mentorID__last_name', 'subjectID__ratePerHour', 'notes', 'notesTitle').order_by(sort)
-        data = {
-            "notes": n
-        }
-        return render(request, 'notes.html', data)
+            print(request.POST)
+            if 'addNotes' in request.POST:
+                print("add")
+                form= NotesForm(request.POST, request.FILES)
+                if form.is_valid():
+                    notes_title= form.getNotesTitle()
+                    notes_menteeID= form.getMenteeID()
+                    notes_mentorID= form.getMentorID()
+                    notes_subjectID= form.getSubjectID()
+                    notes_note= form.getNotes()
+                    NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
+                    messages.success(request, ("Notes added"))
+                else:
+                    print(form.errors)
+            
+        return redirect('pages:notes')
+
+    def removeNote(request):
+        if request.method=='POST':
+            print(request.POST)
+            if 'deleteNote' in request.POST:
+                form= NotesForm(request.POST or None)
+                notesID= form.getNotesID()
+                NotesModel.removeNotes(notesID)
+                messages.success(request, ("Notes removed"))
+        return redirect("pages:notes")
+
+    def updateTemplate(request):
+        if 'btnSort' in request.POST:
+            item = request.POST.get("search")
+            sort = request.POST.get("sort")
+            print(sort)
+            if sort == 'subjectName':
+                sort = 'subjectID__subjectName'
+            if sort == 'ratePerHour':
+                sort = 'subjectID__ratePerHour'
+            if sort == '-subjectName':
+                sort = '-subjectID__subjectName'
+            if sort == '-ratePerHour':
+                sort = '-subjectID__ratePerHour'
+            n = Notes.objects.all()
+            n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
+                        | Q(mentorID__last_name__icontains=item)).values('subjectID__subjectName',
+                                                                        'mentorID__first_name', 'mentorID__last_name', 'subjectID__ratePerHour', 'notes', 'notesTitle').order_by(sort)
+            data = {
+                "notes": n
+            }
+            return render(request, 'notes.html', data)
+
+    @classmethod
+    def viewNotes(self, request):
+        return CommonUserTemplate.viewNotes(self, request)
 
 
 class SearchView(TemplateView):

@@ -275,14 +275,14 @@
             $("#longitude").val(position.coords.longitude);
         }
         $(function(){
-            $("#session_date").datepicker();
-            $( "#session_date" ).datepicker( "option", "dateFormat", "yy-m-d" );
-            $("#session_time_start").timepicker();
-            $("#session_time_start").timepicker("option", "minTime", "8:00am");
-            $("#session_time_start").timepicker("option", "maxTime", "9:00pm");
-            $("#session_time_end").timepicker();
-            $("#session_time_end").timepicker("option", "minTime", "8:00am");
-            $("#session_time_end").timepicker("option", "maxTime", "9:00pm");
+            $('#session_date').datepicker();
+            $('#session_date' ).datepicker( "option", "dateFormat", "yy-m-d" );
+            $('#session_time_start').timepicker();
+            $('#session_time_start').timepicker("option", "minTime", "8:00am");
+            $('#session_time_start').timepicker("option", "maxTime", "9:00pm");
+            $('#session_time_end').timepicker();
+            $('#session_time_end').timepicker("option", "minTime", "8:00am");
+            $('#session_time_end').timepicker("option", "maxTime", "9:00pm");
 
             getLocation();
         });
