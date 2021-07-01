@@ -83,6 +83,7 @@ class RequestSchedView(TemplateView):
     def post(self, request):
         if request.method == 'POST':
             subjectID = request.POST.get("subjectID")
+            print(subjectID)
             mode = 'E-Wallet'
 
             if 'com' in request.POST:
@@ -97,7 +98,11 @@ class RequestSchedView(TemplateView):
             custom_time_start = request.POST.get("timepicker")
             custom_time_end = request.POST.get("timepicker1")
 
-            form = Schedule(subject=subject[0],menteeID=request.user,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+            current_user = request.user
+            menteeID = User.objects.get(username=current_user)
+            menteeID = Mentee.objects.get(user_identification_id=menteeID)
+
+            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
                             custom_time_end=custom_time_end, payment_method=mode)
             form.save()
 
@@ -332,7 +337,7 @@ class CreateSubjectView(TemplateView):
         if request.user.is_authenticated:
             current_user = request.user
             mentorID = User.objects.get(username=current_user)
-            mentorID = Mentor.objects.get(user_identification=mentorID.id)
+            mentorID = Mentor.objects.get(user_identification=mentorID)
 
         if form.is_valid:
             subName = request.POST.get('subjectName')
