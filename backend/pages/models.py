@@ -83,7 +83,7 @@ class Mentor(models.Model):
 
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
-    mentorID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectName = models.CharField(max_length=100, default='')
     ratePerHour = models.DecimalField(
         max_digits=5, decimal_places=2, default='0')
@@ -102,7 +102,7 @@ class Subject(models.Model):
 class Schedule(models.Model):
     #scheduleId = models.AutoField(primary_key=True, default=None)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
-    menteeID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     date = models.DateField(blank=True, null=True)
     time = models.CharField(max_length=10,  default='00:00-00:00', null=True)
     custom_time_start = models.CharField(

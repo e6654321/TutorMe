@@ -85,17 +85,18 @@ class CommonUserTemplate:
       print(query)
       s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
         'session_date', 'session_time_start', 'session_time_end',
-        'mentorID__first_name', 'mentorID__last_name')
+        'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
     except IndexError as e:
         s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
           'session_date', 'session_time_start', 'session_time_end',
-          'mentorID__first_name', 'mentorID__last_name')
+          'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
     data = {
       "subject": s1
     }
     return render(request, 'search.html', data)
 
   def viewNotes(self, request):
+
     n = Notes.objects.all().values('menteeID', 'mentorID', 'subjectID', 'notes',
       'notesTitle', 'subjectID__subjectName')
     data = {
@@ -107,7 +108,7 @@ class CommonUserTemplate:
     schedId = request.GET.get('id')
     print(schedId)
     sub = Subject.objects.filter(id=schedId).values('id','mentorID', 'subjectName', 'ratePerHour',
-      'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__first_name', 'mentorID__last_name')
+      'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
 
     profile = Profile.objects.filter(user_id=request.user.id)
     account = Account.objects.filter(userID_id=request.user.id)

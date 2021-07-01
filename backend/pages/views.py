@@ -331,6 +331,8 @@ class CreateSubjectView(TemplateView):
         mentors = ''
         if request.user.is_authenticated:
             current_user = request.user
+            mentorID = User.objects.get(username=current_user)
+            mentorID = Mentor.objects.get(user_identification=mentorID.id)
 
         if form.is_valid:
             subName = request.POST.get('subjectName')
@@ -344,7 +346,7 @@ class CreateSubjectView(TemplateView):
             print(latitude,longitude)
             form = Subject(subjectName=subName,  session_date=subDate,
                            session_time_start=timeStart, session_time_end=timeEnd,
-                           ratePerHour=rate, category=category, mentorID=current_user,
+                           ratePerHour=rate, category=category, mentorID=mentorID,
                            latitude=latitude, longitude=longitude
                            )
             print(form.mentorID)
