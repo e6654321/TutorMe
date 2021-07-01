@@ -1,3 +1,4 @@
+from django.http import request
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from pages.views import (
@@ -26,7 +27,8 @@ urlpatterns = [
 	path('register/',RegisterView.as_view(),name='register'),
 	path('RequestSched/',login_required(login_url='pages:login')(RequestSchedView.as_view()), name = 'RequestSched'),
 	path('Chatbot/',login_required(login_url='pages:login')(ChatBotView.as_view()), name = 'Chatbot'),
-	path('notes/',login_required(login_url='pages:login')(NotesPageView.as_view()),name='notes'),
+	path('notes/',login_required(login_url='pages:login')(NotesPageView.viewNotes),name='notes'),
+	path('addnotes/', login_required(login_url='pages:login')(NotesPageView.createNotes), name='add-notes'),
 	path('',login_required(login_url='pages:login')(SearchView.as_view()),name='main'),
 	path('search/',login_required(login_url='pages:login')(SearchView.as_view()),name='search'),
 	path('geolocation/',login_required(login_url='pages:login')(GeolocationView.as_view()),name='geo'),
