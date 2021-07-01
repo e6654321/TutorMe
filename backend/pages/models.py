@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import FileExtensionValidator
 # Create your models here.
 
 class Profile(models.Model):
@@ -42,14 +43,15 @@ class Admin(Profile):
 
 
 class Mentee(models.Model):
-    menteeID = models.OneToOneField(User, primary_key=True,  on_delete=models.CASCADE)
+    menteeID = models.AutoField(primary_key=True)
+    user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
     def addMentee(bio, userID):
         try:
             newMentee = Mentee()
             newMentee.bio = bio
-            newMentee.menteeID=userID
+            newMentee.user_identification=userID
             newMentee.save()
             print('saved')
         except Exception as e:
@@ -60,7 +62,8 @@ class Mentee(models.Model):
 
 
 class Mentor(models.Model):
-    mentorID = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    mentorID = models.AutoField(primary_key=True)
+    user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
 
@@ -69,7 +72,7 @@ class Mentor(models.Model):
             newMentor = Mentor()
             newMentor.achvemnts=achvements
             newMentor.proofs=proofs
-            newMentor.mentorID=userID
+            newMentor.user_identification=userID
             newMentor.save()
             print('saved')
         except Exception as e:
@@ -163,8 +166,9 @@ class Account(models.Model):
 
 class Messages(models.Model):
     #messageID = models.AutoField(primary_key=True, default=None)
-    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     messageID = models.AutoField(primary_key=True, default=0)
+    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    
     message = models.TextField()
     readonly_fields = ('id',)
 
@@ -205,14 +209,14 @@ class Review(models.Model):
 
 class Notes(models.Model):
 
-    notesTitle = models.CharField(primary_key=True, max_length=500, default='Title' )
+    notesID= models.AutoField(primary_key=True, default=0)
+    notesTitle = models.CharField(max_length=500, default='Title' )
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectID = models.ForeignKey(
         Subject, null=True, on_delete=models.SET_NULL)
-    notes = models.CharField(max_length=500, null=True, default=' ')
+    notes = models.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
     
-    readonly_fields = ('id',)
 
     class Meta:
         db_table = "Notes"

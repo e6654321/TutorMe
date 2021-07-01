@@ -1,3 +1,4 @@
+from django.db.models import fields
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -58,3 +59,26 @@ class ReceiptForm(ModelForm):
     class Meta:
         model= Receipt
         fields = '__all__'
+
+class NotesForm(ModelForm):
+    class Meta:
+        model = Notes
+        fields= ['notesTitle', 'menteeID', 'mentorID', 'subjectID', 'notes']
+    
+    def getNotesID(self):
+        return self.data['notesID']
+
+    def getNotesTitle(self):
+        return self.data['notesTitle']
+
+    def getMentorID(self):
+        return self.data['mentorID']
+
+    def getMenteeID(self):
+        return self.data['menteeID']
+    
+    def getNotes(self):
+        return self.cleaned_data['notes']
+
+    def getSubjectID(self):
+        return self.data['subjectID']
