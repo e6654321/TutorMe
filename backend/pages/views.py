@@ -83,6 +83,7 @@ class RequestSchedView(TemplateView):
     def post(self, request):
         if request.method == 'POST':
             subjectID = request.POST.get("subjectID")
+            print(subjectID)
             mode = 'E-Wallet'
 
             if 'com' in request.POST:
@@ -97,7 +98,11 @@ class RequestSchedView(TemplateView):
             custom_time_start = request.POST.get("timepicker")
             custom_time_end = request.POST.get("timepicker1")
 
-            form = Schedule(subject=subject[0],menteeID=request.user,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+            current_user = request.user
+            menteeID = User.objects.get(username=current_user)
+            menteeID = Mentee.objects.get(user_identification_id=menteeID)
+
+            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
                             custom_time_end=custom_time_end, payment_method=mode)
             form.save()
 
@@ -116,15 +121,17 @@ class NotesPageView(View):
                 form= NotesForm(request.POST, request.FILES)
                 if form.is_valid():
                     notes_title= form.getNotesTitle()
-                    notes_menteeID= form.getMenteeID()
-                    notes_mentorID= form.getMentorID()
-                    notes_subjectID= form.getSubjectID()
-                    notes_note= form.getNotes()
+                    userID = form.getMenteeID()
+                    subjectID= form.getSubjectID()                  
+                    notes_menteeID= Mentee.objects.get(user_identification_id=userID)
+                    notes_subjectID= Subject.objects.get(id=subjectID)
+                    notes_mentorID = Mentor.objects.get(mentorID=notes_subjectID.mentorID_id)
+                    notes_note= request.FILES['notes']
                     NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
                     messages.success(request, ("Notes added"))
                 else:
+                    messages.error(request, form.errors)
                     print(form.errors)
-            
         return redirect('pages:notes')
 
     def removeNote(request):
@@ -133,35 +140,36 @@ class NotesPageView(View):
             if 'deleteNote' in request.POST:
                 form= NotesForm(request.POST or None)
                 notesID= form.getNotesID()
+                print(notesID)
                 NotesModel.removeNotes(notesID)
                 messages.success(request, ("Notes removed"))
         return redirect("pages:notes")
 
-    def updateTemplate(request):
-        if 'btnSort' in request.POST:
-            item = request.POST.get("search")
-            sort = request.POST.get("sort")
-            print(sort)
-            if sort == 'subjectName':
-                sort = 'subjectID__subjectName'
-            if sort == 'ratePerHour':
-                sort = 'subjectID__ratePerHour'
-            if sort == '-subjectName':
-                sort = '-subjectID__subjectName'
-            if sort == '-ratePerHour':
-                sort = '-subjectID__ratePerHour'
-            n = Notes.objects.all()
-            n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                        | Q(mentorID__last_name__icontains=item)).values('subjectID__subjectName',
-                                                                        'mentorID__first_name', 'mentorID__last_name', 'subjectID__ratePerHour', 'notes', 'notesTitle').order_by(sort)
-            data = {
-                "notes": n
-            }
-            return render(request, 'notes.html', data)
-
     @classmethod
     def viewNotes(self, request):
         return CommonUserTemplate.viewNotes(self, request)
+
+    # def updateTemplate(self, request):
+    #     if 'btnSort' in request.POST:
+    #         item = request.POST.get("search")
+    #         sort = request.POST.get("sort")
+    #         print(sort)
+    #         if sort == 'subjectName':
+    #             sort = 'subjectID_id__subjectName'
+    #         if sort == 'ratePerHour':
+    #             sort = 'subjectID_id__ratePerHour'
+    #         if sort == '-subjectName':
+    #             sort = '-subjectID_id__subjectName'
+    #         if sort == '-ratePerHour':
+    #             sort = '-subjectID_id__ratePerHour'
+    #         n = Notes.objects.all()
+    #         n = n.filter(Q(subjectID_id__subjectName__icontains=item) | Q(mentorID_id__user_identification__first_name__icontains=item)
+    #                     | Q(mentorID_id__user_identification__last_name__icontains=item)).values('subjectID_id__subjectName',
+    #                                                                     'mentorID_id__user_identification__first_name', 'mentorID_id__user_identification__last_name', 'subjectID_id__ratePerHour', 'notes', 'notesTitle').order_by(sort)
+    #         data = {
+    #             "notes": n
+    #         }
+    #         return render(request, 'notes.html', data)
 
 
 class SearchView(TemplateView):
@@ -173,10 +181,11 @@ class SearchView(TemplateView):
             if 'btnSort' in request.POST:
                 item = request.POST.get("search")
                 sort = request.POST.get("sort")
+                print(sort)
                 userId = request.user.id
-                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID.id else (Q(id=0))) for sched in Schedule.objects.all()]
-                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                                        | Q(mentorID__last_name__icontains=item))
+                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID_id__user_identification_id__first_name__icontains=item)
+                                        | Q(mentorID_id__user_identification_id__last_name__icontains=item))
                 print(s1)
                 try:
                     query = queries.pop()
@@ -190,7 +199,7 @@ class SearchView(TemplateView):
                 data = {
                     "subject": s2.values('id','subjectName', 'ratePerHour',
                                             'session_date', 'session_time_start', 'session_time_end',
-                                            'mentorID__first_name', 'mentorID__last_name').order_by(sort)
+                                            'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
                 }
                 return render(request, 'search.html', data)
 
@@ -331,6 +340,8 @@ class CreateSubjectView(TemplateView):
         mentors = ''
         if request.user.is_authenticated:
             current_user = request.user
+            mentorID = User.objects.get(username=current_user)
+            mentorID = Mentor.objects.get(user_identification=mentorID)
 
         if form.is_valid:
             subName = request.POST.get('subjectName')
@@ -344,7 +355,7 @@ class CreateSubjectView(TemplateView):
             print(latitude,longitude)
             form = Subject(subjectName=subName,  session_date=subDate,
                            session_time_start=timeStart, session_time_end=timeEnd,
-                           ratePerHour=rate, category=category, mentorID=current_user,
+                           ratePerHour=rate, category=category, mentorID=mentorID,
                            latitude=latitude, longitude=longitude
                            )
             print(form.mentorID)

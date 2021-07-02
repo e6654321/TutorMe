@@ -1,105 +1,208 @@
-{% extends "components/base.html" %}
-{% load static %}
+{% extends "components/base.html" %} {% load static %} 
 
-
-{% block title %}<title>TutorMe</title>{% endblock %}
-
-{% block pageCSS %}
+{% block title%}<title>TutorMe</title>{% endblock %} {% block pageCSS %}
 <style type="text/css">
-    .main-content {
-        height: 100%;
-        width: 100%;
-    }
+	.main-content {
+		height: 100%;
+		width: 100%;
+	}
+	a{
+		text-decoration:none ;
+		color: white;
+	}
+	input{
+		border-radius: 0.3em;
+	}
+	ul{
+		background-color: rgb(231, 80, 80);
+		color: white;
+		list-style-type: none;
+	}
+	.group-form{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.suggestions .row3 h6 {
+		float: left;
+	}
+	.center-component {
+		height: 89vh;
+		width: 80%;
+		position: relative;
+		overflow-y: scroll;
+	}
+	.notes-table {
+		width: 100%;
+		padding: 2%;
+		margin-top: 1%;
+		border-top-right-radius: 5%;
+		border-right: lightgrey 1px;
+		box-shadow: 5px 2px lightgrey;
+		border-bottom-right-radius: 5%;
+	}
+	.notes-container {
+		display: flex;
+		flex-direction: column;
+		padding: 1.5% 1.5% 5px 1.5%;
+		border-left: solid blue 5px;
+		border-bottom: 1px solid grey;
+	}
+	.notes-header {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    .suggestions .row3 h6{
-        float: left;
-    }
-    .center-component{
-        height: 89vh;
-        width: 80%;
-        position: relative;
-        overflow-y: scroll;
-    }
-    .notes-table{
-        width: 100%;
-        padding: 2%;
-        margin-top: 1%;
-        border-top-right-radius: 5%;
-        border-right: lightgrey 1px;
-        box-shadow: 5px 2px lightgrey;
-        border-bottom-right-radius: 5%;
-    }
-    .notes-container{
-        display: flex;
-        flex-direction: column;
-        padding: 1.5% 1.5% 5px 1.5%;
-        border-left: solid blue 5px;
-        border-bottom: 1px solid grey;
-    }
-    .notes-header{
-        display: flex;
-        justify-content: space-between;
-    }
+	.empty {
+		color: white;
+		background-color: white;
+	}
 
-    .empty{
-        color: white;
-        background-color: white;
-    }
+	select{
+            width: 190px;
+            padding: 5px 35px 5px 10px;
+            font-size: 16px;
+            border: 1px solid #CCC;
+            height: 34px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
 </style>
-{% endblock %}
+{% endblock %} {% block pageBody %}
 
-{% block pageBody %}
+<div class="main-container row">
+	{% include 'components/navigation.html' %}
+	<span style="z-index: 100"> {% include 'components/Chatbot.html' %} </span>
 
-    <div class="main-container row">
-        {% include 'components/navigation.html' %}
-        <span style="z-index: 100">
-        {% include 'components/Chatbot.html' %}
-        </span>
+	<div class="body-container col-11" style="z-index: 1">
+		{% include 'components/header.html' %}
+		<div class="row">
+			<div class="center-component col-9">
+				<div class="notes-table">
+				<button type="button" name= "modalAddNotes" class= 'btn' data-toggle="modal" data-target="#AddNotes" {% if user.is_staff > 0 %} disabled {% endif %}>Add Notes</button>
+				{% if messages %}
+				<ul class="messages">
+					{% for message in messages %}
+					<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+					{% for n in notes %}
+					<div class="notes-container {%if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-gold {%else%} bg-maroon1 {%endif%}">
+					<div class="notes-header">
+						<h5>{{n.notesTitle}}</h5>
+						<button type="button" name="modalRemoveNote" class="btn btn-sm" data-toggle="modal" data-target="#RemoveNotes-{{n.notesID}}">Remove</button>
+					</div>
+					<div class="notes-details">
+						<div class="detail-subj" style="display: flex; padding-top: 8px">
+							<a href="{{n.notes.url}}">{{n.notes.name}}</a>
+						</div>
+						</div>
+					</div>
+					{% empty %}
+					<div class="notes-container empty" style="background-color: skyblue; border-left-color: blue">
+						<div class="notes-header">
+							<h5 style="color: black">You got no notes yet!</h5>
+						</div>
+						<div class="notes-details">
+							<div class="detail-subj" style="display: flex; padding-top: 8px">
+								<p style="color: black">Go and make some notes.</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
 
-        <div class="body-container col-11" style="z-index: 1">
-            {% include 'components/header.html' %}
-            <div class="row">
-                <div class="center-component col-9">
-                    <div class="notes-table">
-                        {% for n in notes %}
-                        <div class="notes-container {% if n.subjectID.subjectName == 'Special Topics in Mathematics' %} bg-gold {% else %} bg-maroon1 {% endif %}">
-                            <div class="notes-header">
-                                <h5>{{n.notesTitle}}</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p onclick="popUP()">{{n.notes}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div class="notes-container empty" style="background-color: skyblue; border-left-color:blue;">
-                            <div class="notes-header">
-                                <h5 style="color: black;">You got no notes yet!</h5>
-                            </div>
-                            <div class="notes-details">
-                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
-                                    <p style="color: black;">Go and make some notes.</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
+			{% include "components/sidebar.html" %}
+		</div>
+	</div>
+</div>
 
-                {% include "components/sidebar.html" %}
+<!--Add Modal-->
+<div class='modal fade' id='AddNotes' role="dialog">
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+			<div class="modal-header">
+				<h4 class="modal-title">Add Notes</h4>
+				<button type="button" class="close" data-dismiss="modal" >&times;</button>
+        	</div>
+            <div class="modal-body">
+				<form method='POST' action = "{% url 'pages:add-notes' %}" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="group-form">
+						<div class="form-group">
+							<label for="notesTitle">&ensp;&ensp;Title <span style="color:red;">*</span>&ensp;&ensp;</label>
+							<input type="text" name="notesTitle" >
+						</div>
+						<div class="form-group" hidden>
+							<label for="menteeID" style="display: inline-block;">Mentee <span style="color:red;">*</span>&ensp;</label>
+							<input type="text" name="menteeID" value="{{request.user.id}}">
+						</div>
+						<div class="form-group" >
+							<label for="subjectID" style="display: inline-block;">Subject <span style="color:red;">*</span>&ensp;</label>
+							<select name="subjectID" id="subjectID" style="background: url({% static 'assets/logo.png' %}) 96% / 15% no-repeat #EEE;">
+								{% for s in subject %}
+                               		<option value="{{s.id}}"><p class="text-center">{{s.subjectName}}</p></option>
+								{% endfor %}
+                            </select>
+						</div>
+						<input type="file" name="notes" accept=".pdf,.docx,.txt">
+					</div>
+            	
+			</div>
+			<div class='modal-footer'>
+                <button type='submit' name='addNotes' class='btn'>Add</button>
+                <button type='button' class='btn' data-dismiss='modal'>Close</button>
             </div>
-    
+			</form>
         </div>
     </div>
+</div>
+<!--End of Modal-->
 
-{% endblock %}
+<!--Remove Modal-->
+{% for n in notes %}
+<div class='modal fade' id='RemoveNotes-{{n.notesID}}' role="dialog">
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+			<div class="modal-header">
+				<h4 class="modal-title">Remove Note</h4>
+				<button type="button" class="close" data-dismiss="modal" >&times;</button>
+        	</div>
+            <div class="modal-body">
+				<form method='POST' action = "{% url 'pages:removeNote' %}" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="group-form">
+						<div class="form-group">
+							<h5>Are you sure you want to delete this note?</h5>
+							<input type="text" name="notesID" value="{{n.notesID}}" hidden>
+						</div>
+						<div class="form-group" hidden>
+							<label for="menteeID" style="display: inline-block;">Mentee <span style="color:red;">*</span>&ensp;</label>
+							<input type="text" name="menteeID" value="{{request.user.id}}">
+						</div>
+					</div>
+            	
+			</div>
+			<div class='modal-footer'>
+                <button type='submit' name='deleteNote' class='btn'>Yes</button>
+                <button type='button' class='btn' data-dismiss='modal'>Close</button>
+            </div>
+			</form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!--End of Modal-->
 
-{% block pageJS %}
+{% endblock %} {% block pageJS %}
 <script type="text/javascript">
-    $('.notes-container div p').css('cursor', 'pointer');
-    function popUP(){
-        alert("You will leave this page and download the file.");
-    }
+	$(".notes-container div p").css("cursor", "pointer");
+	function popUP() {
+		alert("You will leave this page and download the file.");
+	}
 </script>
 {% endblock %}

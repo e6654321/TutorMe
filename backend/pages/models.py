@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 from django.core.validators import FileExtensionValidator
 # Create your models here.
 
@@ -83,7 +84,7 @@ class Mentor(models.Model):
 
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
-    mentorID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectName = models.CharField(max_length=100, default='')
     ratePerHour = models.DecimalField(
         max_digits=5, decimal_places=2, default='0')
@@ -102,7 +103,7 @@ class Subject(models.Model):
 class Schedule(models.Model):
     #scheduleId = models.AutoField(primary_key=True, default=None)
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL)
-    menteeID = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     date = models.DateField(blank=True, null=True)
     time = models.CharField(max_length=10,  default='00:00-00:00', null=True)
     custom_time_start = models.CharField(
@@ -209,13 +210,13 @@ class Review(models.Model):
 
 class Notes(models.Model):
 
-    notesID= models.AutoField(primary_key=True, default=0)
+    notesID= models.AutoField(primary_key=True)
     notesTitle = models.CharField(max_length=500, default='Title' )
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectID = models.ForeignKey(
         Subject, null=True, on_delete=models.SET_NULL)
-    notes = models.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
+    notes = models.FileField(upload_to='documents/',  validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
     
 
     class Meta:
