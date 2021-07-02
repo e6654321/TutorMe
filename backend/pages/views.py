@@ -181,10 +181,11 @@ class SearchView(TemplateView):
             if 'btnSort' in request.POST:
                 item = request.POST.get("search")
                 sort = request.POST.get("sort")
+                print(sort)
                 userId = request.user.id
-                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID.id else (Q(id=0))) for sched in Schedule.objects.all()]
-                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                                        | Q(mentorID__last_name__icontains=item))
+                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID_id__user_identification_id__first_name__icontains=item)
+                                        | Q(mentorID_id__user_identification_id__last_name__icontains=item))
                 print(s1)
                 try:
                     query = queries.pop()
@@ -198,7 +199,7 @@ class SearchView(TemplateView):
                 data = {
                     "subject": s2.values('id','subjectName', 'ratePerHour',
                                             'session_date', 'session_time_start', 'session_time_end',
-                                            'mentorID__first_name', 'mentorID__last_name').order_by(sort)
+                                            'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
                 }
                 return render(request, 'search.html', data)
 
