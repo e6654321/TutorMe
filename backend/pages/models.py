@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 from django.core.validators import FileExtensionValidator
 # Create your models here.
 
@@ -215,7 +216,7 @@ class Notes(models.Model):
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectID = models.ForeignKey(
         Subject, null=True, on_delete=models.SET_NULL)
-    notes = models.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
+    notes = models.FileField(upload_to='documents/',  validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
     
 
     class Meta:

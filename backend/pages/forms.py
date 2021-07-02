@@ -76,9 +76,6 @@ class NotesForm(ModelForm):
 
     def getMenteeID(self):
         return self.data['menteeID']
-    
-    def getNotes(self):
-        return self.cleaned_data['notes']
 
     def getSubjectID(self):
         return self.data['subjectID']

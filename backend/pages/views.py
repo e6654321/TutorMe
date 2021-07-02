@@ -121,15 +121,18 @@ class NotesPageView(View):
                 form= NotesForm(request.POST, request.FILES)
                 if form.is_valid():
                     notes_title= form.getNotesTitle()
-                    notes_menteeID= form.getMenteeID()
-                    notes_mentorID= form.getMentorID()
-                    notes_subjectID= form.getSubjectID()
-                    notes_note= form.getNotes()
+                    userID = form.getMenteeID()
+                    mentorID= form.getMentorID()
+                    subjectID= form.getSubjectID()
+                    notes_menteeID= Mentee.objects.get(user_identification_id=userID)
+                    notes_mentorID= Mentor.objects.get(mentorID=mentorID)
+                    notes_subjectID= Subject.objects.get(id=subjectID)
+                    notes_note= request.FILES['notes']
                     NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
                     messages.success(request, ("Notes added"))
                 else:
+                    messages.error(request, form.errors)
                     print(form.errors)
-            
         return redirect('pages:notes')
 
     def removeNote(request):

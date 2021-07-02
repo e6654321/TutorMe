@@ -94,12 +94,21 @@ class CommonUserTemplate:
     return render(request, 'search.html', data)
 
   def viewNotes(self, request):
-
-    n = Notes.objects.all().values('menteeID', 'mentorID', 'subjectID', 'notes',
-      'notesTitle', 'subjectID__subjectName')
-    data = {
-      "notes": n
-    }
+    user = request.user.id
+    try:
+      menteeID = Mentee.objects.get(user_identification_id=user)
+      sched = Schedule.objects.filter(menteeID_id=menteeID)
+      subjectList= []
+      for p in sched:
+        subjectList.append(Subject.objects.get(pk=p.subject_id))
+        print(subjectList)
+      n = Notes.objects.filter()
+      data = {
+        "notes": n,
+        "subject": subjectList
+      }
+    except Exception as e:
+      data={}
     return render(request, 'notes.html', data)
     
   def viewSchedule(self, request):
