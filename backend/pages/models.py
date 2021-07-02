@@ -210,7 +210,7 @@ class Review(models.Model):
 
 class Notes(models.Model):
 
-    notesID= models.AutoField(primary_key=True, default=0)
+    notesID= models.AutoField(primary_key=True)
     notesTitle = models.CharField(max_length=500, default='Title' )
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)

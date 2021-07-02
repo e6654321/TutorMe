@@ -63,16 +63,13 @@ class ReceiptForm(ModelForm):
 class NotesForm(ModelForm):
     class Meta:
         model = Notes
-        fields= ['notesTitle', 'menteeID', 'mentorID', 'subjectID', 'notes']
+        fields= ['notesTitle', 'menteeID', 'subjectID', 'notes']
     
     def getNotesID(self):
         return self.data['notesID']
 
     def getNotesTitle(self):
         return self.data['notesTitle']
-
-    def getMentorID(self):
-        return self.data['mentorID']
 
     def getMenteeID(self):
         return self.data['menteeID']

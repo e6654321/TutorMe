@@ -122,11 +122,10 @@ class NotesPageView(View):
                 if form.is_valid():
                     notes_title= form.getNotesTitle()
                     userID = form.getMenteeID()
-                    mentorID= form.getMentorID()
-                    subjectID= form.getSubjectID()
+                    subjectID= form.getSubjectID()                  
                     notes_menteeID= Mentee.objects.get(user_identification_id=userID)
-                    notes_mentorID= Mentor.objects.get(mentorID=mentorID)
                     notes_subjectID= Subject.objects.get(id=subjectID)
+                    notes_mentorID = Mentor.objects.get(mentorID=notes_subjectID.mentorID_id)
                     notes_note= request.FILES['notes']
                     NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
                     messages.success(request, ("Notes added"))
@@ -141,35 +140,36 @@ class NotesPageView(View):
             if 'deleteNote' in request.POST:
                 form= NotesForm(request.POST or None)
                 notesID= form.getNotesID()
+                print(notesID)
                 NotesModel.removeNotes(notesID)
                 messages.success(request, ("Notes removed"))
         return redirect("pages:notes")
 
-    def updateTemplate(request):
-        if 'btnSort' in request.POST:
-            item = request.POST.get("search")
-            sort = request.POST.get("sort")
-            print(sort)
-            if sort == 'subjectName':
-                sort = 'subjectID__subjectName'
-            if sort == 'ratePerHour':
-                sort = 'subjectID__ratePerHour'
-            if sort == '-subjectName':
-                sort = '-subjectID__subjectName'
-            if sort == '-ratePerHour':
-                sort = '-subjectID__ratePerHour'
-            n = Notes.objects.all()
-            n = n.filter(Q(subjectID__subjectName__icontains=item) | Q(mentorID__first_name__icontains=item)
-                        | Q(mentorID__last_name__icontains=item)).values('subjectID__subjectName',
-                                                                        'mentorID__first_name', 'mentorID__last_name', 'subjectID__ratePerHour', 'notes', 'notesTitle').order_by(sort)
-            data = {
-                "notes": n
-            }
-            return render(request, 'notes.html', data)
-
     @classmethod
     def viewNotes(self, request):
         return CommonUserTemplate.viewNotes(self, request)
+
+    # def updateTemplate(self, request):
+    #     if 'btnSort' in request.POST:
+    #         item = request.POST.get("search")
+    #         sort = request.POST.get("sort")
+    #         print(sort)
+    #         if sort == 'subjectName':
+    #             sort = 'subjectID_id__subjectName'
+    #         if sort == 'ratePerHour':
+    #             sort = 'subjectID_id__ratePerHour'
+    #         if sort == '-subjectName':
+    #             sort = '-subjectID_id__subjectName'
+    #         if sort == '-ratePerHour':
+    #             sort = '-subjectID_id__ratePerHour'
+    #         n = Notes.objects.all()
+    #         n = n.filter(Q(subjectID_id__subjectName__icontains=item) | Q(mentorID_id__user_identification__first_name__icontains=item)
+    #                     | Q(mentorID_id__user_identification__last_name__icontains=item)).values('subjectID_id__subjectName',
+    #                                                                     'mentorID_id__user_identification__first_name', 'mentorID_id__user_identification__last_name', 'subjectID_id__ratePerHour', 'notes', 'notesTitle').order_by(sort)
+    #         data = {
+    #             "notes": n
+    #         }
+    #         return render(request, 'notes.html', data)
 
 
 class SearchView(TemplateView):

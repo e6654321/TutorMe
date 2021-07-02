@@ -102,7 +102,7 @@ class CommonUserTemplate:
       for p in sched:
         subjectList.append(Subject.objects.get(pk=p.subject_id))
         print(subjectList)
-      n = Notes.objects.filter()
+      n = Notes.objects.filter(menteeID_id=menteeID)
       data = {
         "notes": n,
         "subject": subjectList
