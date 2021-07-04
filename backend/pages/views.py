@@ -63,6 +63,7 @@ class RegisterView(TemplateView):
             messages.success(request, 'Account created ' + username)
             return redirect('pages:login')
         else:
+            form = CreateUserForm()
             messages.error(request, 'Check inputs and try again')
 
         context={'form': form}
