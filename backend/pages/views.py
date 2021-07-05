@@ -101,9 +101,9 @@ class RequestSchedView(TemplateView):
 
             current_user = request.user
             menteeID = User.objects.get(username=current_user)
-            menteeID = Mentee.objects.get(user_identification_id=menteeID)
+            # menteeID = Mentee.objects.get(user_identification_id=menteeID)
 
-            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+            form = Schedule(subject=subject[0],userID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
                             custom_time_end=custom_time_end, payment_method=mode)
             form.save()
 
@@ -217,10 +217,10 @@ class ProfileView(TemplateView):
     def post(self, request):
         if request.method == 'POST':
             if 'btnUpdate' in request.POST:
-                AdminModel.updateUser(request)
+                res = AdminModel.updateUser(self, request)
                 return render(request, 'profile.html', {
-                    "user": user[0],
-                    "profile": profile[0],
+                    "user": res[0],
+                    "profile": res[1],
                 })
             elif 'cancelUpdate' in request.POST:
                 return redirect('pages:profile')
@@ -342,7 +342,7 @@ class CreateSubjectView(TemplateView):
         if request.user.is_authenticated:
             current_user = request.user
             mentorID = User.objects.get(username=current_user)
-            mentorID = Mentor.objects.get(user_identification=mentorID)
+            # mentorID = Mentor.objects.get(user_identification=mentorID)
 
         if form.is_valid:
             subName = request.POST.get('subjectName')

@@ -76,20 +76,20 @@ class CommonUserTemplate:
 
   def search(self, request):
     userId = request.user
-    queries = [((Q(id=sched.subject.id)) if userId.id== sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+    queries = [((Q(id=sched.subject.id)) if userId.id== sched.userID.id else (Q(id=0))) for sched in Schedule.objects.all()]
     try:
       query = queries.pop()
       for item in queries:
           query |= item
       s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
         'session_date', 'session_time_start', 'session_time_end',
-        'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+        'mentorID__first_name', 'mentorID__last_name', 'mentorID__id')
     except IndexError as e:
         s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
           'session_date', 'session_time_start', 'session_time_end',
-          'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+          'mentorID__first_name', 'mentorID__last_name', 'mentorID__id')
     data = {
-      "subject": s1
+      "subject": s1.exclude(mentorID__id=userId.id)
     }
     return render(request, 'search.html', data)
 
@@ -115,7 +115,7 @@ class CommonUserTemplate:
     schedId = request.GET.get('id')
     print("Sched Id: " + str(schedId))
     sub = Subject.objects.filter(id=schedId).values('id','mentorID', 'subjectName', 'ratePerHour',
-      'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+      'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__first_name', 'mentorID__last_name')
 
     profile = Profile.objects.filter(user_id=request.user.id)
     account = Account.objects.filter(userID_id=request.user.id)

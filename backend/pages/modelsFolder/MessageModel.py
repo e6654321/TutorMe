@@ -1,8 +1,14 @@
-class MessageModel():
-  messages = []
+from django.db import models
+from django.contrib.auth.models import User
 
-  def deleteMessage(self):
-    self.messages.pop()
+class MessageModel(models.Model):
+    messageID= models.AutoField(primary_key=True)
+    dateSent = models.DateTimeField(auto_now_add=True, blank=True)
+    senderId = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='message_sender')
+    recieverId = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='message_reciever')
+    
+    message = models.TextField()
+    readonly_fields = ('messageID', 'dateSent')
 
-  def sendMessage(self, messages):
-    self.messages.append(messages)
+    class Meta:
+        db_table = "Messages"

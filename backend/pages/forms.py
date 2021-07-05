@@ -1,3 +1,4 @@
+from pages.modelsFolder.MessageModel import MessageModel
 from django.db.models import fields
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
@@ -76,3 +77,8 @@ class NotesForm(ModelForm):
 
     def getSubjectID(self):
         return self.data['subjectID']
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = MessageModel
+        fields = '__all__'
