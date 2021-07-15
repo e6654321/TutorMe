@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt
+from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt, Review, Ratings, Comments
 from .forms import CreateUserForm, CreateProfileForm, CardDetailsForm, AccountForm, CreateSubjectForm, NotesForm, ReceiptForm, CreateMenteeForm, CreateMentorForm
 from django.db.models import Q
 from django.core import serializers
@@ -15,6 +15,7 @@ from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
 from .modelsFolder.NotesModel import NotesModel
+
 
 class HomePageView(TemplateView):
     def get(self, request):
@@ -49,13 +50,13 @@ class RegisterView(TemplateView):
         form1 = request.POST.copy()
         form = AdminModel.addUser(self, form)
         usn = form.cleaned_data.get('username')
-        id= User.objects.get(username=usn)
+        id = User.objects.get(username=usn)
         try:
             mentor = form.cleaned_data.get('is_staff')
-            if mentor==True:
-                Mentor.addMentor(achvements=True, proofs=True, userID = id)
+            if mentor == True:
+                Mentor.addMentor(achvements=True, proofs=True, userID=id)
             else:
-                Mentee.addMentee(bio="hello", userID= id)
+                Mentee.addMentee(bio="hello", userID=id)
         except Exception as e:
             print(e)
         if form:
@@ -65,7 +66,7 @@ class RegisterView(TemplateView):
         else:
             messages.error(request, 'Check inputs and try again')
 
-        context={'form': form}
+        context = {'form': form}
         return render(request, 'register.html', context)
 
 
@@ -73,12 +74,14 @@ class logoutUser(TemplateView):
     def get(self, request):
         return AdminTemplate.logout(self, request)
 
+
 class MainView(TemplateView):
     template_name = 'main.html'
 
+
 class RequestSchedView(TemplateView):
     def get(self, request):
-        return AdminTemplate.viewSchedule(self, request)
+        return AdminTemplate.reqSchedule(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -93,7 +96,8 @@ class RequestSchedView(TemplateView):
             subject = Subject.objects.filter(id=subjectID)
             date = subject.values('session_date')[0].get('session_date')
             ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
-            time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
+            time = (subject.values('session_time_start')[0].get(
+                'session_time_start')) + " - " + (subject.values('session_time_end')[0].get('session_time_end'))
             print(time)
             custom_time_start = request.POST.get("timepicker")
             custom_time_end = request.POST.get("timepicker1")
@@ -102,7 +106,7 @@ class RequestSchedView(TemplateView):
             menteeID = User.objects.get(username=current_user)
             menteeID = Mentee.objects.get(user_identification_id=menteeID)
 
-            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+            form = Schedule(subject=subject[0], menteeID=menteeID, date=date, ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
                             custom_time_end=custom_time_end, payment_method=mode)
             form.save()
 
@@ -118,16 +122,19 @@ class NotesPageView(View):
             print(request.POST)
             if 'addNotes' in request.POST:
                 print("add")
-                form= NotesForm(request.POST, request.FILES)
+                form = NotesForm(request.POST, request.FILES)
                 if form.is_valid():
-                    notes_title= form.getNotesTitle()
+                    notes_title = form.getNotesTitle()
                     userID = form.getMenteeID()
-                    subjectID= form.getSubjectID()                  
-                    notes_menteeID= Mentee.objects.get(user_identification_id=userID)
-                    notes_subjectID= Subject.objects.get(id=subjectID)
-                    notes_mentorID = Mentor.objects.get(mentorID=notes_subjectID.mentorID_id)
-                    notes_note= request.FILES['notes']
-                    NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
+                    subjectID = form.getSubjectID()
+                    notes_menteeID = Mentee.objects.get(
+                        user_identification_id=userID)
+                    notes_subjectID = Subject.objects.get(id=subjectID)
+                    notes_mentorID = Mentor.objects.get(
+                        mentorID=notes_subjectID.mentorID_id)
+                    notes_note = request.FILES['notes']
+                    NotesModel.addNotes(
+                        notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
                     messages.success(request, ("Notes added"))
                 else:
                     messages.error(request, form.errors)
@@ -135,11 +142,11 @@ class NotesPageView(View):
         return redirect('pages:notes')
 
     def removeNote(request):
-        if request.method=='POST':
+        if request.method == 'POST':
             print(request.POST)
             if 'deleteNote' in request.POST:
-                form= NotesForm(request.POST or None)
-                notesID= form.getNotesID()
+                form = NotesForm(request.POST or None)
+                notesID = form.getNotesID()
                 print(notesID)
                 NotesModel.removeNotes(notesID)
                 messages.success(request, ("Notes removed"))
@@ -183,23 +190,24 @@ class SearchView(TemplateView):
                 sort = request.POST.get("sort")
                 print(sort)
                 userId = request.user.id
-                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (
+                    Q(id=0))) for sched in Schedule.objects.all()]
                 s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID_id__user_identification_id__first_name__icontains=item)
-                                        | Q(mentorID_id__user_identification_id__last_name__icontains=item))
+                                            | Q(mentorID_id__user_identification_id__last_name__icontains=item))
                 print(s1)
                 try:
                     query = queries.pop()
                     for item in queries:
                         query |= item
                     print(query)
-                    s2 =s1.filter(~query).distinct()
+                    s2 = s1.filter(~query).distinct()
                 except IndexError as e:
                     s2 = s1.filter()
                 print(s2)
                 data = {
-                    "subject": s2.values('id','subjectName', 'ratePerHour',
-                                            'session_date', 'session_time_start', 'session_time_end',
-                                            'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
+                    "subject": s2.values('id', 'subjectName', 'ratePerHour',
+                                         'session_date', 'session_time_start', 'session_time_end',
+                                         'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
                 }
                 return render(request, 'search.html', data)
 
@@ -242,25 +250,28 @@ class PaymentView(TemplateView):
                 year = request.POST.get('year')
                 cvc = request.POST.get('cvc')
                 if (did):
-                    Details.objects.filter(id=did).update(cardOwnerName=cardOwnerName,cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
-                    
+                    Details.objects.filter(id=did).update(
+                        cardOwnerName=cardOwnerName, cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
+
                     s1 = Account.objects.filter(userID=request.user)
-                    details = s1.values('detailID__id','detailID__cardOwnerName', 'detailID__cardNumber', 
-                        'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
+                    details = s1.values('detailID__id', 'detailID__cardOwnerName', 'detailID__cardNumber',
+                                        'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
                     print(details)
                     data = {
                         "details": details
                     }
                     return render(request, 'payment.html', data)
                 else:
-                    details = Details(cardOwnerName=cardOwnerName,cardNumber=cardNum, expire_month=month, expire_year=year, cvc=cvc)
+                    details = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum,
+                                      expire_month=month, expire_year=year, cvc=cvc)
                     details.save()
                     print(details.id)
 
-                    Account.objects.filter(userID=request.user).update(detailID=details)
+                    Account.objects.filter(
+                        userID=request.user).update(detailID=details)
                     s1 = Account.objects.filter(userID=request.user)
-                    details = s1.values('detailID__id','detailID__cardOwnerName', 'detailID__cardNumber', 
-                        'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
+                    details = s1.values('detailID__id', 'detailID__cardOwnerName', 'detailID__cardNumber',
+                                        'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
                     print(details)
                     data = {
                         "details": [details]
@@ -272,13 +283,13 @@ class PaymentView(TemplateView):
                 rid = request.POST.get('rid')
                 aid = request.POST.get('aid')
                 if (did):
-                    details = Details.objects.filter(pk = did).delete()
+                    details = Details.objects.filter(pk=did).delete()
                     print(details)
                 if (rid):
-                    receipt = Receipt.objects.filter(pk = rid).delete()
+                    receipt = Receipt.objects.filter(pk=rid).delete()
                     print(receipt)
                 if (aid):
-                    acc = Account.objects.filter(pk = aid).delete()
+                    acc = Account.objects.filter(pk=aid).delete()
                     print(acc)
                 print("Record deleted!")
                 return redirect('pages:addpayment')
@@ -294,8 +305,8 @@ class AddPaymentView(TemplateView):
         cardNum = request.POST.get('cardNumber')
         month = request.POST.get('expire_month')
         year = request.POST.get('expire_year')
-        cvc= request.POST.get('cvc')
-        # form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
+        cvc = request.POST.get('cvc')
+        # form = Details(cardOwnerName=cardOwnerName, cardNumber=cardNum,
         #                 expire_month=month, expire_year=year, cvc=cvc)
         accForm = Account(userID=current_user)
         print(cvc)
@@ -304,13 +315,14 @@ class AddPaymentView(TemplateView):
             form.save()
             accForm.save()
 
-            saved_details = Details.objects.filter(cardOwnerName=cardOwnerName, cardNumber=cardNum, 
-                        expire_month=month, expire_year=year, cvc=cvc)
+            saved_details = Details.objects.filter(cardOwnerName=cardOwnerName, cardNumber=cardNum,
+                                                   expire_month=month, expire_year=year, cvc=cvc)
             print(saved_details)
-            Account.objects.filter(userID=current_user).update(detailID=saved_details[0])
+            Account.objects.filter(userID=current_user).update(
+                detailID=saved_details[0])
             s1 = Account.objects.filter(userID=current_user)
-            details = s1.values('detailID__id','detailID__cardOwnerName', 'detailID__cardNumber', 
-                'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
+            details = s1.values('detailID__id', 'detailID__cardOwnerName', 'detailID__cardNumber',
+                                'detailID__expire_month', 'detailID__expire_year', 'detailID__cvc')
             print(details)
             data = {
                 "details": [details]
@@ -352,7 +364,7 @@ class CreateSubjectView(TemplateView):
             category = request.POST.get('category')
             latitude = request.POST.get('latitude')
             longitude = request.POST.get('longitude')
-            print(latitude,longitude)
+            print(latitude, longitude)
             form = Subject(subjectName=subName,  session_date=subDate,
                            session_time_start=timeStart, session_time_end=timeEnd,
                            ratePerHour=rate, category=category, mentorID=mentorID,
@@ -377,3 +389,57 @@ class MentorProfileView(TemplateView):
 
 class ChatBotView(TemplateView):
     template_name = 'Chatbot.html'
+
+
+class HistoryView(TemplateView):
+    def get(self, request):
+        return CommonUserTemplate.history(self, request)
+
+    def post(self, request):
+        if request.method == 'POST':
+            if 'btnSort' in request.POST:
+                item = request.POST.get("search")
+                sort = request.POST.get("sort")
+                print(sort)
+                userId = request.user.id
+                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (
+                    Q(id=0))) for sched in Schedule.objects.all()]
+                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID_id__user_identification_id__first_name__icontains=item)
+                                            | Q(mentorID_id__user_identification_id__last_name__icontains=item))
+                print(s1)
+                try:
+                    query = queries.pop()
+                    for item in queries:
+                        query |= item
+                    print(query)
+                    s2 = s1.filter(~query).distinct()
+                except IndexError as e:
+                    s2 = s1.filter()
+                print(s2)
+                data = {
+                    "subject": s2.values('id', 'subjectName', 'ratePerHour',
+                                         'session_date', 'session_time_start', 'session_time_end',
+                                         'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
+                }
+                return render(request, 'history.html', data)
+
+
+class ViewSchedView(TemplateView):
+    def get(self, request):
+        return AdminTemplate.viewSchedule(self, request)
+
+    def post(self, request):
+        if request.method == 'POST':
+            rating = request.POST.get("rate")
+            comments = request.POST.get("message")
+
+            rate = Ratings(rate=rating)
+            rate.save()
+            comment = Comments(comment=comments)
+            comment.save()
+            form = Review(ratings=rate, comments=comment)
+            form.save()
+            print(form)
+            return redirect('pages:ViewSched')
+        else:
+            return HttpResponse('failed')
