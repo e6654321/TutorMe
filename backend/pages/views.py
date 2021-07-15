@@ -49,9 +49,9 @@ class RegisterView(TemplateView):
         form = request.POST.copy()
         form1 = request.POST.copy()
         form = AdminModel.addUser(self, form)
-        usn = form.cleaned_data.get('username')
-        id = User.objects.get(username=usn)
         try:
+            usn = form.cleaned_data.get('username')
+            id = User.objects.get(username=usn)
             mentor = form.cleaned_data.get('is_staff')
             if mentor == True:
                 Mentor.addMentor(achvements=True, proofs=True, userID=id)
