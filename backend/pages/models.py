@@ -134,6 +134,7 @@ class TutorialPayment(models.Model):
 
 class Details(models.Model):
     #detailID = models.AutoField(primary_key=True, default=None)
+    stripeCustomerID = models.TextField(max_length=100, default=None)
     cardOwnerName = models.TextField(max_length=100, default=None)
     cardNumber = models.IntegerField(default=None, blank=True, null=True)
     expire_month = models.IntegerField(default=None, blank=True, null=True)

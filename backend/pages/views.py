@@ -16,6 +16,13 @@ from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
 from .modelsFolder.NotesModel import NotesModel
 
+
+from django.http import JsonResponse
+import json
+
+import stripe
+stripe.api_key = "sk_test_51J9TM9L6zwlGFb0jpsul8bsQLGExhhTrPXyymygvzUREf3GO2Bc1W6Pu2vl68IMAq9dNzv786KoRyyrnRn3hbZ0I00Oz1NePik"
+
 class HomePageView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
@@ -76,35 +83,62 @@ class logoutUser(TemplateView):
 class MainView(TemplateView):
     template_name = 'main.html'
 
+def paymentComplete(request):
+    body = json.loads(request.body)
+    print('BODY:', body)
+
+    return JsonResponse('Payment completed!', safe=False)
+
 class RequestSchedView(TemplateView):
     def get(self, request):
         return AdminTemplate.viewSchedule(self, request)
 
     def post(self, request):
         if request.method == 'POST':
+            mode =  request.POST.get('cardMode')
             subjectID = request.POST.get("subjectID")
-            print(subjectID)
-            mode = 'E-Wallet'
+            # print(subjectID)
+
+            subject = Subject.objects.filter(id=subjectID)
+            ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
+            cardOwnerName = request.POST.get('cardOwnerName')
+            cardEmail = request.POST.get('cardEmail')
+            # print(ratePrHour)
 
             if 'com' in request.POST:
                 mode = 'Cash on Delivery'
-            elif 'card-btn' in request.POST:
+            elif mode == 'card':
                 mode = 'Credit Card'
-            subject = Subject.objects.filter(id=subjectID)
-            date = subject.values('session_date')[0].get('session_date')
-            ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
-            time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
-            print(time)
-            custom_time_start = request.POST.get("timepicker")
-            custom_time_end = request.POST.get("timepicker1")
+                if Details.objects.filter(cardOwnerName=cardOwnerName).exists():
 
-            current_user = request.user
-            menteeID = User.objects.get(username=current_user)
-            menteeID = Mentee.objects.get(user_identification_id=menteeID)
+                    
+                    data = Details.objects.filter(cardOwnerName=cardOwnerName)
+                    stripeCustomerID = data.values('stripeCustomerID')[0].get('stripeCustomerID')
 
-            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
-                            custom_time_end=custom_time_end, payment_method=mode)
-            form.save()
+
+                    charge = stripe.Charge.create(
+                        customer=stripeCustomerID,
+                        amount=int(ratePrHour)*100,
+                        currency='usd',
+                        description="Tutorial Session"
+                        )
+                else:
+                    cname = request.POST['cardOwnerName']
+                    customer = stripe.Customer.create(
+                        name=cname,
+                        email=request.POST['cardEmail'],
+                        source=request.POST['stripeToken'] 
+                        )
+
+                    charge = stripe.Charge.create(
+                        customer=customer,
+                        amount=int(ratePrHour)*100,
+                        currency='usd',
+                        description="Tutorial Session"
+                        )
+
+                    form = Details(cardOwnerName=cname, stripeCustomerID=customer.id)
+                    form.save()
 
             return redirect('pages:search')
         else:
