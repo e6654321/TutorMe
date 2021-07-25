@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Details, Account, Notes, Subject, Receipt, Schedule, Mentee, Mentor, Profile
 from django import forms
+from pages.modelsFolder.MessageModel import MessageModel
 
 
 class CreateUserForm(UserCreationForm):
@@ -76,3 +77,8 @@ class NotesForm(ModelForm):
 
     def getSubjectID(self):
         return self.data['subjectID']
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = MessageModel
+        fields = '__all__'

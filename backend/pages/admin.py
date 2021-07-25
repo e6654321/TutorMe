@@ -1,3 +1,4 @@
+from pages.modelsFolder.MessageModel import MessageModel
 from django.contrib import admin
 from . import models
 from django.contrib.auth.models import User
@@ -14,7 +15,7 @@ admin.site.register(models.TutorialPayment)
 admin.site.register(models.Details)
 admin.site.register(models.Receipt)
 admin.site.register(models.Account)
-admin.site.register(models.Messages)
+admin.site.register(MessageModel)
 admin.site.register(models.Ratings)
 admin.site.register(models.Notes)
 admin.site.register(models.Comments)

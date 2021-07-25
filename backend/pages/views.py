@@ -15,6 +15,8 @@ from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
 from .modelsFolder.NotesModel import NotesModel
+from .modelsFolder.MenteeModel import MenteeModel
+from .modelsFolder.MentorModel import MentorModel
 
 class HomePageView(TemplateView):
     def get(self, request):
@@ -46,16 +48,15 @@ class RegisterView(TemplateView):
 
     def post(self, request):
         form = request.POST.copy()
-        form1 = request.POST.copy()
         form = AdminModel.addUser(self, form)
-        usn = form.cleaned_data.get('username')
-        id= User.objects.get(username=usn)
         try:
+            usn = form.cleaned_data.get('username')
+            id= User.objects.get(username=usn)
             mentor = form.cleaned_data.get('is_staff')
             if mentor==True:
-                Mentor.addMentor(achvements=True, proofs=True, userID = id)
+                MentorModel.addMentor(self, achvements=True, proofs=True, userID = id)
             else:
-                Mentee.addMentee(bio="hello", userID= id)
+                MenteeModel.addMentee(self, bio="hello", userID= id)
         except Exception as e:
             print(e)
         if form:
@@ -63,6 +64,7 @@ class RegisterView(TemplateView):
             messages.success(request, 'Account created ' + username)
             return redirect('pages:login')
         else:
+            form = CreateUserForm()
             messages.error(request, 'Check inputs and try again')
 
         context={'form': form}
@@ -112,7 +114,6 @@ class RequestSchedView(TemplateView):
 
 
 class NotesPageView(View):
-    # template_name='notes.html'
     def createNotes(request):
         if request.method == 'POST':
             print(request.POST)
@@ -216,10 +217,10 @@ class ProfileView(TemplateView):
     def post(self, request):
         if request.method == 'POST':
             if 'btnUpdate' in request.POST:
-                AdminModel.updateUser(request)
+                res = AdminModel.updateUser(self, request)
                 return render(request, 'profile.html', {
-                    "user": user[0],
-                    "profile": profile[0],
+                    "user": res[0],
+                    "profile": res[1],
                 })
             elif 'cancelUpdate' in request.POST:
                 return redirect('pages:profile')
