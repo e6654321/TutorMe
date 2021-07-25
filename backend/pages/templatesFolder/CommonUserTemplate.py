@@ -89,7 +89,7 @@ class CommonUserTemplate:
           'session_date', 'session_time_start', 'session_time_end',
           'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
     data = {
-      "subject": s1
+      "subject": s1.exclude(mentorID__user_identification_id=userId.id)
     }
     return render(request, 'search.html', data)
 

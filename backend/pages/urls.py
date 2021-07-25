@@ -21,6 +21,7 @@ from pages.views import (
 	logoutUser,
 	ChatBotView,
 )
+from pages.viewsFolder.MessageView import MessageView
 from . import views
 
 app_name = 'pages'
@@ -39,7 +40,7 @@ urlpatterns = [
 	path('settings/',login_required(login_url='pages:login')(SettingsView.as_view()),name='settings'),
 	path('payment/',login_required(login_url='pages:login')(PaymentView.as_view()),name='payment'),
 	path('addpayment/',login_required(login_url='pages:login')(AddPaymentView.as_view()),name='addpayment'),
-	path('messaging/',login_required(login_url='pages:login')(MessagingView.as_view()),name='message'),
+	path('messaging/',login_required(login_url='pages:login')(MessageView.as_view()),name='message'),
 	path('create-subject/',login_required(login_url='pages:login')(CreateSubjectView.as_view()),name='create-sub'),
 	path('schedule/',login_required(login_url='pages:login')(ScheduleSubjectView.as_view()),name='subject-view'),
 	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
