@@ -21,6 +21,7 @@ from pages.views import (
 	logoutUser,
 	ChatBotView,
 )
+from . import views
 
 app_name = 'pages'
 urlpatterns = [
@@ -43,4 +44,6 @@ urlpatterns = [
 	path('schedule/',login_required(login_url='pages:login')(ScheduleSubjectView.as_view()),name='subject-view'),
 	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
 	path('logout/',logoutUser.as_view(),name='logout'),
+    path('complete/', views.paymentComplete, name="complete"),
+    # path('charge/', views.charge, name="charge")
 ]
