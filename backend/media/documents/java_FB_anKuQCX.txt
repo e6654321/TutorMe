@@ -1,9 +1,0 @@
-var c= document.getElementsByClassName('oajrlxb2');
-for(var i = 0; i < c.length; i++){
-    if(inputs[i].getAttribute("aria-label")!=null)
-        console.log(inputs[i].getAttribute("aria-label"));
-}
-var inputs = document.querySelectorAll("a");
-
-
-
