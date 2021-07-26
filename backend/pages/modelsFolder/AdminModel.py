@@ -23,31 +23,36 @@ class AdminModel():
       print(form.errors)
       return False
     
-  def updateUser(self, user):
-    fname = user.POST.get('fname')
-    mname = user.POST.get('mname')
-    lname = user.POST.get('lname')
-    email = user.POST.get('email')
-    number = user.POST.get('number')
-    username = user.POST.get('username')
-    self.user.objects.filter(
-            id=user.user.id
+  def updateUser(self, request):
+    fname = request.POST.get('fname')
+    mname = request.POST.get('mname')
+    lname = request.POST.get('lname')
+    email = request.POST.get('email')
+    number = request.POST.get('number')
+    username = request.POST.get('username')
+    User.objects.filter(
+            id=request.user.id
         ).update(first_name=fname,last_name=lname, email=email, username=username)
     
     
-    profile = Profile.objects.filter(user=user.user)
+    profile = Profile.objects.filter(user=request.user)
 
     if profile.exists():
         profile.update(middleName=mname,contactNo=number)
     else:
-        updateProfile = Profile(user=user.user,middleName=mname,contactNo=number)
+        updateProfile = Profile(user=request.user,middleName=mname,contactNo=number)
         updateProfile.save()
     print('update')
 
-    user = self.user.objects.filter(id=user.user.id)
-    profile = Profile.objects.filter(user=user.user)
+    user = User.objects.filter(id=request.user.id)
+    profile = Profile.objects.filter(user=request.user)
 
-    print(profile[0])
+    return [
+      user,
+      profile,
+    ]
+
+    print(profile)
 
   def removeUser(self, user):
-    self.user.objects.filter(id=user.id).delete()
+    User.objects.filter(id=user.id).delete()

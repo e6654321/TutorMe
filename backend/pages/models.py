@@ -51,16 +51,6 @@ class Mentee(models.Model):
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
 
-    def addMentee(bio, userID):
-        try:
-            newMentee = Mentee()
-            newMentee.bio = bio
-            newMentee.user_identification = userID
-            newMentee.save()
-            print('saved')
-        except Exception as e:
-            print(e)
-
     class Meta:
         db_table = "Mentee"
 
@@ -72,17 +62,8 @@ class Mentor(models.Model):
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
 
-    def addMentor(achvements, proofs, userID):
-        try:
-            newMentor = Mentor()
-            newMentor.achvemnts = achvements
-            newMentor.proofs = proofs
-            newMentor.user_identification = userID
-            newMentor.save()
-            print('saved')
-        except Exception as e:
-            print(e)
-
+    
+    
     class Meta:
         db_table = "Mentor"
 
@@ -139,11 +120,8 @@ class TutorialPayment(models.Model):
 
 class Details(models.Model):
     #detailID = models.AutoField(primary_key=True, default=None)
+    stripeCustomerID = models.TextField(max_length=100, default=None)
     cardOwnerName = models.TextField(max_length=100, default=None)
-    cardNumber = models.IntegerField(default=None, blank=True, null=True)
-    expire_month = models.IntegerField(default=None, blank=True, null=True)
-    expire_year = models.IntegerField(default=None, blank=True, null=True)
-    cvc = models.IntegerField(default=None, blank=True, null=True)
     readonly_fields = ('id',)
 
     class Meta:
@@ -173,16 +151,16 @@ class Account(models.Model):
         db_table = "Account"
 
 
-class Messages(models.Model):
-    #messageID = models.AutoField(primary_key=True, default=None)
-    messageID = models.AutoField(primary_key=True, default=0)
-    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+# class Messages(models.Model):
+#     #messageID = models.AutoField(primary_key=True, default=None)
+#     messageID = models.AutoField(primary_key=True, default=0)
+#     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
+    
+#     message = models.TextField()
+#     readonly_fields = ('id',)
 
-    message = models.TextField()
-    readonly_fields = ('id',)
-
-    class Meta:
-        db_table = "Messages"
+#     class Meta:
+#         db_table = "Messages"
 
 
 class Ratings(models.Model):

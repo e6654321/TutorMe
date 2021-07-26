@@ -78,46 +78,46 @@ class CommonUserTemplate:
 
     def search(self, request):
         userId = request.user
-        queries = [((Q(id=sched.subject.id)) if userId.id == sched.menteeID_id else (
-            Q(id=0))) for sched in Schedule.objects.all()]
+        queries = [((Q(id=sched.subject.id)) if userId.id== sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
         try:
-            query = queries.pop()
-            for item in queries:
-                query |= item
-            s1 = Subject.objects.exclude(query).values('id', 'subjectName', 'ratePerHour',
-                                                       'session_date', 'session_time_start', 'session_time_end',
-                                                       'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+          query = queries.pop()
+          for item in queries:
+              query |= item
+          s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
+            'session_date', 'session_time_start', 'session_time_end',
+            'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
         except IndexError as e:
-            s1 = Subject.objects.all().values('id', 'subjectName', 'ratePerHour',
-                                              'session_date', 'session_time_start', 'session_time_end',
-                                              'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+            s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
+              'session_date', 'session_time_start', 'session_time_end',
+              'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
         data = {
-            "subject": s1
+          "subject": s1.exclude(mentorID__user_identification_id=userId.id)
         }
         return render(request, 'search.html', data)
 
     def viewNotes(self, request):
         user = request.user.id
         try:
-            menteeID = Mentee.objects.get(user_identification_id=user)
-            sched = Schedule.objects.filter(menteeID_id=menteeID)
-            subjectList = []
-            for p in sched:
-                subjectList.append(Subject.objects.get(pk=p.subject_id))
-                print(subjectList)
-            n = Notes.objects.filter(menteeID_id=menteeID)
-            data = {
-                "notes": n,
-                "subject": subjectList
-            }
+          menteeID = Mentee.objects.get(user_identification_id=user)
+          sched = Schedule.objects.filter(menteeID_id=menteeID)
+          subjectList= []
+          for p in sched:
+            subjectList.append(Subject.objects.get(pk=p.subject_id))
+            print(subjectList)
+          n = Notes.objects.filter(menteeID_id=menteeID)
+          data = {
+            "notes": n,
+            "subject": subjectList
+          }
         except Exception as e:
-            data = {}
+          data={}
         return render(request, 'notes.html', data)
+    
 
     def reqSchedule(self, request):
         schedId = request.GET.get('id')
         print("Sched Id: " + str(schedId))
-        sub = Subject.objects.filter(id=schedId).values('id', 'mentorID', 'subjectName', 'ratePerHour',
+        sub = Subject.objects.filter(id=schedId).values('id','mentorID', 'subjectName', 'ratePerHour',
                                                         'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
 
         profile = Profile.objects.filter(user_id=request.user.id)
