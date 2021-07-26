@@ -48,7 +48,5 @@ urlpatterns = [
 	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
 	path('logout/',logoutUser.as_view(),name='logout'),
     path('complete/', views.paymentComplete, name="complete"),
-    path('history/', login_required(login_url='pages:login')(HistoryView.as_view()), name='history'),
-    path('ViewSched/', login_required(login_url='pages:login')(ViewSchedView.as_view()), name='ViewSched'),
     # path('charge/', views.charge, name="charge")
 ]

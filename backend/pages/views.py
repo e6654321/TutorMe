@@ -25,7 +25,6 @@ import json
 import stripe
 stripe.api_key = "sk_test_51J9TM9L6zwlGFb0jpsul8bsQLGExhhTrPXyymygvzUREf3GO2Bc1W6Pu2vl68IMAq9dNzv786KoRyyrnRn3hbZ0I00Oz1NePik"
 
-
 class HomePageView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
