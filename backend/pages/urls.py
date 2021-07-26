@@ -21,7 +21,7 @@ from pages.views import (
     logoutUser,
     ChatBotView,
     HistoryView,
-    ViewSchedView
+    RatingFeedback
 )
 from pages.viewsFolder.MessageView import MessageView
 from . import views
@@ -47,6 +47,7 @@ urlpatterns = [
 	path('schedule/',login_required(login_url='pages:login')(ScheduleSubjectView.as_view()),name='subject-view'),
 	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
 	path('logout/',logoutUser.as_view(),name='logout'),
-    path('complete/', views.paymentComplete, name="complete"),
+    path('history/', login_required(login_url='pages:login')(HistoryView.as_view()), name='history'),
+    path('RatingFeedback/', login_required(login_url='pages:login')(RatingFeedback.as_view()), name='ViewSched'),
     # path('charge/', views.charge, name="charge")
 ]

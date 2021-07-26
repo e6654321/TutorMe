@@ -217,7 +217,7 @@ class CommonUserTemplate:
         }
         return render(request, 'history.html', data)
 
-  def viewSchedule(self, request):
+  def RatingFeedbackTemplate(self, request):
         schedId = request.GET.get('id')
         print("Sched Id: " + str(schedId))
         sub = Subject.objects.filter(id=schedId).values('id', 'mentorID', 'subjectName', 'ratePerHour',

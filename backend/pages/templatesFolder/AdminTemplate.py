@@ -12,8 +12,6 @@ class AdminTemplate:
     def viewSchedule(self, request):
         return CommonUserTemplate.viewSchedule(self, request)
 
-    def reqSchedule(self, request):
-        return CommonUserTemplate.reqSchedule(self, request)
 
     def logout(self, request):
         return CommonUserTemplate.logout(self, request)

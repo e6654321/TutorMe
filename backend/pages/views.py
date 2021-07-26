@@ -14,10 +14,11 @@ from .modelsFolder.AdminModel import AdminModel
 from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
+from.templatesFolder.RatingFeedbackTemplate import RatingFeedbackTemplate
 from .modelsFolder.NotesModel import NotesModel
 from .modelsFolder.MenteeModel import MenteeModel
 from .modelsFolder.MentorModel import MentorModel
-
+from .modelsFolder.RatingFeedbackModel import RatingFeedbackModel
 
 from django.http import JsonResponse
 import json
@@ -85,13 +86,7 @@ class logoutUser(TemplateView):
 
 class MainView(TemplateView):
     template_name = 'main.html'
-
-def paymentComplete(request):
-    body = json.loads(request.body)
-    print('BODY:', body)
-
-    return JsonResponse('Payment completed!', safe=False)
-
+  
 class RequestSchedView(TemplateView):
     def get(self, request):
         return AdminTemplate.reqSchedule(self, request)
@@ -456,19 +451,17 @@ class HistoryView(TemplateView):
                 return render(request, 'history.html', data)
 
 
-class ViewSchedView(TemplateView):
+class RatingFeedback(TemplateView):
     def get(self, request):
-        return AdminTemplate.viewSchedule(self, request)
+        return RatingFeedbackTemplate.viewReview(self, request)
 
     def post(self, request):
         if request.method == 'POST':
             rating = request.POST.get("rate")
             comments = request.POST.get("message")
 
-            rate = Ratings(rate=rating)
-            rate.save()
-            comment = Comments(comment=comments)
-            comment.save()
+            rate = RatingFeedbackModel.setRating(rating)
+            comment = RatingFeedbackModel.setFeedback(comments)
             form = Review(ratings=rate, comments=comment)
             form.save()
             print(form)
