@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.validators import FileExtensionValidator
 # Create your models here.
 
+
 class Profile(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     middleName = models.CharField(max_length=100, blank=True, null=True)
@@ -45,7 +46,8 @@ class Admin(Profile):
 
 class Mentee(models.Model):
     menteeID = models.AutoField(primary_key=True)
-    user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user_identification = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
 
@@ -55,7 +57,8 @@ class Mentee(models.Model):
 
 class Mentor(models.Model):
     mentorID = models.AutoField(primary_key=True)
-    user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user_identification = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE)
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
 
@@ -63,6 +66,7 @@ class Mentor(models.Model):
     
     class Meta:
         db_table = "Mentor"
+
 
 class Subject(models.Model):
     #subjectID = models.AutoField(primary_key=True, default=None)
@@ -135,9 +139,12 @@ class Receipt(models.Model):
 
 class Account(models.Model):
     #accountID = models.AutoField(primary_key=True, default=None)
-    userID = models.ForeignKey(User, null=True, blank=False, on_delete=models.SET_NULL)
-    detailID = models.ForeignKey(Details, null=True, blank=False, on_delete=models.SET_NULL)
-    receiptID = models.ForeignKey(Receipt, null=True, blank=False, on_delete=models.SET_NULL)
+    userID = models.ForeignKey(
+        User, null=True, blank=False, on_delete=models.SET_NULL)
+    detailID = models.ForeignKey(
+        Details, null=True, blank=False, on_delete=models.SET_NULL)
+    receiptID = models.ForeignKey(
+        Receipt, null=True, blank=False, on_delete=models.SET_NULL)
     readonly_fields = ('id',)
 
     class Meta:
@@ -167,7 +174,7 @@ class Ratings(models.Model):
 
 class Comments(models.Model):
     #commentID = models.AutoField(primary_key=True, default=None)
-    comment = models.TextField()
+    comment = models.TextField(max_length=500)
     readonly_fields = ('id',)
 
     class Meta:
@@ -181,6 +188,7 @@ class Review(models.Model):
     ratings = models.ForeignKey(Ratings, null=True, on_delete=models.SET_NULL)
     comments = models.ForeignKey(
         Comments, null=True, on_delete=models.SET_NULL)
+
     readonly_fields = ('id',)
 
     class Meta:
@@ -189,14 +197,14 @@ class Review(models.Model):
 
 class Notes(models.Model):
 
-    notesID= models.AutoField(primary_key=True)
-    notesTitle = models.CharField(max_length=500, default='Title' )
+    notesID = models.AutoField(primary_key=True)
+    notesTitle = models.CharField(max_length=500, default='Title')
     menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
     mentorID = models.ForeignKey(Mentor, null=True, on_delete=models.SET_NULL)
     subjectID = models.ForeignKey(
         Subject, null=True, on_delete=models.SET_NULL)
-    notes = models.FileField(upload_to='documents/',  validators=[FileExtensionValidator(allowed_extensions=['pdf', 'docx', 'txt'])],null=True, blank=True)
-    
+    notes = models.FileField(upload_to='documents/',  validators=[FileExtensionValidator(
+        allowed_extensions=['pdf', 'docx', 'txt'])], null=True, blank=True)
 
     class Meta:
         db_table = "Notes"

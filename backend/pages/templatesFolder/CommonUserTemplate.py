@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core import serializers
 from ..models import Details, Notes, Profile, Subject, Schedule, Account, Mentee
+from itertools import chain
+
 
 class CommonUserTemplate:
   def viewProfile(self, request):
@@ -131,8 +133,108 @@ class CommonUserTemplate:
   def viewNotifications(self):
     return redirect('pages:notifications')
 
-  def chatbot(self):
-    return redirect('pages:chatbot')
+  def search(self, request):
+        userId = request.user
+        queries = [((Q(id=sched.subject.id)) if userId.id== sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+        try:
+          query = queries.pop()
+          for item in queries:
+              query |= item
+          s1 = Subject.objects.exclude(query).values('id','subjectName', 'ratePerHour',
+            'session_date', 'session_time_start', 'session_time_end',
+            'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+        except IndexError as e:
+            s1 = Subject.objects.all().values('id','subjectName', 'ratePerHour',
+              'session_date', 'session_time_start', 'session_time_end',
+              'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+        data = {
+          "subject": s1.exclude(mentorID__user_identification_id=userId.id)
+        }
+        return render(request, 'search.html', data)
+
+  def viewNotes(self, request):
+        user = request.user.id
+        try:
+          menteeID = Mentee.objects.get(user_identification_id=user)
+          sched = Schedule.objects.filter(menteeID_id=menteeID)
+          subjectList= []
+          for p in sched:
+            subjectList.append(Subject.objects.get(pk=p.subject_id))
+            print(subjectList)
+          n = Notes.objects.filter(menteeID_id=menteeID)
+          data = {
+            "notes": n,
+            "subject": subjectList
+          }
+        except Exception as e:
+          data={}
+        return render(request, 'notes.html', data)
     
+
+  def reqSchedule(self, request):
+        schedId = request.GET.get('id')
+        print("Sched Id: " + str(schedId))
+        sub = Subject.objects.filter(id=schedId).values('id','mentorID', 'subjectName', 'ratePerHour',
+                                                        'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+
+        profile = Profile.objects.filter(user_id=request.user.id)
+        account = Account.objects.filter(userID_id=request.user.id)
+        cardId = account.values('detailID_id')
+        card = Details.objects.filter(id=cardId)
+        subject = {
+            'subject': sub,
+            'profile': profile,
+            'card': card
+        }
+        return render(request, 'RequestSched.html', subject)
+
+  def viewNotifications(self):
+        return redirect('pages:notifications')
+
+  def chatbot(self):
+        return redirect('pages:chatbot')
+
   def becomeMentor(self):
-    return redirect('pages:become-mentor')
+        return redirect('pages:become-mentor')
+
+  def history(self, request):
+        userId = request.user
+        queries = [((Q(id=sched.subject.id)) if userId.id == sched.menteeID_id else (
+            Q(id=0))) for sched in Schedule.objects.all()]
+        try:
+            query = queries.pop()
+            for item in queries:
+                query |= item
+            s1 = Subject.objects.exclude(query).values('id', 'subjectName', 'ratePerHour',
+                                                       'session_date', 'session_time_start', 'session_time_end',
+                                                       'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+        except IndexError as e:
+            s1 = Subject.objects.all().values('id', 'subjectName', 'ratePerHour',
+                                              'session_date', 'session_time_start', 'session_time_end',
+                                              'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+        data = {
+            "subject": s1
+        }
+        return render(request, 'history.html', data)
+
+  def RatingFeedbackTemplate(self, request):
+        schedId = request.GET.get('id')
+        print("Sched Id: " + str(schedId))
+        sub = Subject.objects.filter(id=schedId).values('id', 'mentorID', 'subjectName', 'ratePerHour',
+                                                        'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
+
+        sched = Schedule.objects.filter(id=schedId).values('menteeID_id', 'ratePrHour', 'time', 'ratePrHour',
+                                                           'custom_time_start', 'custom_time_end', 'payment_method', 'status', 'menteeID__user_identification__first_name', 'menteeID__user_identification__last_name')
+
+        print(sched)
+        profile = Profile.objects.filter(user_id=request.user.id)
+        account = Account.objects.filter(userID_id=request.user.id)
+        cardId = account.values('detailID_id')
+        card = Details.objects.filter(id=cardId)
+        subject = {
+            'subject': sub,
+            'profile': profile,
+            'card': card,
+            'sched': sched
+        }
+        return render(request, 'ViewSched.html', subject)
