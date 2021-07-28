@@ -1,31 +1,17 @@
-from django.db import models
-from ..views  import Ratings, Comments
+
 class RatingFeedbackModel():
-  rating_val = 0
+  rating = 0
   feedback = ""
 
-
-  def setRating(rate):
-    try:
-        rating = Ratings()
-        rating.rate = rate
-        rating.save()
-        return rating
-    except Exception as e:
-        print(e)
+  def setRating(self, rating):
+    self.rating = rating
   
-  def setFeedback(feedback):
-    try:
-        review = Comments()
-        review.comment = feedback
-        review.save()
-        return review
-    except Exception as e:
-        print(e)
+  def setFeedback(self, feedback):
+    self.feedback = feedback
   
-  def getRating(id):  
-   return Ratings.objects.get(id)
+  def getRating(self):
+    return self.rating
   
-  def getFeedback(id):
-    return Comments.objects.get(id)
+  def getFeedback(self):
+    return self.feedback
   

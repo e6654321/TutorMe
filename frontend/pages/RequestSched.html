@@ -640,6 +640,21 @@
             var total = '{{s.ratePerHour}}'
             var productId = '1'
 
+            function completeOrder(){
+              alert("Order Completed");
+              var url = "{% url 'complete' %}"
+
+              fetch(url, {
+                method:'POST',
+                headers:{
+                  'Content-type':'application/json',
+                  'X-CSRFToken':csrftoken,
+                },
+                body:JSON.stringify({'productId':productId})
+              })
+            }
+
+
                 // Render the PayPal button into #paypal-button-container
                 paypal.Buttons({
 
