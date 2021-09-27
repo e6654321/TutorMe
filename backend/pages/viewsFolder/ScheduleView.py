@@ -20,8 +20,8 @@ class ScheduleView():
   def schedViaGeo(self, ulocation):
     self.scheduleModel.schedViaGeo(self, ulocation)
     
-  def viewSched(self):
-    self.scheduleModel.viewSched(self)
+  def reqSched(self):
+    self.scheduleModel.reqSched(self)
     
   def addSched(self):
     self.scheduleModel.addSched(self)
