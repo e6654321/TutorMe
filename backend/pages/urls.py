@@ -3,27 +3,6 @@ from django.http import request
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from pages.views import (
-<<<<<<< HEAD
-	HomePageView,
-	NotesPageView, 
-	MainView,
-	SearchView,
-	GeolocationView,
-	ProfileView,
-	SettingsView,
-	PaymentView,
-	AddPaymentView,
-	MessagingView,
-	CreateSubjectView,
-	ScheduleSubjectView,
-	MentorProfileView,
-	RequestSchedView,
-	RegisterView,
-	logoutUser,
-	ChatBotView,
-	RatingFeedback,
-	HistoryView
-=======
 
     HomePageView,
     NotesPageView,
@@ -43,8 +22,7 @@ from pages.views import (
     logoutUser,
     ChatBotView,
     HistoryView,
-    ViewSchedView
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
+    RatingFeedback,
 )
 from pages.viewsFolder.MessageView import MessageView
 from . import views

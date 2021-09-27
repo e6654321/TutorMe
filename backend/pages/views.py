@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt
+from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt, Review, Ratings, Comments
 from .forms import CreateUserForm, CreateProfileForm, CardDetailsForm, AccountForm, CreateSubjectForm, NotesForm, ReceiptForm, CreateMenteeForm, CreateMentorForm
 from django.db.models import Q
 from django.core import serializers
@@ -14,10 +14,12 @@ from .modelsFolder.AdminModel import AdminModel
 from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
+from.templatesFolder.RatingFeedbackTemplate import RatingFeedbackTemplate
 from .modelsFolder.NotesModel import NotesModel
 from .modelsFolder.MenteeModel import MenteeModel
 from .modelsFolder.MentorModel import MentorModel
 from .templatesFolder.RatingFeedbackTemplate import RatingFeedbackTemplate
+from .modelsFolder.RatingFeedbackModel import RatingFeedbackModel
 
 from django.http import JsonResponse
 import json
@@ -91,10 +93,7 @@ def paymentComplete(request):
     print('BODY:', body)
 
     return JsonResponse('Payment completed!', safe=False)
-<<<<<<< HEAD
 #viewSchedule
-=======
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
 class RequestSchedView(TemplateView):
     def get(self, request):
         return AdminTemplate.reqSchedule(self, request)
@@ -103,31 +102,24 @@ class RequestSchedView(TemplateView):
         if request.method == 'POST':
             mode =  request.POST.get('cardMode')
             subjectID = request.POST.get("subjectID")
-            print(subjectID)
+            # print(subjectID)
 
             subject = Subject.objects.filter(id=subjectID)
             ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
             cardOwnerName = request.POST.get('cardOwnerName')
             cardEmail = request.POST.get('cardEmail')
-            print(ratePrHour)
+            # print(ratePrHour)
 
             if 'com' in request.POST:
                 mode = 'Cash on Delivery'
             elif mode == 'card':
                 mode = 'Credit Card'
-            subject = Subject.objects.filter(id=subjectID)
-            date = subject.values('session_date')[0].get('session_date')
-            ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
-            time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
-            print(time)
-            custom_time_start = request.POST.get("timepicker")
-            custom_time_end = request.POST.get("timepicker1")
+                if Details.objects.filter(cardOwnerName=cardOwnerName).exists():
 
                     
                     data = Details.objects.filter(cardOwnerName=cardOwnerName)
                     stripeCustomerID = data.values('stripeCustomerID')[0].get('stripeCustomerID')
 
-<<<<<<< HEAD
 
                     charge = stripe.Charge.create(
                         customer=stripeCustomerID,
@@ -152,14 +144,7 @@ class RequestSchedView(TemplateView):
 
                     form = Details(cardOwnerName=cname, stripeCustomerID=customer.id)
                     form.save()
-               
-                form.save()      
-=======
-            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
-                            custom_time_end=custom_time_end, payment_method=mode)
-            form.save()
 
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
             return redirect('pages:search')
         else:
             return HttpResponse('failed')
@@ -430,7 +415,6 @@ class MentorProfileView(TemplateView):
 class ChatBotView(TemplateView):
     template_name = 'Chatbot.html'
 
-<<<<<<< HEAD
 class RatingFeedback(TemplateView):
     def get(self, request):
         return RatingFeedbackTemplate.viewReview(self, request)
@@ -445,12 +429,9 @@ class RatingFeedback(TemplateView):
             form = Review(ratings=rate, comments=comment)
             form.save()
             print(form)
-            return redirect('pages:ViewSched')
+            return redirect('pages:RatingFeedback')
         else:
             return HttpResponse('failed')
-=======
-
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
 class HistoryView(TemplateView):
     def get(self, request):
         return CommonUserTemplate.history(self, request)
@@ -483,27 +464,3 @@ class HistoryView(TemplateView):
                 }
                 return render(request, 'history.html', data)
 
-<<<<<<< HEAD
-=======
-
-class ViewSchedView(TemplateView):
-    def get(self, request):
-        return AdminTemplate.viewSchedule(self, request)
-
-    def post(self, request):
-        if request.method == 'POST':
-            rating = request.POST.get("rate")
-            comments = request.POST.get("message")
-
-            rate = Ratings(rate=rating)
-            rate.save()
-            comment = Comments(comment=comments)
-            comment.save()
-            form = Review(ratings=rate, comments=comment)
-            form.save()
-            print(form)
-            return redirect('pages:ViewSched')
-        else:
-            return HttpResponse('failed')
-
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9

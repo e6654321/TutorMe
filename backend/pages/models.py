@@ -48,9 +48,6 @@ class Mentee(models.Model):
     user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
-<<<<<<< HEAD
-
-=======
     def addMentee(bio, userID):
         try:
             newMentee = Mentee()
@@ -61,7 +58,6 @@ class Mentee(models.Model):
         except Exception as e:
             print(e)
     
->>>>>>> parent of f534151 (ReviewAndFeedback)
     class Meta:
         db_table = "Mentee"
 
@@ -72,20 +68,7 @@ class Mentor(models.Model):
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
 
-<<<<<<< HEAD
     
-=======
-    def addMentor(achvements, proofs, userID):
-        try:
-            newMentor = Mentor()
-            newMentor.achvemnts=achvements
-            newMentor.proofs=proofs
-            newMentor.user_identification=userID
-            newMentor.save()
-            print('saved')
-        except Exception as e:
-            print(e)
->>>>>>> parent of f534151 (ReviewAndFeedback)
     
     class Meta:
         db_table = "Mentor"
@@ -170,7 +153,6 @@ class Account(models.Model):
         db_table = "Account"
 
 
-<<<<<<< HEAD
 # class Messages(models.Model):
 #     #messageID = models.AutoField(primary_key=True, default=None)
 #     messageID = models.AutoField(primary_key=True, default=0)
@@ -181,18 +163,6 @@ class Account(models.Model):
 
 #     class Meta:
 #         db_table = "Messages"
-=======
-class Messages(models.Model):
-    #messageID = models.AutoField(primary_key=True, default=None)
-    messageID = models.AutoField(primary_key=True, default=0)
-    menteeID = models.ForeignKey(Mentee, null=True, on_delete=models.SET_NULL)
-    
-    message = models.TextField()
-    readonly_fields = ('id',)
-
-    class Meta:
-        db_table = "Messages"
->>>>>>> parent of f534151 (ReviewAndFeedback)
 
 
 class Ratings(models.Model):
@@ -220,6 +190,7 @@ class Review(models.Model):
     ratings = models.ForeignKey(Ratings, null=True, on_delete=models.SET_NULL)
     comments = models.ForeignKey(
         Comments, null=True, on_delete=models.SET_NULL)
+
     readonly_fields = ('id',)
 
     class Meta:

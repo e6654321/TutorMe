@@ -89,11 +89,7 @@ class CommonUserTemplate:
           'session_date', 'session_time_start', 'session_time_end',
           'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
     data = {
-<<<<<<< HEAD
       "subject": s1.exclude(mentorID__user_identification_id=userId.id)
-=======
-      "subject": s1
->>>>>>> parent of f534151 (ReviewAndFeedback)
     }
     return render(request, 'search.html', data)
 
@@ -139,7 +135,6 @@ class CommonUserTemplate:
     return redirect('pages:chatbot')
     
   def becomeMentor(self):
-<<<<<<< HEAD
     return redirect('pages:become-mentor')
   
   def RatingFeedbackTemplate(self, request):
@@ -163,10 +158,7 @@ class CommonUserTemplate:
       'sched': sched
     }
     return render(request, 'ViewSched.html', subject)
-=======
-<<<<<<< HEAD
-        return redirect('pages:become-mentor')
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
+
 
   def history(self, request):
         userId = request.user
@@ -186,33 +178,5 @@ class CommonUserTemplate:
         data = {
             "subject": s1
         }
-<<<<<<< HEAD
-        return render(request, 'history.html', data)
-=======
         return render(request, 'history.html', data)
 
-  def viewSchedule(self, request):
-        schedId = request.GET.get('id')
-        print("Sched Id: " + str(schedId))
-        sub = Subject.objects.filter(id=schedId).values('id', 'mentorID', 'subjectName', 'ratePerHour',
-                                                        'session_date', 'session_time_end', 'session_time_start', 'category', 'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name')
-
-        sched = Schedule.objects.filter(id=schedId).values('menteeID_id', 'ratePrHour', 'time', 'ratePrHour',
-                                                           'custom_time_start', 'custom_time_end', 'payment_method', 'status', 'menteeID__user_identification__first_name', 'menteeID__user_identification__last_name')
-
-        print(sched)
-        profile = Profile.objects.filter(user_id=request.user.id)
-        account = Account.objects.filter(userID_id=request.user.id)
-        cardId = account.values('detailID_id')
-        card = Details.objects.filter(id=cardId)
-        subject = {
-            'subject': sub,
-            'profile': profile,
-            'card': card,
-            'sched': sched
-        }
-        return render(request, 'ViewSched.html', subject)
-=======
-    return redirect('pages:become-mentor')
->>>>>>> parent of f534151 (ReviewAndFeedback)
->>>>>>> 166e0146f03dd64d1451ae02639d72af374fe1a9
