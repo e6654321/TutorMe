@@ -3,23 +3,26 @@ from django.http import request
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from pages.views import (
-	HomePageView,
-	NotesPageView, 
-	MainView,
-	SearchView,
-	GeolocationView,
-	ProfileView,
-	SettingsView,
-	PaymentView,
-	AddPaymentView,
-	MessagingView,
-	CreateSubjectView,
-	ScheduleSubjectView,
-	MentorProfileView,
-	RequestSchedView,
-	RegisterView,
-	logoutUser,
-	ChatBotView,
+
+    HomePageView,
+    NotesPageView,
+    MainView,
+    SearchView,
+    GeolocationView,
+    ProfileView,
+    SettingsView,
+    PaymentView,
+    AddPaymentView,
+    MessagingView,
+    CreateSubjectView,
+    ScheduleSubjectView,
+    MentorProfileView,
+    RequestSchedView,
+    RegisterView,
+    logoutUser,
+    ChatBotView,
+    HistoryView,
+    RatingFeedback,
 )
 from pages.viewsFolder.MessageView import MessageView
 from . import views
@@ -40,11 +43,14 @@ urlpatterns = [
 	path('settings/',login_required(login_url='pages:login')(SettingsView.as_view()),name='settings'),
 	path('payment/',login_required(login_url='pages:login')(PaymentView.as_view()),name='payment'),
 	path('addpayment/',login_required(login_url='pages:login')(AddPaymentView.as_view()),name='addpayment'),
-	path('messaging/',login_required(login_url='pages:login')(MessageView.as_view()),name='message'),
+	path('messaging/',login_required(login_url='pages:login')(MessagingView.as_view()),name='message'),
 	path('create-subject/',login_required(login_url='pages:login')(CreateSubjectView.as_view()),name='create-sub'),
 	path('schedule/',login_required(login_url='pages:login')(ScheduleSubjectView.as_view()),name='subject-view'),
 	path('mentor-profile/',login_required(login_url='pages:login')(MentorProfileView.as_view()),name='mentor-profile'),
 	path('logout/',logoutUser.as_view(),name='logout'),
     path('complete/', views.paymentComplete, name="complete"),
+    path('history/', login_required(login_url='pages:login')(HistoryView.as_view()), name='history'),
+    path('RatingFeedback/', login_required(login_url='pages:login')(RatingFeedback.as_view()), name='RatingFeedback'),
     # path('charge/', views.charge, name="charge")
+
 ]

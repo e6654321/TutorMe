@@ -1,0 +1,148 @@
+{% extends 'components/base.html' %} {% load static %} {% block title %}
+<title>TutorMe</title>
+{% endblock %} {% block pageCSS %}
+<style type="text/css">
+  .center-component {
+    height: 89vh;
+    width: 80%;
+    position: relative;
+    overflow-y: scroll;
+  }
+
+  .notes-table {
+    width: 100%;
+    padding: 2%;
+    margin-top: 1%;
+    border-top-right-radius: 5%;
+    border-right: lightgrey 1px;
+    box-shadow: 5px 2px lightgrey;
+    border-bottom-right-radius: 5%;
+    color: #f8c400;
+  }
+
+  .notes-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5% 1.5% 5px 1.5%;
+    background-color: skyblue;
+    border-left: solid blue 5px;
+    border-radius: 0px 10px 10px 0px;
+  }
+
+  .notes-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .notes-container:hover {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    cursor: pointer;
+  }
+</style>
+{% endblock %} {% block pageBody %}
+<div class="main-container">
+  {% include 'components/navigation.html' %}
+  <span style="z-index: 100"> {% include 'components/Chatbot.html' %} </span>
+
+  <div class="body-container col">
+    {% include 'components/header.html' %}
+    <div class="row">
+      <div class="center-component col-9">
+        <div class="notes-table">
+          {% for s in subject %}
+
+          <div class="notes-container" id="{{s.id}}" style="background-color: #8c383e; border-left-color: #781b1b"
+            onClick="onChoose('{{s.id}}')">
+            <div class="notes-header">
+              <h6>{{s.session_date}}</h6>
+              <h6>{{s.session_time_start}} - {{s.session_time_end}}</h6>
+            </div>
+            <div class="notes-details">
+              <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px">
+                <!-- <img src="{% static 'assets/icons/elram.png' %}"> -->
+                <i class="fas fa-chalkboard-teacher" style="height: 5%; width: 5%"></i>
+                <p style="padding: 0px 0px 0px 10px; font-size: larger">
+                  <i>{{s.mentorID__user_identification__first_name}}
+                    {{s.mentorID__user_identification__last_name}}</i>
+                </p>
+              </div>
+
+              <div class="detail-subj" style="display: flex; padding-top: 8px">
+                <!-- <img src="{% static 'assets/icons/math_logo.png' %}"> -->
+                <i class="fas fa-book" style="height: 2%; width: 2%; margin-right: 5px"></i>
+                <h5>{{s.subjectName}}</h5>
+                <h6 style="position: absolute; right: 50px">
+                  {{s.ratePerHour}}/hour
+                </h6>
+              </div>
+            </div>
+          </div>
+          <br />
+
+          {% endfor %}
+
+          <!-- <div class="notes-container" style="background-color: #FFA848; border-left-color: #FF8600;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>13:00 - 15:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Aldren Kim Concordia</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Intelligent Systems</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #C4BEFF; border-left-color: #948BFF;">
+                            <div class="notes-header">
+                                <h5>October 30</h5>
+                                <p>9:00 - 10:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jonah Marc Batomalaque</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Information Management</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="notes-container" style="background-color: #FF6E6E; border-left-color: #FD3030;">
+                            <div class="notes-header">
+                                <h5>October 24</h5>
+                                <p>10:00 - 11:00</p>
+                            </div>
+                            <div class="notes-details">
+                                <div class="detail-nm" style="display: flex; align-items: center; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/elram.png' %}">
+                                    <p style="padding: 0px 0px 0px 10px;">Jhosie Charles Espantaleon</p>
+                                </div>
+                                <div class="detail-subj" style="display: flex; padding-top: 8px;">
+                                    <img src="{% static 'assets/icons/math_logo.png' %}">
+                                    <p>Life and Works of Rizal</p>
+                                </div>
+                            </div>
+                        </div> -->
+        </div>
+      </div>
+      {% include "components/sidebar.html" %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block pageJS %}
+<script type="text/javascript">
+  function onChoose(id) {
+    console.log(id);
+    window.location.replace("/RatingFeedback?id=" + id);
+  }
+</script>
+{% endblock %}

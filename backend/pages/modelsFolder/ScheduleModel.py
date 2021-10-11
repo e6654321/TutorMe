@@ -26,13 +26,13 @@ class ScheduleModel():
 
   def setRate(self, rate):
     self.rate = rate
-  
+  #viewSchedule
   def schedViaGeo(self, ulocation):
     self.ulocation = ulocation
-    return CommonUserTemplate.viewSchedule(self, ulocation)
-  
-  def viewSched(self, request):
-    return CommonUserTemplate.viewSchedule(self, request)
+    return CommonUserTemplate.reqSchedule(self, ulocation)
+  #viewSchedule
+  def reqSched(self, request):
+    return CommonUserTemplate.reqSchedule(self, request)
   
   def addSched(self, request):
     try:

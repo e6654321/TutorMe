@@ -3,7 +3,7 @@ from django.views.generic import View, TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt
+from .models import Profile, Schedule, Subject, Mentor, Mentee, Details, Account, Notes, Receipt, Review, Ratings, Comments
 from .forms import CreateUserForm, CreateProfileForm, CardDetailsForm, AccountForm, CreateSubjectForm, NotesForm, ReceiptForm, CreateMenteeForm, CreateMentorForm
 from django.db.models import Q
 from django.core import serializers
@@ -14,17 +14,18 @@ from .modelsFolder.AdminModel import AdminModel
 from .modelsFolder.ScheduleModel import ScheduleModel
 from .templatesFolder.AdminTemplate import AdminTemplate
 from .templatesFolder.CommonUserTemplate import CommonUserTemplate
+from.templatesFolder.RatingFeedbackTemplate import RatingFeedbackTemplate
 from .modelsFolder.NotesModel import NotesModel
 from .modelsFolder.MenteeModel import MenteeModel
 from .modelsFolder.MentorModel import MentorModel
-
+from .templatesFolder.RatingFeedbackTemplate import RatingFeedbackTemplate
+from .modelsFolder.RatingFeedbackModel import RatingFeedbackModel
 
 from django.http import JsonResponse
 import json
 
 import stripe
 stripe.api_key = "sk_test_51J9TM9L6zwlGFb0jpsul8bsQLGExhhTrPXyymygvzUREf3GO2Bc1W6Pu2vl68IMAq9dNzv786KoRyyrnRn3hbZ0I00Oz1NePik"
-
 class HomePageView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated:
@@ -56,14 +57,16 @@ class RegisterView(TemplateView):
     def post(self, request):
         form = request.POST.copy()
         form = AdminModel.addUser(self, form)
+        usn = form.cleaned_data.get('username')
+        id= User.objects.get(username=usn)
         try:
             usn = form.cleaned_data.get('username')
             id= User.objects.get(username=usn)
             mentor = form.cleaned_data.get('is_staff')
             if mentor==True:
-                MentorModel.addMentor(self, achvements=True, proofs=True, userID = id)
+                Mentor.addMentor(achvements=True, proofs=True, userID = id)
             else:
-                MenteeModel.addMentee(self, bio="hello", userID= id)
+                Mentee.addMentee(bio="hello", userID= id)
         except Exception as e:
             print(e)
         if form:
@@ -90,10 +93,10 @@ def paymentComplete(request):
     print('BODY:', body)
 
     return JsonResponse('Payment completed!', safe=False)
-
+#viewSchedule
 class RequestSchedView(TemplateView):
     def get(self, request):
-        return AdminTemplate.viewSchedule(self, request)
+        return AdminTemplate.reqSchedule(self, request)
 
     def post(self, request):
         if request.method == 'POST':
@@ -145,7 +148,6 @@ class RequestSchedView(TemplateView):
             return redirect('pages:search')
         else:
             return HttpResponse('failed')
-
 
 class NotesPageView(View):
     def createNotes(request):
@@ -412,3 +414,53 @@ class MentorProfileView(TemplateView):
 
 class ChatBotView(TemplateView):
     template_name = 'Chatbot.html'
+
+class RatingFeedback(TemplateView):
+    def get(self, request):
+        return RatingFeedbackTemplate.viewReview(self, request)
+
+    def post(self, request):
+        if request.method == 'POST':
+            rating = request.POST.get("rate")
+            comments = request.POST.get("message")
+
+            rate = RatingFeedbackModel.setRating(rating)
+            comment = RatingFeedbackModel.setFeedback(comments)
+            form = Review(ratings=rate, comments=comment)
+            form.save()
+            print(form)
+            return redirect('pages:RatingFeedback')
+        else:
+            return HttpResponse('failed')
+class HistoryView(TemplateView):
+    def get(self, request):
+        return CommonUserTemplate.history(self, request)
+
+    def post(self, request):
+        if request.method == 'POST':
+            if 'btnSort' in request.POST:
+                item = request.POST.get("search")
+                sort = request.POST.get("sort")
+                print(sort)
+                userId = request.user.id
+                queries = [((Q(id=sched.subject.id)) if userId == sched.menteeID_id else (
+                    Q(id=0))) for sched in Schedule.objects.all()]
+                s1 = Subject.objects.filter(Q(subjectName__icontains=item) | Q(mentorID_id__user_identification_id__first_name__icontains=item)
+                                            | Q(mentorID_id__user_identification_id__last_name__icontains=item))
+                print(s1)
+                try:
+                    query = queries.pop()
+                    for item in queries:
+                        query |= item
+                    print(query)
+                    s2 = s1.filter(~query).distinct()
+                except IndexError as e:
+                    s2 = s1.filter()
+                print(s2)
+                data = {
+                    "subject": s2.values('id', 'subjectName', 'ratePerHour',
+                                         'session_date', 'session_time_start', 'session_time_end',
+                                         'mentorID__user_identification__first_name', 'mentorID__user_identification__last_name').order_by(sort)
+                }
+                return render(request, 'history.html', data)
+

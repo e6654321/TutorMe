@@ -48,7 +48,16 @@ class Mentee(models.Model):
     user_identification = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100, blank=False,
                            null=False, default=None)
-
+    def addMentee(bio, userID):
+        try:
+            newMentee = Mentee()
+            newMentee.bio = bio
+            newMentee.user_identification=userID
+            newMentee.save()
+            print('saved')
+        except Exception as e:
+            print(e)
+    
     class Meta:
         db_table = "Mentee"
 
@@ -181,6 +190,7 @@ class Review(models.Model):
     ratings = models.ForeignKey(Ratings, null=True, on_delete=models.SET_NULL)
     comments = models.ForeignKey(
         Comments, null=True, on_delete=models.SET_NULL)
+
     readonly_fields = ('id',)
 
     class Meta:

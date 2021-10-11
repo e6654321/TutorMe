@@ -7,9 +7,9 @@ class AdminTemplate:
   
   def viewMentee(self):
     return redirect('pages:mentee')
-
-  def viewSchedule(self, request):
-    return CommonUserTemplate.viewSchedule(self, request)
+  #viewSchedule
+  def reqSchedule(self, request):
+    return CommonUserTemplate.reqSchedule(self, request)
   
   def logout(self, request):
     return CommonUserTemplate.logout(self, request)

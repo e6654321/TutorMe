@@ -1,10 +1,7 @@
 {% extends "components/base.html" %} {% load static %} {% block title%}
 <title>TutorMe</title>{% endblock %} {% block pageCSS %}
 <!-- Datepicker CSS -->
-<link
-  rel="stylesheet"
-  href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
 <!-- Timepicker -->
 <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}" />
@@ -23,32 +20,38 @@
     justify-content: center;
     height: 10%;
   }
-  .date-group > img {
+
+  .date-group>img {
     height: 30px;
     width: auto;
   }
-  .date-group > input {
+
+  .date-group>input {
     height: 30px;
     padding-left: 15px;
     padding-right: 0;
     border-radius: 20px;
     border: 1px solid lightgrey;
   }
-  .date-group > input:focus {
+
+  .date-group>input:focus {
     outline: none;
     border: 1px solid black;
   }
+
   .time-group {
     padding-top: 20px;
     display: flex;
     justify-content: center;
     height: 10%;
   }
-  .time-group > img {
+
+  .time-group>img {
     height: 30px;
     width: auto;
   }
-  .time-group > input {
+
+  .time-group>input {
     height: 30px;
     width: 120px;
     padding-left: 15px;
@@ -56,43 +59,51 @@
     border-radius: 20px;
     border: 1px solid lightgrey;
   }
-  .time-group > input:focus {
+
+  .time-group>input:focus {
     outline: none;
     border: 1px solid black;
   }
+
   .middle-content {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
   }
+
   .category-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
   }
+
   .subject-category {
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 100%;
   }
-  .subject-category > p {
+
+  .subject-category>p {
     margin: 0;
   }
-  .category-group > div > p {
+
+  .category-group>div>p {
     padding: 0px 10px 0px 10px;
     border-radius: 20px;
     border: 1px solid lightgrey;
     color: white;
   }
+
   .below-button {
     padding: 20px;
     display: flex;
     justify-content: center;
   }
-  .below-button > button {
+
+  .below-button>button {
     width: 300px;
   }
 </style>
@@ -100,45 +111,45 @@
 
 <!-- payment form css (stripe) -->
 <style type="text/css">
-    /**
+  /**
      * The CSS shown here will not be introduced in the Quickstart guide, but shows
      * how you can use CSS to style your Element's container.
      */
-    .StripeElement {
-      box-sizing: border-box;
+  .StripeElement {
+    box-sizing: border-box;
 
-      height: 40px;
+    height: 40px;
 
-      padding: 10px 12px;
+    padding: 10px 12px;
 
-      border: 1px solid transparent;
-      border-radius: 4px;
-      background-color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: white;
 
-      box-shadow: 0 1px 3px 0 #e6ebf1;
-      -webkit-transition: box-shadow 150ms ease;
-      transition: box-shadow 150ms ease;
-    }
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
 
-    .StripeElement--focus {
-      box-shadow: 0 1px 3px 0 #cfd7df;
-    }
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
 
-    .StripeElement--invalid {
-      border-color: #fa755a;
-    }
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
 
-    .StripeElement--webkit-autofill {
-      background-color: #fefde5 !important;
-    }
-  </style>
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+</style>
 
 
 <!-- stripe for payment -->
-  <script src="https://js.stripe.com/v3/"></script>
+<script src="https://js.stripe.com/v3/"></script>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
-        
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+
 
 
 {% endblock %} {% block pageBody %}
@@ -146,30 +157,25 @@
 <div class="main-container">
   {% include 'components/navigation.html' %}
   <span style="z-index: 100">
-  {% include 'components/Chatbot.html' %}
+    {% include 'components/Chatbot.html' %}
   </span>
 
   <div class="body-container col">
     {% include 'components/header.html' %}
     <div class="row">
       <div class="center-component col-9">
-        <div
-          class="main-content shadow-rounded"
-          style="display: flex; justify-content: center; align-items: center"
-        >
+        <div class="main-content shadow-rounded" style="display: flex; justify-content: center; align-items: center">
 
           <div id="payment-form">
-            
-              <form action="{% url 'pages:RequestSched' %}" method="POST" class="pform" id="pf">
-                  {% csrf_token %}
-                    <h3 style="text-align: center; margin-top: 15px">
-                      Schedule a Tutorial
-                    </h3>
-                    {% for s in subject %}
-                    <div class="form-row">
-                      <div
-                        class="suggestions"
-                        style="
+
+            <form action="{% url 'pages:RequestSched' %}" method="POST" class="pform" id="pf">
+              {% csrf_token %}
+              <h3 style="text-align: center; margin-top: 15px">
+                Schedule a Tutorial
+              </h3>
+              {% for s in subject %}
+              <div class="form-row">
+                <div class="suggestions" style="
                           border-style: solid;
                           border-color: #ffb10d;
                           border-width: 3px;
@@ -178,244 +184,155 @@
                           display: block;
                           border-radius: 8px;
                           margin: auto;
-                        "
-                      >
-                        <div class="row1" style="text-align: center">
-                          <img
-                            src="{% static '/assets/img/costumer.jpg' %}"
-                            class="border border-warning rounded-circle z-depth-0"
-                            alt="avatar image"
-                            style="
+                        ">
+                  <div class="row1" style="text-align: center">
+                    <img src="{% static '/assets/img/costumer.jpg' %}"
+                      class="border border-warning rounded-circle z-depth-0" alt="avatar image" style="
                               width: 100px;
                               height: 100px;
                               margin-right: 5px;
                               margin-top: 15px;
-                            "
-                          />
-                          <div align="center">
-                            <input hidden name="subjectID" value="{{s.id}}"></input>
-                            <h5>{{s.mentorID__user_identification__first_name}} {{s.mentorID__user_identification__last_name}}</h5>
-                            <h6>{{s.subjectName}}</h6>
-                            <div class="star-ratings-css" title=".875"></div>
+                            " />
+                    <div align="center">
+                      <input hidden name="subjectID" value="{{s.id}}"></input>
+                      <h5>{{s.mentorID__user_identification__first_name}} {{s.mentorID__user_identification__last_name}}
+                      </h5>
+                      <h6>{{s.subjectName}}</h6>
+                      <div class="star-ratings-css" title=".875"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr style="width: 750px" />
+              <hr style="width: 750px" />
+              <div class="form-row">
+                <div style="margin: auto">
+                  <h5 align="center">Date of Tutorial</h5>
+                  {% comment %} <i>Slots Available: 12</i> {% endcomment %}
+                  <div class="middle-content">
+                    <div class="date-group">
+                      <img src="{% static 'assets/icons/calendar.png' %}" alt="" />
+                      <input disabled type="text" id="datepicker" name="datepicker" autocomplete="off"
+                        placeholder="{{s.session_date|date:'Y-m-d'}}" value="{{s.session_date}}" />
+                    </div>
+                  </div>
+                </div>
+                <br />
+              </div>
+
+              <div class="form-row">
+                <div style="margin: auto">
+                  <br />
+                  <h5 align="center">Time Available :</h5>
+                  <div class="container" style="position: relative; margin: auto">
+                    <input disabled class="btn btn-warning" id="time" name="time"
+                      style="margin-left: 100px; margin-right: 10px"
+                      value="{{s.session_time_start}}-{{s.session_time_end}}">
+                    </input>
+                    {% comment %}
+                    <button class="btn btn-warning" style="margin-right: 10px">
+                      10:30-11:30 AM
+                    </button>
+                    <button class="btn btn-warning" style="margin-right: 10px">
+                      1:00-2:00 PM
+                    </button>
+                    <button class="btn btn-warning" style="margin-right: 10px">
+                      3:00-4:00 PM
+                    </button>
+                    {% endcomment %}
+                  </div>
+
+                  <div class="time-group">
+                    <label><i>Set Custom Time: </i></label>
+                    <img src="{% static 'assets/icons/clock.png' %}" alt="" style="margin-left: 5px" />
+                    <input type="text" name="timepicker" id="timepicker" name="timepicker" placeholder="00:00 AM/PM" />
+                    <p>_</p>
+                    <input type="text" id="timepicker1" name="timepicker1" placeholder="00:00 AM/PM" />
+                  </div>
+                </div>
+              </div>
+
+              <h6 style="margin-top: 10px" align="center">
+                <u><i>Rate Per Hour</i></u>
+              </h6>
+              <input disabled class="form-control" type="text" id="rate" name="rate" value="{{s.ratePerHour}}" readonly
+                style="text-align: center" /><br />
+              <hr />
+              <div class="form-row">
+                <div style="margin: auto">
+                  <i>Mentee / Your Contact Information:</i>
+                  <h6 align="left">Name</h6>
+                  <input disabled class="form-control" type="text" id="name" name="name"
+                    value="{{user.first_name}} {{user.last_name}}" readonly /><br />
+                  <h6 align="left">Contact Number</h6>
+                  <input disabled class="form-control" type="text" id="contact" name="contact"
+                    value="{{profile.contactNo}}" readonly /><br />
+                  <h6 align="left">Email</h6>
+                  <input disabled class="form-control" type="text" id="email" name="email" value="{{user.email}}"
+                    readonly /><br />
+                </div>
+              </div>
+              <hr />
+
+
+              <div class="form-row">
+                <div style="margin: auto">
+                  <h5 align="center">Method Payment</h5>
+                  <!-- Trigger the modal with a button -->
+                  <input type="button" id="credit" name="credit" class="btn btn-warning" data-toggle="modal"
+                    data-target="#myModal" value="Credit / Debit Card">
+                  </input>
+
+                  <input type="button" id="ewallet" name="ewallet" class="btn btn-warning" data-toggle="modal"
+                    data-target="#myModalE-Wallet" style="margin-left: 10px" value="E-Wallet">
+                  </input>
+
+                  <button id="com" name="com" type="submit" style="margin-left: 10px" class="btn btn-warning"> Cash on
+                    Meet-up
+                  </button>
+                  <!-- Modal Credit -->
+                  <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Payment Details</h4>
+                          <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                          </button>
+                        </div>
+
+                        <div class="modal-body">
+                          <label for="fname">Accepted Cards</label><br />
+
+                          <div class="icon-container">
+                            <i class="fa fa-cc-visa" style="color: navy"></i>
+                            <i class="fa fa-cc-amex" style="color: blue"></i>
+                            <i class="fa fa-cc-mastercard" style="color: red"></i>
+                            <i class="fa fa-cc-discover" style="color: orange"></i>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr style="width: 750px" />
-                    <hr style="width: 750px" />
-                    <div class="form-row">
-                      <div style="margin: auto">
-                        <h5 align="center">Date of Tutorial</h5>
-                        {% comment %} <i>Slots Available: 12</i> {% endcomment %}
-                        <div class="middle-content">
-                          <div class="date-group">
-                            <img
-                              src="{% static 'assets/icons/calendar.png' %}"
-                              alt=""
-                            />
-                            <input
-                              disabled
-                              type="text"
-                              id="datepicker"
-                              name="datepicker"
-                              autocomplete="off"
-                              placeholder="{{s.session_date|date:'Y-m-d'}}"
-                              value="{{s.session_date}}"
-                            />
+                          <br />
+
+                          <br>
+                          <div style="padding-bottom: 10px">
+                            <input class="form-control" type="text" placeholder="Card Owner Name" name="cardOwnerName">
                           </div>
-                        </div>
-                      </div>
-                      <br />
-                    </div>
+                          <div style="padding-bottom: 10px">
+                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
+                              name="cardEmail">
+                          </div>
+                          <input type="hidden" name="cardMode" value="card">
 
-                    <div class="form-row">
-                      <div style="margin: auto">
-                        <br />
-                        <h5 align="center">Time Available :</h5>
-                        <div class="container" style="position: relative; margin: auto">
-                          <input
-                            disabled
-                            class="btn btn-warning"
-                            id="time"
-                            name="time"
-                            style="margin-left: 100px; margin-right: 10px"
-                            value="{{s.session_time_start}}-{{s.session_time_end}}"
-                          >
-                          </input>
-                          {% comment %}
-                          <button class="btn btn-warning" style="margin-right: 10px">
-                            10:30-11:30 AM
-                          </button>
-                          <button class="btn btn-warning" style="margin-right: 10px">
-                            1:00-2:00 PM
-                          </button>
-                          <button class="btn btn-warning" style="margin-right: 10px">
-                            3:00-4:00 PM
-                          </button>
-                          {% endcomment %}
-                        </div>
-
-                        <div class="time-group">
-                          <label><i>Set Custom Time: </i></label>
-                          <img
-                            src="{% static 'assets/icons/clock.png' %}"
-                            alt=""
-                            style="margin-left: 5px"
-                          />
-                          <input
-                            type="text"
-                            name="timepicker"
-                            id="timepicker"
-                            name="timepicker"
-                            placeholder="00:00 AM/PM"
-                          />
-                          <p>_</p>
-                          <input
-                            type="text"
-                            id="timepicker1"
-                            name="timepicker1"
-                            placeholder="00:00 AM/PM"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <h6 style="margin-top: 10px" align="center">
-                      <u><i>Rate Per Hour</i></u>
-                    </h6>
-                    <input
-                      disabled
-                      class="form-control"
-                      type="text"
-                      id="rate"
-                      name="rate"
-                      value="{{s.ratePerHour}}"
-                      readonly
-                      style="text-align: center"
-                    /><br />
-                    <hr />
-                    <div class="form-row">
-                      <div style="margin: auto">
-                        <i>Mentee / Your Contact Information:</i>
-                        <h6 align="left">Name</h6>
-                        <input
-                          disabled
-                          class="form-control"
-                          type="text"
-                          id="name"
-                          name="name"
-                          value="{{user.first_name}} {{user.last_name}}"
-                          readonly
-                        /><br />
-                        <h6 align="left">Contact Number</h6>
-                        <input
-                          disabled
-                          class="form-control"
-                          type="text"
-                          id="contact"
-                          name="contact"
-                          value="{{profile.contactNo}}"
-                          readonly
-                        /><br />
-                        <h6 align="left">Email</h6>
-                        <input
-                          disabled
-                          class="form-control"
-                          type="text"
-                          id="email"
-                          name="email"
-                          value="{{user.email}}"
-                          readonly
-                        /><br />
-                      </div>
-                    </div>
-                    <hr />
-
-
-                    <div class="form-row">
-                      <div style="margin: auto">
-                        <h5 align="center">Method Payment</h5>
-                        <!-- Trigger the modal with a button -->
-                        <input
-                          type="button"
-                          id="credit"
-                          name="credit"
-                          class="btn btn-warning"
-                          data-toggle="modal"
-                          data-target="#myModal"
-                          value="Credit / Debit Card"
-                        >
-                        </input>
-
-                        <input
-                          type="button"
-                          id="ewallet"
-                          name="ewallet"
-                          class="btn btn-warning"
-                          data-toggle="modal"
-                          data-target="#myModalE-Wallet"
-                          style="margin-left: 10px"
-                          value="E-Wallet"
-                        >
-                        </input>
-
-                        <button
-                          id="com"
-                          name="com"
-                          type="submit"
-                          style="margin-left: 10px"
-                          class="btn btn-warning"
-                        > Cash on Meet-up
-                        </button>
-                        <!-- Modal Credit -->
-                        <div class="modal fade" id="myModal" role="dialog">
-                          <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h4 class="modal-title">Payment Details</h4>
-                                <button
-                                  type="button"
-                                  class="close"
-                                  data-dismiss="modal"
-                                >
-                                  &times;
-                                </button>
-                              </div>
-
-                              <div class="modal-body">
-                                <label for="fname">Accepted Cards</label><br />
-
-                                <div class="icon-container">
-                                  <i class="fa fa-cc-visa" style="color: navy"></i>
-                                  <i class="fa fa-cc-amex" style="color: blue"></i>
-                                  <i class="fa fa-cc-mastercard" style="color: red"></i>
-                                  <i
-                                    class="fa fa-cc-discover"
-                                    style="color: orange"
-                                  ></i>
-                                </div>
-                                <br />
-
-                                <br>
-                                <div style="padding-bottom: 10px">
-                                  <input class="form-control" type="text" placeholder="Card Owner Name" name="cardOwnerName">
-                                </div>
-                                <div style="padding-bottom: 10px">
-                                  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email" name="cardEmail">
-                                </div>
-                                <input type="hidden" name="cardMode" value="card">
-
-                                <!-- <label for="card-element">
+                          <!-- <label for="card-element">
                                   Credit or debit card
                                 </label> -->
-                                <div id="card-element">
-                                  <!-- A Stripe Element will be inserted here. -->
-                                </div>
+                          <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                          </div>
 
-                                <!-- Used to display form errors. -->
-                                <div id="card-errors" role="alert"></div>
+                          <!-- Used to display form errors. -->
+                          <div id="card-errors" role="alert"></div>
 
-                                <!-- <label for="cname">Name on Card</label>
+                          <!-- <label for="cname">Name on Card</label>
                                 <input
                                   type="text"
                                   id="cname"
@@ -450,53 +367,44 @@
                                   name="cvv"
                                   value="{{card.cvc}}"
                                 /> -->
-                              </div>
-
-                              <div class="modal-footer">
-                                <button
-                                  type="submit"
-                                  class="btn btn-warning"
-                                  name="card-btn"
-                                >
-                                  Pay
-                                </button>
-                                <!-- <input  class="myButton" style="background-color:#10a195" type="submit" value="Submit Payment" name="card-btn" id="card-btn"
-                                > -->
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                        <!-- End of credit modal -->
 
-                        <!-- Modal E-Wallet -->
-                        <div class="modal fade" id="myModalE-Wallet" role="dialog">
-                          <div class="modal-dialog modal-sm">
-                            <div class="modal-content"
-                            >
-                              <div class="modal-header">
-                                <h4 class="modal-title">Payment Details</h4>
-                                <button
-                                  type="button"
-                                  class="close"
-                                  data-dismiss="modal"
-                                >
-                                  &times;
-                                </button>
-                              </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-warning" name="card-btn">
+                            Pay
+                          </button>
+                          <!-- <input  class="myButton" style="background-color:#10a195" type="submit" value="Submit Payment" name="card-btn" id="card-btn"
+                                > -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End of credit modal -->
 
-                              <div class="modal-body">
-                                <!-- GCASH INFO -->
-                                <h5>G-CASH</h5>
-                                <p>
-                                  <button onClick="onGCash()" type="button" class="btn btn-primary">
-                                    <i class=""></i> Log into my G-CASH
-                                  </button>
-                                </p>
+                  <!-- Modal E-Wallet -->
+                  <div class="modal fade" id="myModalE-Wallet" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Payment Details</h4>
+                          <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                          </button>
+                        </div>
 
-                                <!-- Paypal info -->
-                                <h5>PAYPAL</h5>
-                                <div id="paypal-button-container"></div>
-                                <!-- <h6 class="pb-2">Select your paypal account type</h6>
+                        <div class="modal-body">
+                          <!-- GCASH INFO -->
+                          <h5>G-CASH</h5>
+                          <p>
+                            <button onClick="onGCash()" type="button" class="btn btn-primary">
+                              <i class=""></i> Log into my G-CASH
+                            </button>
+                          </p>
+
+                          <!-- Paypal info -->
+                          <h5>PAYPAL</h5>
+                          <div id="paypal-button-container"></div>
+                          <!-- <h6 class="pb-2">Select your paypal account type</h6>
                                 <div class="form-group">
                                   <label class="radio-inline">
                                     <input type="radio" name="optradio" checked />
@@ -516,173 +424,170 @@
                                     Paypal
                                   </input>
                                 </p> -->
-                                <p class="text-muted">
-                                  Note: After clicking on the button, you will be
-                                  directed to a secure gateway for payment. After
-                                  completing the payment process, you will be redirected
-                                  back to the website to view details of your order.
-                                </p>
-                                <!-- </div> End -->
-                              </div>
-
-                              <div class="modal-footer">
-                                <button
-                                  type="submit"
-                                  class="btn btn-warning"
-                                  name="e-wallet"
-                                >
-                                  Continue to Request
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                          <p class="text-muted">
+                            Note: After clicking on the button, you will be
+                            directed to a secure gateway for payment. After
+                            completing the payment process, you will be redirected
+                            back to the website to view details of your order.
+                          </p>
+                          <!-- </div> End -->
                         </div>
 
-                        <!-- End of E-wallet modal -->
-                        {% comment %} <div align="center">
-                          <button
-                            type="submit"
-                            name="submit"
-                            class="btn btn-warning"
-                            style="width: 50%; margin-top: 20px"
-                          >
-                            Request Schedule
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-warning" name="e-wallet">
+                            Continue to Request
                           </button>
-                        </div> {% endcomment %}
+                        </div>
                       </div>
                     </div>
-                    {%endfor%}
+                  </div>
 
-              </form>
+                  <!-- End of E-wallet modal -->
+                  {% comment %} <div align="center">
+                    <button type="submit" name="submit" class="btn btn-warning" style="width: 50%; margin-top: 20px">
+                      Request Schedule
+                    </button>
+                  </div> {% endcomment %}
+                </div>
+              </div>
+              {%endfor%}
+
+            </form>
 
           </div>
 
-            <!-- stripe payment script -->
-            <script>
+          <!-- stripe payment script -->
+          <script>
+            // Create a Stripe client.
+            const stripe = Stripe(
+              'pk_test_51J9TM9L6zwlGFb0js9j14WIja57MASIN7hZilAJACyR7kpbQFnyAo1KGJjMiRE1nFfiyrlt6mGHbGcg3IYRUKR5p00sYoI7yTN'
+              );
 
-                // Create a Stripe client.
-                const stripe = Stripe('pk_test_51J9TM9L6zwlGFb0js9j14WIja57MASIN7hZilAJACyR7kpbQFnyAo1KGJjMiRE1nFfiyrlt6mGHbGcg3IYRUKR5p00sYoI7yTN');
+            // Create an instance of Elements.
+            const elements = stripe.elements();
 
-                // Create an instance of Elements.
-                const elements = stripe.elements();
+            // Custom styling can be passed to options when creating an Element.
+            const style = {
+              base: {
+                // Add your base input styles here. For example:
+                fontSize: '16px',
+                color: '#32325d',
+              },
+            };
 
-                // Custom styling can be passed to options when creating an Element.
-                const style = {
-                  base: {
-                    // Add your base input styles here. For example:
-                    fontSize: '16px',
-                    color: '#32325d',
-                  },
-                };
+            // Create an instance of the card Element.
+            const card = elements.create('card', {
+              style
+            });
 
-                // Create an instance of the card Element.
-                const card = elements.create('card', {style});
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-element');
 
-                // Add an instance of the card Element into the `card-element` <div>.
-                card.mount('#card-element');
+            // Create a token or display an error when the form is submitted.
+            const doc = document.getElementById('payment-form');
+            const form = doc.getElementsByClassName('pform')[0];
+            form.addEventListener('submit', async (event) => {
+              event.preventDefault();
 
-                // Create a token or display an error when the form is submitted.
-                const doc = document.getElementById('payment-form');
-                const form = doc.getElementsByClassName('pform')[0];
-                form.addEventListener('submit', async (event) => {
-                  event.preventDefault();
+              const {
+                token,
+                error
+              } = await stripe.createToken(card);
 
-                  const {token, error} = await stripe.createToken(card);
+              if (error) {
+                // Inform the customer that there was an error.
+                const errorElement = document.getElementById('card-errors');
+                errorElement.textContent = error.message;
+              } else {
+                // Send the token to your server.
+                stripeTokenHandler(token);
+              }
+            });
 
-                  if (error) {
-                    // Inform the customer that there was an error.
-                    const errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = error.message;
-                  } else {
-                    // Send the token to your server.
-                    stripeTokenHandler(token);
-                  }
-                });
+            const stripeTokenHandler = (token) => {
+              // Insert the token ID into the form so it gets submitted to the server
+              const doc = document.getElementById('payment-form');
+              const form = doc.getElementsByClassName('pform')[0];
+              const hiddenInput = document.createElement('input');
+              hiddenInput.setAttribute('type', 'hidden');
+              hiddenInput.setAttribute('name', 'stripeToken');
+              hiddenInput.setAttribute('value', token.id);
+              form.appendChild(hiddenInput);
 
-                const stripeTokenHandler = (token) => {
-                  // Insert the token ID into the form so it gets submitted to the server
-                  const doc = document.getElementById('payment-form');
-                  const form = doc.getElementsByClassName('pform')[0];
-                  const hiddenInput = document.createElement('input');
-                  hiddenInput.setAttribute('type', 'hidden');
-                  hiddenInput.setAttribute('name', 'stripeToken');
-                  hiddenInput.setAttribute('value', token.id);
-                  form.appendChild(hiddenInput);
-
-                  // Submit the form
-                  doc.getElementsByClassName('pform')[0].submit();
-                  alert("Payment Successful!");
-                }
-                
+              // Submit the form
+              doc.getElementsByClassName('pform')[0].submit();
+              alert("Payment Successful!");
+            }
           </script>
 
 
 
           <script>
-
             function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = cookies[i].trim();
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
+              var cookieValue = null;
+              if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
                 }
-                return cookieValue;
+              }
+              return cookieValue;
             }
             var csrftoken = getCookie('csrftoken');
 
             var total = '{{s.ratePerHour}}'
             var productId = '1'
 
-            function completeOrder(){
+            function completeOrder() {
               alert("Order Completed");
-              var url = "{% url 'complete' %}"
+              var url = "{% url 'pages:complete' %}"
 
               fetch(url, {
-                method:'POST',
-                headers:{
-                  'Content-type':'application/json',
-                  'X-CSRFToken':csrftoken,
+                method: 'POST',
+                headers: {
+                  'Content-type': 'application/json',
+                  'X-CSRFToken': csrftoken,
                 },
-                body:JSON.stringify({'productId':productId})
+                body: JSON.stringify({
+                  'productId': productId
+                })
               })
             }
 
 
-                // Render the PayPal button into #paypal-button-container
-                paypal.Buttons({
+            // Render the PayPal button into #paypal-button-container
+            paypal.Buttons({
 
-                    // Set up the transaction
-                    createOrder: function(data, actions) {
-                        return actions.order.create({
-                            purchase_units: [{ 
-                                amount: {
-                                    value: total
-                                }
-                            }]
-                        });
-                    },
-
-                    // Finalize the transaction
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(function(details) {
-                            // Show a success message to the buyer
-                            // completeOrder()
-                            alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                        });
+              // Set up the transaction
+              createOrder: function (data, actions) {
+                return actions.order.create({
+                  purchase_units: [{
+                    amount: {
+                      value: total
                     }
+                  }]
+                });
+              },
+
+              // Finalize the transaction
+              onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                  // Show a success message to the buyer
+                  // completeOrder()
+                  alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+              }
 
 
-                }).render('#paypal-button-container');
-            </script>
+            }).render('#paypal-button-container');
+          </script>
 
-           
+
 
 
 
@@ -725,7 +630,7 @@
 
   function onPaypal() {
     window.open('https://www.paypal.com/ph/signin', '_blank');
-    }
+  }
 </script>
 
 
