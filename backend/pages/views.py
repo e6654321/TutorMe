@@ -58,9 +58,9 @@ class RegisterView(TemplateView):
     def post(self, request):
         form = request.POST.copy()
         form = AdminModel.addUser(self, form)
-        usn = form.cleaned_data.get('username')
-        id= User.objects.get(username=usn)
         try:
+            usn = form.cleaned_data.get('username')
+            id= User.objects.get(username=usn)
             usn = form.cleaned_data.get('username')
             id= User.objects.get(username=usn)
             mentor = form.cleaned_data.get('is_staff')
@@ -143,8 +143,7 @@ class RequestSchedView(TemplateView):
                         description="Tutorial Session"
                         )
 
-                    form = Details(cardOwnerName=cname, stripeCustomerID=customer.id)
-                    form.save()
+                    Details.addDetails(cardOwnerName=cname, stripeCustomerID=customer.id)
 
         # if request.method == 'POST':
         #     subjectID = request.POST.get("subjectID")

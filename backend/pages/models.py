@@ -140,6 +140,15 @@ class Details(models.Model):
 
     class Meta:
         db_table = "Details"
+        
+    def addDetails(cardOwnerName, stripeCustomerID):
+        try:
+            newDetails = Details()
+            newDetails.cardOwnerName=cardOwnerName
+            newDetails.stripeCustomerID=stripeCustomerID
+            newDetails.save()
+        except Exception as e:
+            print(e)
 
 
 class Receipt(models.Model):
