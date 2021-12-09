@@ -19,6 +19,7 @@ git clone https://github.com/e6654321/TutorMe.git
 cd TutorMe
 pipenv install django~=3.1.0
 pipenv shell
+pipenv install stripe
 ```
 4. Go to 'backend' folder: `cd backend`
 5. Run this command to start server: `python manage.py runserver`

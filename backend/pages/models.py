@@ -68,6 +68,15 @@ class Mentor(models.Model):
     achvemnts = models.BooleanField()
     proofs = models.BooleanField()
 
+    def addMentor(achvements, proofs, userID):
+        try:
+            newMentor = Mentor()
+            newMentor.achvemnts=achvements
+            newMentor.proofs=proofs
+            newMentor.user_identification=userID
+            newMentor.save()
+        except Exception as e:
+            print(e)
     
     
     class Meta:

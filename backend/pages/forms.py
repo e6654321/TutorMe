@@ -82,3 +82,15 @@ class MessageForm(ModelForm):
     class Meta:
         model = MessageModel
         fields = '__all__'
+
+    def getSenderID(self):
+        return self.data['senderId']
+
+    def getRecieverID(self):
+        return self.data['recieverId']
+
+    def getMessage(self):
+        return self.data['message']
+
+    def getDateSent(self):
+        return self.data['dateSent']

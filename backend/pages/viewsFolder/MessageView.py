@@ -42,12 +42,6 @@ class MessageView(TemplateView):
       }
     return render(request, 'messages.html', data)
 
-  def deleteMessage(self, messages):
-    self.messageModel.sendMessage(self, messages)
-
-  def updateTemplate(self):
-    return self.messageTemplate 
-    
   def post(self, request):
     recieverId = request.POST.get("userId")
     message = request.POST.get("message")

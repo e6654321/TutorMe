@@ -12,3 +12,16 @@ class MessageModel(models.Model):
 
     class Meta:
         db_table = "Messages"
+    
+    def getMessage(self, mID):
+        return self.objects.get(messageID=mID)
+    
+    def addMessage(self, senderId, recieverId, message):
+        try:
+            new_message= self()
+            new_message.senderId=senderId
+            new_message.recieverId=recieverId
+            new_message.message=message
+            new_message.save()
+        except Exception as e:
+            print(e)
