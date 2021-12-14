@@ -110,19 +110,19 @@ class RequestSchedView(TemplateView):
             cardOwnerName = request.POST.get('cardOwnerName')
             cardEmail = request.POST.get('cardEmail')
             
-             date = subject.values('session_date')[0].get('session_date')
-             time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
-             custom_time_start = request.POST.get("timepicker")
-             custom_time_end = request.POST.get("timepicker1")
+            date = subject.values('session_date')[0].get('session_date')
+            time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
+            custom_time_start = request.POST.get("timepicker")
+            custom_time_end = request.POST.get("timepicker1")
             
-             current_user = request.user
-                
-             menteeID = User.objects.get(username=current_user)
-             menteeID = Mentee.objects.get(user_identification_id=menteeID)
+            current_user = request.user
+            
+            menteeID = User.objects.get(username=current_user)
+            menteeID = Mentee.objects.get(user_identification_id=menteeID)
 
-             form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
-                             custom_time_end=custom_time_end, payment_method=mode)
-             form.save()
+            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+                            custom_time_end=custom_time_end, payment_method=mode)
+            form.save()
             
             
             
