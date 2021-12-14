@@ -135,7 +135,7 @@
 					<div class="group-form">
 						<div class="form-group">
 							<label for="notesTitle">&ensp;&ensp;Title <span style="color:red;">*</span>&ensp;&ensp;</label>
-							<input type="text" name="notesTitle" >
+							<input required type="text" name="notesTitle" >
 						</div>
 						<div class="form-group" hidden>
 							<label for="menteeID" style="display: inline-block;">Mentee <span style="color:red;">*</span>&ensp;</label>
@@ -143,13 +143,13 @@
 						</div>
 						<div class="form-group" >
 							<label for="subjectID" style="display: inline-block;">Subject <span style="color:red;">*</span>&ensp;</label>
-							<select name="subjectID" id="subjectID" style="background: url({% static 'assets/logo.png' %}) 96% / 15% no-repeat #EEE;">
+							<select required name="subjectID" id="subjectID" style="background: url({% static 'assets/logo.png' %}) 96% / 15% no-repeat #EEE;">
 								{% for s in subject %}
                                		<option value="{{s.id}}"><p class="text-center">{{s.subjectName}}</p></option>
 								{% endfor %}
                             </select>
 						</div>
-						<input type="file" name="notes" accept=".pdf,.docx,.txt">
+						<input required type="file" name="notes" accept=".pdf,.docx,.txt">
 					</div>
             	
 			</div>
