@@ -76,7 +76,7 @@ class CommonUserTemplate:
 
   def search(self, request):
     userId = request.user
-    queries = [((Q(id=sched.subject.id)) if userId.id== sched.menteeID_id else (Q(id=0))) for sched in Schedule.objects.all()]
+    queries = [((Q(id=0)) if userId.id== sched.menteeID_id else (Q(id=sched.subject.id))) for sched in Schedule.objects.all()]
     try:
       query = queries.pop()
       for item in queries:

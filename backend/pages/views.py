@@ -120,16 +120,10 @@ class RequestSchedView(TemplateView):
             menteeID = User.objects.get(username=current_user)
             menteeID = Mentee.objects.get(user_identification_id=menteeID)
 
-            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
-                            custom_time_end=custom_time_end, payment_method=mode)
-            form.save()
-            
-            
-            
-            # print(ratePrHour)
-
-            if 'com' in request.POST:
-                mode = 'Cash on Delivery'
+            if mode == 'meetup':
+                mode = 'Cash on Meet-up'
+            elif mode == 'eWallet':
+                mode = 'E-Wallet'
             elif mode == 'card':
                 mode = 'Credit Card'
                 if Details.objects.filter(cardOwnerName=cardOwnerName).exists():
@@ -162,31 +156,10 @@ class RequestSchedView(TemplateView):
 
                     Details.addDetails(cardOwnerName=cname, stripeCustomerID=customer.id)
 
-        # if request.method == 'POST':
-        #     subjectID = request.POST.get("subjectID")
-        #     print(subjectID)
-        #     mode = 'E-Wallet'
-
-        #     if 'com' in request.POST:
-        #         mode = 'Cash on Delivery'
-        #     elif 'card-btn' in request.POST:
-        #         mode = 'Credit Card'
-        #     subject = Subject.objects.filter(id=subjectID)
-        #     date = subject.values('session_date')[0].get('session_date')
-        #     ratePrHour = subject.values('ratePerHour')[0].get('ratePerHour')
-        #     time = (subject.values('session_time_start')[0].get('session_time_start'))+ " - " +(subject.values('session_time_end')[0].get('session_time_end'))
-        #     print(time)
-        #     custom_time_start = request.POST.get("timepicker")
-        #     custom_time_end = request.POST.get("timepicker1")
-
-        #     current_user = request.user
-        #     menteeID = User.objects.get(username=current_user)
-        #     menteeID = Mentee.objects.get(user_identification_id=menteeID)
-
-        #     form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
-        #                     custom_time_end=custom_time_end, payment_method=mode)
-        #     form.save()
-
+            form = Schedule(subject=subject[0],menteeID=menteeID,date=date,ratePrHour=ratePrHour, time=time, custom_time_start=custom_time_start,
+                            custom_time_end=custom_time_end, payment_method=mode)
+            form.save()
+            
             return redirect('pages:search')
         else:
             return HttpResponse('failed')

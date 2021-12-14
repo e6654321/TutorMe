@@ -287,7 +287,7 @@
                     data-target="#myModalE-Wallet" style="margin-left: 10px" value="E-Wallet">
                   </input>
 
-                  <button id="com" name="com" type="submit" style="margin-left: 10px" class="btn btn-warning"> Cash on
+                  <button id="com" name="com" type="submit" style="margin-left: 10px" class="btn btn-warning" onclick="onMeetUp()"> Cash on
                     Meet-up
                   </button>
                   <!-- Modal Credit -->
@@ -320,7 +320,7 @@
                             <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
                               name="cardEmail">
                           </div>
-                          <input type="hidden" name="cardMode" value="card">
+                          <input id="cardMode" type="hidden" name="cardMode" value="card">
 
                           <!-- <label for="card-element">
                                   Credit or debit card
@@ -434,7 +434,7 @@
                         </div>
 
                         <div class="modal-footer">
-                          <button type="submit" class="btn btn-warning" name="e-wallet">
+                          <button type="submit" class="btn btn-warning" name="e-wallet" onclick="onEWallet()">
                             Continue to Request
                           </button>
                         </div>
@@ -514,6 +514,7 @@
               hiddenInput.setAttribute('value', token.id);
               form.appendChild(hiddenInput);
 
+              $('#cardMode').val('card');
               // Submit the form
               doc.getElementsByClassName('pform')[0].submit();
               alert("Payment Successful!");
@@ -631,6 +632,17 @@
   function onPaypal() {
     window.open('https://www.paypal.com/ph/signin', '_blank');
   }
+
+  function onMeetUp() {
+    $('#cardMode').val('meetup');
+    doc.getElementsByClassName('pform')[0].submit();
+  }
+
+  function onEWallet() {
+    $('#cardMode').val('eWallet');
+    doc.getElementsByClassName('pform')[0].submit();
+  }
+
 </script>
 
 
