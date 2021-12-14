@@ -169,15 +169,18 @@ class NotesPageView(View):
         if request.method == 'POST':
             print(request.POST)
             if 'addNotes' in request.POST:
-                print("add")
                 form= NotesForm(request.POST, request.FILES)
+                print(form.is_valid())
                 if form.is_valid():
                     notes_title= form.getNotesTitle()
-                    userID = form.getMenteeID()
                     subjectID= form.getSubjectID()                  
-                    notes_menteeID= Mentee.objects.get(user_identification_id=userID)
-                    notes_subjectID= Subject.objects.get(id=subjectID)
-                    notes_mentorID = Mentor.objects.get(mentorID=notes_subjectID.mentorID_id)
+                    try:
+                        notes_menteeID= Mentee.objects.get(user_identification_id=request.user.id)
+                        notes_subjectID= Subject.objects.get(id=subjectID)
+                        notes_mentorID = Mentor.objects.get(mentorID=notes_subjectID.mentorID_id)
+                    except Exception as e:
+                        print(e)
+                        raise
                     notes_note= request.FILES['notes']
                     NotesModel.addNotes(notes_menteeID, notes_mentorID, notes_subjectID, notes_title, notes_note)
                     messages.success(request, ("Notes added"))
