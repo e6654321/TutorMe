@@ -75,6 +75,10 @@
     .chat-mentor > a{
         padding-top: 20px;
     }
+    .chat-mentor > a > img{
+        height: 36px;
+        width: 36px;
+    }
     .message-mentor > p{
         border-radius: 20px;
         border: 1px solid grey;
@@ -144,7 +148,7 @@
 
                             {% if m.senderId_id == user.id%}
                             <div class="chat-mentor">
-                                <a href="#"><img src="{% static 'assets/icons/jhosie.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'assets/icons/user.png' %}" alt=""></a>
                                 <div class="message-mentor">
                                     <div style="white-space: nowrap;"  class="message-date">{{m.dateSent}}</div>
                                     <p>{{m.message}}</p>
